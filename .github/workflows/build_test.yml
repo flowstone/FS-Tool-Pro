@@ -36,10 +36,6 @@ jobs:
       - name: Zip the generated files (Windows)
         run: Compress-Archive -Path dist_portable/* -DestinationPath FS-Tool.zip  # 将生成文件压缩为zip包
 
-      - name: Generate Release Notes
-        run: |
-           git log --oneline --no-merges --pretty=format:"- %s" ${{ github.event.before }}..${{ github.sha }}> release_notes.txt
-           cat release_notes.txt
 
       - name: Create release
         uses: actions/create-release@v1
@@ -50,11 +46,9 @@ jobs:
           # 使用条件判断来确保根据触发事件动态选择 tag_name 和 name
           tag_name: ${{ github.ref }}
           name: Release ${{ github.ref }}
-          body: |
-            $(cat release_notes.txt)
           draft: false  # 是否为草稿，设为false表示直接发布
           prerelease: false  # 是否为预发布版本，设为false表示正式发布
-          
+
       - name: Upload release asset
         uses: actions/upload-release-asset@v1
         env:
@@ -82,28 +76,28 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3  # 检出当前仓库代码
-        
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
            python-version: '3.11'  # 根据项目实际依赖的Python版本进行调整
-          
+
       - name: Install dependencies
         run: pip install -r requirements.txt  # 安装项目依赖的Python库
 
       - name: Install PyInstaller
         run: pip install pyinstaller  # 安装PyInstaller打包工具
-        
+
       - name: Install create-dmg tool
         run: |
-          brew install create-dmg  
+          brew install create-dmg
         # 安装 create-dmg 工具
-          
+
       - name: Build application with PyInstaller
         #run: pyinstaller --name "FS-Tool" --onefile --windowed --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/lib:./PyQt5/Qt/lib" --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/plugins:./PyQt5/Qt/plugins"   --add-data "resources:resources" --add-data "config.json:." --collect-all PyQt5 --icon=resources/app.ico app.py
         run: |
           pyinstaller --name "FS-Tool" --onefile  --window   --add-data "resources:resources" --add-data "config.json:." --icon=resources/app.ico ./app.py
-      
+
       - name: Create DMG file from .app (macOS)
         run: |
           create-dmg  "dist/FS-Tool.dmg"  "dist/FS-Tool.app"
@@ -130,30 +124,3 @@ jobs:
           asset_path: FS-Tool.app.zip
           asset_name: FS-Tool.MacOS.zip
           asset_content_type: application/zip
-          
-      - name: Add version badge to README
-        run: |
-          VERSION="${{ github.ref }}"
-          BADGE_URL="https://img.shields.io/badge/version-${VERSION}-blue.svg"
-          README_FILE="README.md"
-
-          # 使用 sed 或类似工具在 README.md 中插入版本徽章
-          # 查找现有的徽章或其他位置插入版本徽章
-          if grep -q "version" "$README_FILE"; then
-            sed -i "s|<badge_placeholder>|![Version Badge](${BADGE_URL})|g" "$README_FILE"
-          else
-            # 如果没有找到 placeholder，直接在文件顶部插入
-            echo "![Version Badge](${BADGE_URL})" | cat - "$README_FILE" > temp && mv temp "$README_FILE"
-          fi
-
-      - name: Commit changes to README
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add README.md
-          git commit -m "Add version badge for ${{ github.ref }}"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-          

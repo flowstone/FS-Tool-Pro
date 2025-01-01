@@ -34,6 +34,7 @@ class FsConstants:
     HASH_CALCULATOR_WINDOW_TITLE = "HASH校验"
     PORT_SCANNER_WINDOW_TITLE = "端口扫描器"
     PORT_KILLER_WINDOW_TITLE = "端口杀手"
+    NETWORK_TOOL_WINDOW_TITLE = "网络工具"
     # 桌面时钟相关常量
     DESKTOP_CLOCK_WINDOW_WIDTH = 0
     DESKTOP_CLOCK_WINDOW_HEIGHT = 0
@@ -111,6 +112,7 @@ class FsConstants:
     BUTTON_HASH_CALCULATOR_ICON = "MD5-icon.svg"
     BUTTON_PORT_SCANNER_ICON = "port-scanner-icon.svg"
     BUTTON_PORT_KILLER_ICON = "port-killer-icon.svg"
+    BUTTON_NETWORK_TOOL_ICON = "network-tool-icon.svg"
 
 
     BUTTON_IMAGE_LOCK_OPEN = "resources/btn/lock-open-solid.svg"

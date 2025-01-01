@@ -1,6 +1,7 @@
 # config.py
 from src.batch_heic_jpg import HeicToJpgApp
 from src.desktop_clock import ColorSettingDialog
+from src.network_tool import NetworkInfoApp
 from src.pic_conversion import PicConversionApp
 from src.batch_file_renamer import RenameFileApp
 from src.batch_create_folder import CreateFolderApp
@@ -45,4 +46,7 @@ app_instance_config = [
     {"key": "port_killer", "icon": FsConstants.BUTTON_PORT_KILLER_ICON,
      "title": FsConstants.PORT_KILLER_WINDOW_TITLE,
      "class": PortKillerApp},
+    {"key": "network_tool", "icon": FsConstants.BUTTON_NETWORK_TOOL_ICON,
+         "title": FsConstants.NETWORK_TOOL_WINDOW_TITLE,
+         "class": NetworkInfoApp},
 ]

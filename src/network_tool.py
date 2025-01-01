@@ -11,6 +11,7 @@ from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
+from src.widget.custom_progress_widget import CustomProgressBar
 
 
 def get_local_ip():
@@ -185,8 +186,7 @@ class NetworkInfoApp(QWidget):
         title_label.setFont(FontConstants.H1)
         self.text_area = QTextEdit()
         self.text_area.setReadOnly(True)
-        self.progress_bar = QProgressBar()
-        self.progress_bar.setValue(0)
+        self.progress_bar = CustomProgressBar()
         self.progress_bar.hide()
         self.button = QPushButton("获取网络信息")
         self.button.clicked.connect(self.fetch_network_info)
@@ -204,21 +204,15 @@ class NetworkInfoApp(QWidget):
         启动多线程获取网络信息
         """
         self.text_area.clear()
-        self.progress_bar.show()
         self.button.setEnabled(False)
 
         self.worker = NetworkInfoWorker()
-        self.worker.progress_signal.connect(self.update_progress)
+        self.worker.progress_signal.connect(self.progress_bar.update_progress)
         self.worker.result_signal.connect(self.display_result)
         self.worker.error_signal.connect(self.display_error)  # 连接错误信号
-
         self.worker.start()
+        self.progress_bar.show()
 
-    def update_progress(self, value):
-        """
-        更新进度条
-        """
-        self.progress_bar.setValue(value)
 
     def display_result(self, result):
         """

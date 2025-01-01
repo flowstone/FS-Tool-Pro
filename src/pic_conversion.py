@@ -11,6 +11,7 @@ from src.const.color_constants import BLACK
 from src.util.common_util import CommonUtil
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.widget.custom_progress_widget import CustomProgressBar
 from src.widget.progress_widget import ProgressWidget
 
 
@@ -74,7 +75,9 @@ class PicConversionApp(QWidget):
         scroll_area.setWidget(self.checkbox_frame)
         scroll_area.setWidgetResizable(True)
         layout.addWidget(scroll_area)
-
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
         # 按钮布局
         button_layout = QHBoxLayout()
 
@@ -122,7 +125,6 @@ class PicConversionApp(QWidget):
             self.convert_button.setEnabled(False)
 
     def convert_image(self):
-        self.progress_tool = ProgressWidget(self)
 
         if not self.image_path:
             logger.warning("---- 请先上传图片! ----")
@@ -130,15 +132,16 @@ class PicConversionApp(QWidget):
             return
 
         self.setEnabled(False)
-        self.worker_thread = ImageConversionThread(self.image_path, self.selected_formats, self.progress_tool)
+        self.progress_bar.set_range(0,0)
+        self.worker_thread = ImageConversionThread(self.image_path, self.selected_formats)
         self.worker_thread.finished_signal.connect(self.conversion_finished)
         self.worker_thread.error_signal.connect(self.conversion_error)
         self.worker_thread.start()
-        self.progress_tool.show()
+        self.progress_bar.show()
 
     def conversion_finished(self):
         logger.info("---- 图片转换完成 ----")
-        self.progress_tool.hide()
+        self.progress_bar.hide()
         self.setEnabled(True)
         logger.info(
             f"图片已成功转换为所选格式，保存路径分别为: {[f'{os.path.splitext(self.image_path)[0]}.{f.lower()}' for f in self.selected_formats]}")
@@ -147,7 +150,7 @@ class PicConversionApp(QWidget):
 
     def conversion_error(self, error_msg):
         logger.error(f"转换图片时出错: {error_msg}")
-        self.progress_tool.hide()
+        self.progress_bar.hide()
         self.setEnabled(True)
         QMessageBox.information(self, "警告", "遇到异常停止工作")
 
@@ -160,16 +163,14 @@ class ImageConversionThread(QThread):
     finished_signal = pyqtSignal()
     error_signal = pyqtSignal(str)
 
-    def __init__(self, image_path, selected_formats, progress_tool):
+    def __init__(self, image_path, selected_formats):
         super().__init__()
         self.image_path = image_path
         self.selected_formats = selected_formats
-        self.progress_tool = progress_tool
 
     def run(self):
         try:
 
-            self.progress_tool.set_range(0, 0)
 
             image = Image.open(self.image_path)
             for target_format in self.selected_formats:

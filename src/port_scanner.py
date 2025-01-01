@@ -9,6 +9,7 @@ from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from src.const.color_constants import BLACK, BLUE
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.widget.custom_progress_widget import CustomProgressBar
 
 
 def get_open_ports(target_ip, start_port, end_port, progress_callback, error_callback):
@@ -90,9 +91,7 @@ class PortScannerApp(QWidget):
         self.result_box.setReadOnly(True)
 
         # 添加进度条
-        self.progress_bar = QProgressBar()
-        self.progress_bar.setRange(0, 100)
-        self.progress_bar.setValue(0)
+        self.progress_bar = CustomProgressBar()
         self.progress_bar.hide()
         # 布局
         self.layout.addWidget(self.description_label)
@@ -131,17 +130,14 @@ class PortScannerApp(QWidget):
         self.result_box.append(f"正在扫描目标 IP: {target_ip}, 端口范围: {start_port}-{end_port}...")
         self.result_box.append("这可能需要一些时间，请耐心等待。")
         self.scan_button.setEnabled(False)
-        self.progress_bar.show()
         # 启动扫描线程
         self.worker_thread = WorkerThread(target_ip, start_port, end_port)
-        self.worker_thread.progress_signal.connect(self.update_progress)
+        self.worker_thread.progress_signal.connect(self.progress_bar.update_progress)
         self.worker_thread.result_signal.connect(self.display_results)
         self.worker_thread.error_signal.connect(self.display_error)
         self.worker_thread.start()
+        self.progress_bar.show()
 
-    def update_progress(self, value):
-        """更新进度条"""
-        self.progress_bar.setValue(value)
 
     def display_results(self, open_ports):
         """显示扫描结果"""

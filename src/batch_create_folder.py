@@ -10,6 +10,7 @@ from loguru import logger
 from src.util.common_util import CommonUtil
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.widget.custom_progress_widget import CustomProgressBar
 from src.widget.progress_widget import ProgressWidget,ProgressSignalEmitter
 from src.const.color_constants import BLUE, BLACK
 
@@ -82,6 +83,10 @@ class CreateFolderApp(QWidget):
         layout.addWidget(description_label)
         layout.addLayout(folder_path_layout)
         layout.addLayout(slice_layout)
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
+
         layout.addLayout(button_layout)
 
         self.setLayout(layout)
@@ -110,32 +115,29 @@ class CreateFolderApp(QWidget):
 
     def start_operation(self):
         logger.info("---- 开始执行操作 ----")
-        self.progress_tool = ProgressWidget(self)
-        self.progress_tool.set_range(0, 100)
-        self.progress_emitter = ProgressSignalEmitter()  # 创建进度发射器
-        self.progress_emitter.progress_signal.connect(self.progress_tool.set_value)
 
         folder_path = self.folder_path_entry.text()
         slice_char = self.slice_entry.text()
         if folder_path:
             self.setEnabled(False)
-            self.worker_thread = FileOperationThread(folder_path, slice_char,self.progress_emitter)
+            self.worker_thread = FileOperationThread(folder_path, slice_char)
             self.worker_thread.finished_signal.connect(self.operation_finished)
+            self.worker_thread.progress_signal.connect(self.progress_bar.update_progress)
             self.worker_thread.error_signal.connect(self.operation_error)
             self.worker_thread.start()
-            self.progress_tool.show()
+            self.progress_bar.show()
         else:
             QMessageBox.warning(self, "警告", "请选择要操作的文件夹！")
 
     def operation_finished(self):
         logger.info("---- 操作完成 ----")
-        self.progress_tool.hide()
+        self.progress_bar.hide()
         self.setEnabled(True)
         QMessageBox.information(self, "提示", "移动文件完成！")
 
     def operation_error(self, error_msg):
         logger.error(f"出现异常：{error_msg}")
-        self.progress_tool.hide()
+        self.progress_bar.hide()
         self.setEnabled(True)
         QMessageBox.information(self, "警告", "遇到异常停止工作")
 
@@ -145,14 +147,14 @@ class CreateFolderApp(QWidget):
         super().closeEvent(event)
 
 class FileOperationThread(QThread):
+    progress_signal = pyqtSignal(int)
     finished_signal = pyqtSignal()
     error_signal = pyqtSignal(str)
 
-    def __init__(self, folder_path, slice_char, progress_emitter):
+    def __init__(self, folder_path, slice_char):
         super().__init__()
         self.folder_path = folder_path
         self.slice_char = slice_char
-        self.progress_emitter = progress_emitter
 
 
     def run(self):
@@ -193,7 +195,7 @@ class FileOperationThread(QThread):
                     shutil.move(source_path, destination_path)
                     # 更新进度条
                     processed_files += 1
-                    self.progress_emitter.update_progress(processed_files)  # 发出进度信号
+                    self.progress_signal.emit(processed_files)  # 发出进度信号
 
                 # 处理完成后退出循环
                 if processed_files == total_files:

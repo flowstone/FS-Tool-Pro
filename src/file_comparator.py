@@ -12,6 +12,7 @@ from PyQt5.QtCore import Qt, pyqtSignal, QThread
 from src.util.common_util import CommonUtil
 from src.const.color_constants import BLUE, BLACK
 from src.const.font_constants import FontConstants
+from src.widget.custom_progress_widget import CustomProgressBar
 
 
 class CompareThread(QThread):
@@ -166,7 +167,9 @@ class FileComparatorApp(QWidget):
         self.method_combo = QComboBox()
         self.method_combo.addItems(["文件大小比较", "哈希算法比较", "逐字节比较", "校验和比较"])
         layout.addWidget(self.method_combo)
-
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
         self.compare_button = QPushButton("开始比较")
         self.compare_button.setObjectName("start_button")
         self.compare_button.clicked.connect(self.start_comparison)
@@ -212,11 +215,13 @@ class FileComparatorApp(QWidget):
             QMessageBox.warning(self, "警告", "请先选择源目录和目标目录！")
             return
         self.compare_button.setEnabled(False)
+        self.progress_bar.set_range(0,0)
         method = self.method_combo.currentText()
         self.compare_thread = CompareThread(self.source_directory, self.target_directory, method)
         self.compare_thread.update_signal.connect(self.update_result)
         self.compare_thread.done_signal.connect(self.display_summary)
         self.compare_thread.start()
+        self.progress_bar.show()
 
     def update_result(self, result):
         """更新结果"""
@@ -228,7 +233,7 @@ class FileComparatorApp(QWidget):
         summary += f"不同文件数量: {diff_count} 个文件\n"
         self.result_text.append(summary)
         self.compare_button.setEnabled(True)
-
+        self.progress_bar.hide()
 
     def closeEvent(self, event):
         # 在关闭事件中发出信号

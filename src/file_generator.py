@@ -15,6 +15,7 @@ from src.const.color_constants import BLACK
 
 from src.util.common_util import CommonUtil
 from src.const.font_constants import FontConstants
+from src.widget.custom_progress_widget import CustomProgressBar
 
 
 class FileGenerationThread(QThread):
@@ -140,6 +141,9 @@ class FileGeneratorApp(QWidget):
         self.file_type_combo = QComboBox()
         self.file_type_combo.addItems(["文本文件", "图片文件", "JSON文件", "CSV文件"])
         layout.addWidget(self.file_type_combo)
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
 
         button_layout = QHBoxLayout()
         self.generate_button = QPushButton("生成文件")
@@ -192,11 +196,13 @@ class FileGeneratorApp(QWidget):
 
         file_type = self.file_type_combo.currentText()
         self.generate_button.setEnabled(False)
+        self.progress_bar.set_range(0,0)
         self.thread = FileGenerationThread(self.folder_path, file_count, file_size, file_type)
         self.thread.update_progress_signal.connect(self.update_progress)
         self.thread.file_generated_signal.connect(self.file_generated)
         self.thread.finished_signal.connect(self.file_generation_finished)
         self.thread.start()
+        self.progress_bar.show()
 
     def update_progress(self, message):
         # Update progress label or display
@@ -207,7 +213,7 @@ class FileGeneratorApp(QWidget):
 
     def file_generation_finished(self):
         self.generate_button.setEnabled(True)
-
+        self.progress_bar.hide()
         self.show_message("成功", "文件生成完成！")
 
     def show_message(self, title, message):

@@ -15,6 +15,7 @@ from loguru import logger
 from src.util.common_util import CommonUtil
 from src.const.color_constants import BLUE, BLACK
 from src.const.font_constants import FontConstants
+from src.widget.custom_progress_widget import CustomProgressBar
 
 
 class EncryptThread(QThread):
@@ -171,6 +172,10 @@ class FileEncryptorApp(QWidget):
         self.show_password_button.clicked.connect(self.toggle_password_visibility)
         password_input_layout.addWidget(self.show_password_button)
         layout.addLayout(password_input_layout)
+        # 进度条
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
 
         button_layout = QHBoxLayout()
 
@@ -188,12 +193,7 @@ class FileEncryptorApp(QWidget):
 
         layout.addLayout(button_layout)
 
-        # 进度条
-        self.progress_bar = QProgressBar()
-        self.progress_bar.setRange(0, 100)
-        self.progress_bar.setValue(0)
-        self.progress_bar.hide()
-        layout.addWidget(self.progress_bar)
+
 
         self.setLayout(layout)
         # 当前选择的文件夹路径
@@ -232,13 +232,13 @@ class FileEncryptorApp(QWidget):
 
         key_length = int(self.key_length_combo.currentText())
         key = self.derive_key(password, key_length)
-        self.progress_bar.show()
         self.setEnabled(False)
         self.encrypt_thread = EncryptThread(self.selected_folder, key)
-        self.encrypt_thread.progress.connect(self.update_progress)  # 连接进度更新
+        self.encrypt_thread.progress.connect(self.progress_bar.update_progress)  # 连接进度更新
         self.encrypt_thread.finished.connect(self.encryption_finished)  # 加密完成处理
         self.encrypt_thread.error.connect(self.encryption_error)  # 错误处理
         self.encrypt_thread.start()  # 启动加密线程
+        self.progress_bar.show()
 
     def decrypt_folder(self):
         """解密文件夹下的所有加密文件"""
@@ -256,14 +256,12 @@ class FileEncryptorApp(QWidget):
         self.progress_bar.show()
         self.setEnabled(False)
         self.decrypt_thread = DecryptThread(self.selected_folder, key)
-        self.decrypt_thread.progress.connect(self.update_progress)  # 连接进度更新
+        self.decrypt_thread.progress.connect(self.progress_bar.update_progress)  # 连接进度更新
         self.decrypt_thread.finished.connect(self.decryption_finished)  # 解密完成处理
         self.decrypt_thread.error.connect(self.decryption_error)  # 错误处理
         self.decrypt_thread.start()  # 启动解密线程
 
-    def update_progress(self, value):
-        """更新进度条"""
-        self.progress_bar.setValue(value)
+
 
     def encryption_finished(self):
         self.setEnabled(True)

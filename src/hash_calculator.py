@@ -13,6 +13,7 @@ from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
+from src.widget.custom_progress_widget import CustomProgressBar
 
 
 class HashCalculatorThread(QThread):
@@ -146,8 +147,7 @@ class HashCalculatorApp(QWidget):
         self.file_info_text.setReadOnly(True)
 
         # 进度条
-        self.progress_bar = QProgressBar()
-        self.progress_bar.setValue(0)
+        self.progress_bar = CustomProgressBar()
         self.progress_bar.hide()
         # 布局组合
         layout.addLayout(file_layout)
@@ -198,20 +198,18 @@ class HashCalculatorApp(QWidget):
             return
 
         self.calculate_button.setEnabled(False)
-        self.progress_bar.show()
         # 创建并启动线程
         self.thread = HashCalculatorThread(file_path, hash_types)
-        self.thread.progress_signal.connect(self.progress_bar.setValue)
+        self.thread.progress_signal.connect(self.progress_bar.update_progress)
         self.thread.result_signal.connect(self.display_file_info)
         self.thread.start()
+        self.progress_bar.show()
 
     def display_file_info(self, file_info, hashes):
         info_text = "\n".join([f"{key}: {value}" for key, value in file_info.items()])
         hash_text = "\n".join([f"{key}: {value}" for key, value in hashes.items() if value])
         self.file_info_text.setText(f"{info_text}\n\n{hash_text}")
-        self.progress_bar.setValue(100)
         self.calculate_button.setEnabled(True)
-
 
     @staticmethod
     def get_file_info(file_path):

@@ -4,6 +4,8 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt,pyqtSignal, QThread
+
+from src.widget.custom_progress_widget import CustomProgressBar
 from src.widget.progress_widget import ProgressWidget
 
 from PyQt5.QtWidgets import QMessageBox
@@ -81,6 +83,9 @@ class HeicToJpgApp(QWidget):
         # 布局组合
         layout.addWidget(description_label)
         layout.addLayout(folder_path_layout)
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
         layout.addLayout(button_layout)
 
         self.setLayout(layout)
@@ -108,31 +113,30 @@ class HeicToJpgApp(QWidget):
 
     def start_operation(self):
         logger.info("---- 开始执行操作 ----")
-        self.progress_tool = ProgressWidget(self)
-
         folder_path = self.folder_path_input.text()
 
 
         if folder_path:
             logger.info("---- 有选择文件夹，开始执行操作 ----")
             self.setEnabled(False)  # 禁用按钮，防止多次点击
-            self.worker = HeicToJpgAppThread(folder_path, self.progress_tool)
+            self.progress_bar.set_range(0,0)
+            self.worker = HeicToJpgAppThread(folder_path)
             self.worker.finished_signal.connect(self.operation_finished)
             self.worker.error_signal.connect(self.operation_error)  # 连接异常信号处理方法
             self.worker.start()
-            self.progress_tool.show()
+            self.progress_bar.show()
 
         else:
             QMessageBox.warning(self, "警告", "请选择要操作的文件夹！")
 
     def operation_finished(self):
-        self.progress_tool.hide()
+        self.progress_bar.hide()
         self.setEnabled(True)
         QMessageBox.information(self, "提示", "移动文件完成！")
 
     def operation_error(self, error_msg):
         logger.error(f"出现异常：{error_msg}")
-        self.progress_tool.hide()
+        self.progress_bar.hide()
         self.setEnabled(True)
         QMessageBox.information(self, "警告", "遇到异常停止工作")
 
@@ -147,14 +151,12 @@ class HeicToJpgAppThread(QThread):
     finished_signal = pyqtSignal()
     error_signal = pyqtSignal(str)  # 新增信号，用于发送错误信息
 
-    def __init__(self, folder_path, progress_tool):
+    def __init__(self, folder_path):
         super().__init__()
         self.folder_path = folder_path
-        self.progress_tool = progress_tool
 
     def run(self):
         try:
-            self.progress_tool.set_range(0, 0)
 
             self.heic_to_jpg_v2(self.folder_path)
             self.finished_signal.emit()

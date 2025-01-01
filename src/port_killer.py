@@ -12,6 +12,7 @@ import sys
 from src.const.color_constants import BLACK, BLUE
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.widget.custom_progress_widget import CustomProgressBar
 
 
 def is_admin():
@@ -111,9 +112,7 @@ class PortKillerApp(QWidget):
         self.search_button.clicked.connect(self.search_ports)
 
         # 进度条
-        self.progress_bar = QProgressBar()
-        self.progress_bar.setRange(0, 100)
-        self.progress_bar.setValue(0)
+        self.progress_bar = CustomProgressBar()
         self.progress_bar.hide()
         # 显示端口列表
         self.port_list = QListWidget()
@@ -150,17 +149,14 @@ class PortKillerApp(QWidget):
 
         self.description_label.setText("正在扫描端口，请稍候...")
         self.search_button.setEnabled(False)
-        self.progress_bar.show()
         # 启动后台线程
         self.scanner_thread = PortScannerThread(target_ip, start_port, end_port)
-        self.scanner_thread.progress_signal.connect(self.update_progress)
+        self.scanner_thread.progress_signal.connect(self.progress_bar.update_progress)
         self.scanner_thread.result_signal.connect(self.display_ports)
         self.scanner_thread.error_signal.connect(self.display_error)
         self.scanner_thread.start()
+        self.progress_bar.show()
 
-    def update_progress(self, value):
-        """更新进度条"""
-        self.progress_bar.setValue(value)
 
     def display_ports(self, open_ports):
         """显示被占用端口"""

@@ -10,6 +10,7 @@ from src.const.color_constants import BLACK
 from src.util.common_util import CommonUtil
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.widget.custom_progress_widget import CustomProgressBar
 from src.widget.progress_widget import ProgressWidget
 
 class RenameCustomApp(QWidget):
@@ -106,8 +107,9 @@ class RenameCustomApp(QWidget):
         replace_char_layout.addWidget(self.replace_char_entry)
         layout.addLayout(replace_char_layout)
 
-
-
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
         # 操作按钮
         button_layout = QHBoxLayout()
         self.start_button = QPushButton("开始")
@@ -155,7 +157,6 @@ class RenameCustomApp(QWidget):
                 QMessageBox.warning(self, "警告", "拖入的不是有效文件夹！")
 
     def start_operation(self):
-        self.progress_tool = ProgressWidget(self.parent_self)
 
         folder_path = self.folder_path_entry.text()
         prefix = self.prefix_entry.text()
@@ -165,12 +166,14 @@ class RenameCustomApp(QWidget):
 
         if folder_path:
             self.setEnabled(False)
+            self.progress_bar.set_range(0,0)
+
             self.worker_thread = FileRenameThread(folder_path, prefix, suffix, char_to_find, replace_char,
-                                                  self.check_type_text, self.progress_tool)
+                                                  self.check_type_text)
             self.worker_thread.finished_signal.connect(self.operation_finished)
             self.worker_thread.error_signal.connect(self.operation_error)
             self.worker_thread.start()
-            self.progress_tool.show()
+            self.progress_bar.show()
 
         else:
             QMessageBox.warning(self, "警告", "请选择要修改的文件夹！")
@@ -178,13 +181,13 @@ class RenameCustomApp(QWidget):
 
     def operation_finished(self):
         logger.info("---- 操作完成 ----")
-        self.progress_tool.hide()
+        self.progress_bar.hide()
         self.setEnabled(True)
         QMessageBox.information(self, "提示", "批量改名完成！")
 
     def operation_error(self, error_msg):
         logger.error(f"出现异常：{error_msg}")
-        self.progress_tool.hide()
+        self.progress_bar.hide()
         self.setEnabled(True)
         QMessageBox.information(self, "警告", "遇到异常停止工作")
 
@@ -197,7 +200,7 @@ class FileRenameThread(QThread):
     finished_signal = pyqtSignal()
     error_signal = pyqtSignal(str)
 
-    def __init__(self, folder_path, prefix, suffix, char_to_find, replace_char, check_type_text, progress_tool):
+    def __init__(self, folder_path, prefix, suffix, char_to_find, replace_char, check_type_text):
         super().__init__()
         self.folder_path = folder_path
         self.prefix = prefix
@@ -206,11 +209,9 @@ class FileRenameThread(QThread):
         self.replace_char = replace_char
         self.check_type_text = check_type_text
 
-        self.progress_tool = progress_tool
 
     def run(self):
         try:
-            self.progress_tool.set_range(0, 0)
 
             if self.check_type_text == "文件":
                 logger.info(f"你选择类型是:{FsConstants.FILE_RENAMER_TYPE_FILE}")

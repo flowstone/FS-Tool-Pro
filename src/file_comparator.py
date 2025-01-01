@@ -17,6 +17,7 @@ from src.widget.custom_progress_widget import CustomProgressBar
 
 class CompareThread(QThread):
     update_signal = pyqtSignal(str)
+    break_signal = pyqtSignal(str)
     done_signal = pyqtSignal(int, int)  # 返回比较结果，(相同文件数量, 不同文件数量)
 
     def __init__(self, source_directory, target_directory, method):
@@ -33,6 +34,7 @@ class CompareThread(QThread):
 
         if not common_files:
             self.update_signal.emit("没有相同文件名的文件。")
+            self.break_signal.emit("没有相同文件名的文件。")
             return
 
         total_same_files = 0
@@ -43,7 +45,7 @@ class CompareThread(QThread):
             source_file_path = os.path.join(self.source_directory, file_name)
             target_file_path = os.path.join(self.target_directory, file_name)
 
-            result += f"正在比较文件: {file_name}\n"
+            result += f"正在比较文件: {file_name}"
 
             if self.method == "文件大小比较":
                 if self.compare_by_size(source_file_path, target_file_path):
@@ -136,16 +138,13 @@ class FileComparatorApp(QWidget):
         layout.addWidget(title_label)
 
         self.label = QLabel("请选择源目录和目标目录进行文件比较")
-        self.label.setAlignment(Qt.AlignCenter)
         self.label.setStyleSheet(f"color: {BLUE.name()};")
         layout.addWidget(self.label)
 
         self.source_label = QLabel("源目录: 未选择")
-        self.source_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.source_label)
 
         self.target_label = QLabel("目标目录: 未选择")
-        self.target_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.target_label)
 
         button_layout = QHBoxLayout()
@@ -220,16 +219,22 @@ class FileComparatorApp(QWidget):
         self.compare_thread = CompareThread(self.source_directory, self.target_directory, method)
         self.compare_thread.update_signal.connect(self.update_result)
         self.compare_thread.done_signal.connect(self.display_summary)
+        self.compare_thread.break_signal.connect(self.break_summary)
         self.compare_thread.start()
         self.progress_bar.show()
 
     def update_result(self, result):
         """更新结果"""
-        self.result_text.append(result)
+        self.result_text.setText(result)
+
+    def break_summary(self, result):
+        """中断结果"""
+        self.compare_button.setEnabled(True)
+        self.progress_bar.hide()
 
     def display_summary(self, same_count, diff_count):
         """显示比较总结"""
-        summary = f"\n相同文件数量: {same_count} 个文件\n"
+        summary = f"相同文件数量: {same_count} 个文件\n"
         summary += f"不同文件数量: {diff_count} 个文件\n"
         self.result_text.append(summary)
         self.compare_button.setEnabled(True)

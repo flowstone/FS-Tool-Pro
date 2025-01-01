@@ -1,9 +1,14 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, QEasingCurve
 from PyQt5.QtGui import QMouseEvent, QPixmap
 from loguru import logger
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
+from PyQt5.QtCore import QPropertyAnimation, QPoint
+from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsEllipseItem
+from PyQt5.QtCore import QTimer, QPointF
+from PyQt5.QtGui import QColor
+import random
 
 class FloatingBall(QWidget):
 
@@ -23,7 +28,7 @@ class FloatingBall(QWidget):
         self.setGeometry(0, 0, FsConstants.APP_MINI_WINDOW_WIDTH, FsConstants.APP_MINI_WINDOW_HEIGHT)  # 设置悬浮球大小
         self.setAttribute(Qt.WA_TranslucentBackground, True)  # 设置窗口背景透明
 
-        self.setWindowOpacity(0.8)  # 设置透明度
+        #self.setWindowOpacity(0.8)  # 设置透明度
 
         self.setup_background_image()
         self.move_to_top_right()
@@ -34,7 +39,11 @@ class FloatingBall(QWidget):
 
 
         # 启动呼吸灯效果（透明度周期性变化）
-        self.breathing_light_window()
+        #self.breathing_light_window()
+        # 悬浮球的缓慢漂浮（上下浮动）
+        self.add_float_animation()
+        # 随机跑
+        #self.add_random_walk()
 
     # 启动呼吸灯效果（透明度周期性变化）
     def breathing_light_window(self):
@@ -47,6 +56,37 @@ class FloatingBall(QWidget):
         self.timer.timeout.connect(self.update_opacity)
         # 设置定时器间隔为50毫秒，可根据需要调整呼吸节奏快慢
         self.timer.start(50)
+
+
+    def add_float_animation(self):
+        # 创建属性动画，调整窗口位置
+        self.animation = QPropertyAnimation(self, b"pos")
+        self.animation.setDuration(2000)  # 动画时长2秒
+        self.animation.setStartValue(self.pos())  # 初始位置
+        self.animation.setKeyValueAt(0.5, self.pos() + QPoint(0, 10))  # 浮动到10像素下方
+        self.animation.setEndValue(self.pos())  # 回到原位置
+        self.animation.setLoopCount(-1)  # 无限循环
+        self.animation.setEasingCurve(QEasingCurve.InOutSine)  # 平滑效果
+        self.animation.start()
+
+    def update_animation_start_position(self):
+        if hasattr(self, "animation"):
+            # 更新动画起始位置
+            self.animation.stop()
+            self.animation.setStartValue(self.pos())
+            self.animation.setEndValue(self.pos())
+            self.animation.start()
+
+    def add_random_walk(self):
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.random_move)
+        self.timer.start(1000)  # 每秒移动一次
+
+    def random_move(self):
+        screen_geo = QApplication.desktop().screenGeometry()
+        new_x = random.randint(0, screen_geo.width() - self.width())
+        new_y = random.randint(0, screen_geo.height() - self.height())
+        self.move(new_x, new_y)
 
     # 更新透明度
     def update_opacity(self):
@@ -83,6 +123,11 @@ class FloatingBall(QWidget):
     # 鼠标按下事件
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() == Qt.LeftButton:
+            # 暂停动画
+            if hasattr(self, "animation") and self.animation.state() == QPropertyAnimation.Running:
+                self.animation.pause()
+
+            # 保存鼠标相对窗口左上角的位置
             self.dragPosition = event.globalPos() - self.frameGeometry().topLeft()
             event.accept()
 
@@ -95,13 +140,17 @@ class FloatingBall(QWidget):
     # 鼠标释放
     def mouseReleaseEvent(self, event: QMouseEvent):
         if event.button() == Qt.LeftButton:
+            # 鼠标释放后恢复动画
+            if hasattr(self, "animation") and self.animation.state() == QPropertyAnimation.Paused:
+                self.update_animation_start_position()  # 更新动画位置
+                self.animation.resume()
             self.dragPosition = None
+            event.accept()
 
     def show_main_window(self):
         logger.info("---- 双击悬浮球，打开主界面 ----")
         self.main_window.show()
         self.main_window.is_floating_ball_visible = False
-        #self.close()
         self.hide()
 
     # 鼠标双击，打开主界面

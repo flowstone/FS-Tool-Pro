@@ -1,6 +1,7 @@
 # config.py
 from src.batch_heic_jpg import HeicToJpgApp
 from src.desktop_clock import ColorSettingDialog
+from src.file_tool import FileToolApp
 from src.image_tool import ImageToolApp
 from src.network_tool import NetworkToolApp
 from src.pic_conversion import PicConversionApp
@@ -31,15 +32,10 @@ app_instance_config = [
      "class": RenameFileApp},
     {"key": "image_tool", "icon": FsConstants.BUTTON_HEIC_ICON, "title": FsConstants.IMAGE_TOOL_BUTTON_TITLE,
      "class": ImageToolApp},
-    {"key": "file_generator", "icon": FsConstants.BUTTON_FILE_GENERATOR_ICON, "title": FsConstants.FILE_GENERATOR_WINDOW_TITLE,
-     "class": FileGeneratorApp},
+    {"key": "file_tool", "icon": FsConstants.BUTTON_FILE_GENERATOR_ICON, "title": FsConstants.FILE_TOOL_WINDOW_TITLE,
+     "class": FileToolApp},
     {"key": "create_folder", "icon": FsConstants.BUTTON_FOLDER_ICON, "title": FsConstants.CREATE_FOLDER_WINDOW_TITLE,
      "class": CreateFolderApp},
-    {"key": "file_comparator", "icon": FsConstants.BUTTON_FILE_COMPARATOR_ICON, "title": FsConstants.FILE_COMPARATOR_WINDOW_TITLE,
-     "class": FileComparatorApp},
-    {"key": "file_encryptor", "icon": FsConstants.BUTTON_FILE_ENCRYPTOR_ICON, "title": FsConstants.FILE_ENCRYPTOR_WINDOW_TITLE,
-     "class": FileEncryptorApp},
-
     {"key": "hash_calculator", "icon": FsConstants.BUTTON_HASH_CALCULATOR_ICON,
      "title": FsConstants.HASH_CALCULATOR_WINDOW_TITLE,
      "class": HashCalculatorApp},

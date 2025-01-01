@@ -33,7 +33,7 @@ class HeicToJpgApp(QWidget):
         self.setWindowTitle(FsConstants.HEIC_JPG_WINDOW_TITLE)
         self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
-
+        self.setFixedHeight(300)
 
 
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))

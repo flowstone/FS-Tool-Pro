@@ -127,7 +127,7 @@ class FileComparatorApp(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("文件比较")
-        self.setFixedSize(800, 600)
+        #self.setFixedSize(800, 600)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
         layout = QVBoxLayout()

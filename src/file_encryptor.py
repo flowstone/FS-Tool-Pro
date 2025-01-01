@@ -113,7 +113,7 @@ class FileEncryptorApp(QWidget):
         super().__init__()
         self.setWindowTitle("批量文件加密")
         #self.setFixedSize(500, 550)  # 调整窗口大小
-        self.setFixedWidth(500)
+        self.setFixedHeight(400)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setAcceptDrops(True)
 
@@ -129,7 +129,6 @@ class FileEncryptorApp(QWidget):
         # 应用说明
         desc_label = QLabel("通过 AES 加密算法加密或解密指定文件夹内的所有文件。\n"
                             "支持密钥长度 128/192/256 位，请输入密码进行加密操作。")
-        desc_label.setAlignment(Qt.AlignCenter)
         desc_label.setStyleSheet(f"color: {BLUE.name()};")
         desc_label.setWordWrap(True)
         layout.addWidget(desc_label)

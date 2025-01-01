@@ -99,8 +99,8 @@ class FileGeneratorApp(QWidget):
         super().__init__()
         self.folder_path = None
         self.setWindowTitle("批量生成文件")
-        #self.setFixedSize(450, 400)
-        self.setFixedWidth(450)
+        self.setFixedSize(750, 400)
+
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setAcceptDrops(True)
 

@@ -44,7 +44,7 @@ class FloatingBall(QWidget):
         # 悬浮球的缓慢漂浮（上下浮动）
         self.add_float_animation()
         self.add_mask_animation()
-        #self.add_mask_breathing_effect()
+        self.add_mask_breathing_effect()
         # 随机跑
         #self.add_random_walk()
 
@@ -126,9 +126,16 @@ class FloatingBall(QWidget):
     def add_mask_breathing_effect(self):
         self.breathing_animation = QPropertyAnimation(self.mask, b"size")
         self.breathing_animation.setDuration(4000)
-        self.breathing_animation.setStartValue(self.mask.size())  # 初始大小
-        self.breathing_animation.setEndValue(self.mask.size() * 0.8)  # 缩小到90%
+        # 设置动画初始大小（从大到小）
+        self.breathing_animation.setStartValue(self.mask.size())  # 当前大小
+        self.breathing_animation.setEndValue(self.mask.size() * 0.8)  # 缩小到80%
+
+        # 设置动画的关键帧：由小到大
+        self.breathing_animation.setKeyValueAt(0.5, self.mask.size() * 0.8)  # 在50%位置达到最小值
+        self.breathing_animation.setKeyValueAt(1.0, self.mask.size())  # 在100%位置回到原始大小
+
         self.breathing_animation.setLoopCount(-1)
+        # 设置动画的缓动曲线（InOutSine 曲线会让动画更平滑）
         self.breathing_animation.setEasingCurve(QEasingCurve.InOutSine)
         self.breathing_animation.start()
 

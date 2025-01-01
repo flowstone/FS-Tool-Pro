@@ -13,6 +13,8 @@ from src.file_generator import FileGeneratorApp
 from src.file_encryptor import FileEncryptorApp
 from src.rsa_key_generator import RSAKeyGeneratorApp
 from src.hash_calculator import HashCalculatorApp
+from src.port_killer import PortKillerApp
+from src.port_scanner import PortScannerApp
 
 from PyQt5.QtGui import QIcon
 from src.widget.app_mini import FloatingBall
@@ -44,7 +46,9 @@ class MainWindow(QMainWindow):
             "file_comparator": None,
             "file_encryptor": None,
             "rsa_key_generator": None,
-            "hash_calculator": None
+            "hash_calculator": None,
+            "port_scanner": None,
+            "port_killer": None
         }
         self.init_ui()
 
@@ -87,6 +91,12 @@ class MainWindow(QMainWindow):
              "class": RSAKeyGeneratorApp},
             {"key": "hash_calculator", "icon": FsConstants.BUTTON_HASH_CALCULATOR_ICON,"title": FsConstants.HASH_CALCULATOR_WINDOW_TITLE,
              "class": HashCalculatorApp},
+            {"key": "port_scanner", "icon": FsConstants.BUTTON_PORT_SCANNER_ICON,
+             "title": FsConstants.PORT_SCANNER_WINDOW_TITLE,
+             "class": PortScannerApp},
+            {"key": "port_killer", "icon": FsConstants.BUTTON_PORT_KILLER_ICON,
+             "title": FsConstants.PORT_KILLER_WINDOW_TITLE,
+             "class": PortKillerApp},
         ]
 
 

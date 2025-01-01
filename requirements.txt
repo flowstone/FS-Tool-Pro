@@ -50,3 +50,4 @@ pillow_heif
 whatimage
 pycryptodome
 pyperclip
+psutil

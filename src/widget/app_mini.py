@@ -71,10 +71,15 @@ class FloatingBall(QWidget):
 
     def update_animation_start_position(self):
         if hasattr(self, "animation"):
-            # 更新动画起始位置
+            # 停止当前动画
             self.animation.stop()
+
+            # 更新动画起始位置为当前窗口位置
             self.animation.setStartValue(self.pos())
-            self.animation.setEndValue(self.pos())
+
+            # 更新动画结束位置（基于当前窗口位置计算浮动范围）
+            self.animation.setKeyValueAt(0.5, self.pos() + QPoint(0, 10))  # 下浮10像素
+            self.animation.setEndValue(self.pos())  # 回到原位置
             self.animation.start()
 
     def add_random_walk(self):
@@ -140,9 +145,12 @@ class FloatingBall(QWidget):
     # 鼠标释放
     def mouseReleaseEvent(self, event: QMouseEvent):
         if event.button() == Qt.LeftButton:
+            # 更新动画的位置
+            if hasattr(self, "animation"):
+                self.update_animation_start_position()
+
             # 鼠标释放后恢复动画
             if hasattr(self, "animation") and self.animation.state() == QPropertyAnimation.Paused:
-                self.update_animation_start_position()  # 更新动画位置
                 self.animation.resume()
             self.dragPosition = None
             event.accept()

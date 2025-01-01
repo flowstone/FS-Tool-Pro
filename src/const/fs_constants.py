@@ -10,8 +10,8 @@ class FsConstants:
     APP_WINDOW_TITLE = "FS Tool Pro"
 
     # 悬浮球相关常量
-    APP_MINI_WINDOW_WIDTH = 90
-    APP_MINI_WINDOW_HEIGHT = 90
+    APP_MINI_WINDOW_WIDTH = 80
+    APP_MINI_WINDOW_HEIGHT = 80
     APP_MINI_WINDOW_TITLE = ""
 
     # 工具栏相关常量

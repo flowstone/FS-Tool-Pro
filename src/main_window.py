@@ -77,7 +77,7 @@ class MainWindow(QMainWindow):
         # 创建系统托盘图标
         self.tray_icon = QSystemTrayIcon(self)
         self.tray_icon.setIcon(
-            QIcon(CommonUtil.get_mini_ico_full_path()))  # 这里需要一个名为icon.png的图标文件，可以替换为真实路径
+            QIcon(CommonUtil.get_resource_path(FsConstants.APP_BAR_ICON_PATH)))  # 这里需要一个名为icon.png的图标文件，可以替换为真实路径
         self.tray_icon.activated.connect(self.tray_icon_activated)
 
         # 创建托盘菜单

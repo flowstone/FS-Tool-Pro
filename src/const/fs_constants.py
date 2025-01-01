@@ -94,6 +94,7 @@ class FsConstants:
     # 共用的常量，应用图标
     APP_ICON_PATH = "resources/images/app.ico"
     APP_MINI_ICON_PATH = "resources/images/app_mini.ico"
+    APP_BAR_ICON_PATH = "resources/images/app_bar.ico"
     LOADING_PATH = "resources/images/loading.gif"
     AUTHOR_MAIL = "xueyao.me@gmail.com"
     AUTHOR_BLOG = "https://blog.xueyao.tech"

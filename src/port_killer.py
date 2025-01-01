@@ -77,7 +77,8 @@ class PortKillerApp(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle(FsConstants.PORT_KILLER_WINDOW_TITLE)
-        self.setGeometry(100, 100, 600, 500)
+        #self.setGeometry(100, 100, 600, 500)
+        self.setFixedWidth(600)
         self.initUI()
 
     def initUI(self):
@@ -192,8 +193,8 @@ class PortKillerApp(QWidget):
             return
         if not is_admin():
             QMessageBox.warning(None, "权限不足", "请以管理员权限运行此程序！")
+            #run_as_admin()
             return
-            # run_as_admin()
         selected_text = selected_item.text()
         try:
             port = int(selected_text.split(":")[1].strip())

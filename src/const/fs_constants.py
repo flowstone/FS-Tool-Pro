@@ -64,14 +64,6 @@ class FsConstants:
     PIC_CONVERSION_WINDOW_WIDTH = 500
     PIC_CONVERSION_WINDOW_HEIGHT = 400
 
-    # 自动答题相关常量
-    AUTO_ANSWERS_WINDOW_WIDTH = 0
-    AUTO_ANSWERS_WINDOW_HEIGHT = 0
-    AUTO_ANSWERS_TITLE_IMAGE = "resources/images/auto_answers_title.png"
-    AUTO_ANSWERS_PASSWORD_MD5 = "adf0558822da93b55f6fc48790ff3137"
-    AUTO_ANSWERS_DRIVER_PATH = "resources/driver"
-    AUTO_ANSWERS_WIN_DRIVER_NAME = "chromedriver.exe"
-    AUTO_ANSWERS_OTHER_DRIVER_NAME = "chromedriver"
 
     #快捷便签相关常量
     STICK_NOTE_WINDOW_WIDTH = 400
@@ -95,7 +87,6 @@ class FsConstants:
     APP_ICON_PATH = "resources/images/app.ico"
     APP_MINI_ICON_PATH = "resources/images/app_mini.ico"
     APP_BAR_ICON_PATH = "resources/images/app_bar.ico"
-    LOADING_PATH = "resources/images/loading.gif"
     AUTHOR_MAIL = "xueyao.me@gmail.com"
     AUTHOR_BLOG = "https://blog.xueyao.tech"
     AUTHOR_GITHUB = "https://github.com/flowstone"
@@ -128,9 +119,8 @@ class FsConstants:
     # 保存文件路径
     SAVE_FILE_PATH_WIN = "C:\\"
     SAVE_FILE_PATH_MAC = "~"
-    DATABASE_FILE = "database.db"
-    AUTO_ANSWERS_TABLE_NAME = "auto_answers_log"
+    DATABASE_FILE = "fs-tool-pro.db"
 
-    APP_CONFIG_FILE = "config.json"
+    APP_INI_FILE = "app.ini"
     HELP_PDF_FILE_PATH = "resources/pdf/help.pdf"
     FONT_FILE_PATH = "resources/fonts/AlimamaFangYuanTiVF-Thin.ttf"

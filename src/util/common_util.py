@@ -4,7 +4,8 @@ import datetime
 
 
 from src.const.fs_constants import FsConstants
-from src.util.config_manager import ConfigManager
+from src.util.load_config import get_sqlite_path
+
 
 class CommonUtil:
 
@@ -39,16 +40,12 @@ class CommonUtil:
     def get_mini_ico_full_path():
         return CommonUtil.get_resource_path(FsConstants.APP_MINI_ICON_PATH)
 
-    # 获得Loading
-    @staticmethod
-    def get_loading_full_path():
-        return CommonUtil.get_resource_path(FsConstants.LOADING_PATH)
+
     # 获得数据库文件全路径
     @staticmethod
     def get_db_full_path():
         # 读取配置文件
-        config_manager = ConfigManager(CommonUtil.get_resource_path(FsConstants.APP_CONFIG_FILE))
-        db_location = config_manager.get_db_location()
+        db_location = get_sqlite_path()
         if db_location:
             return db_location
 
@@ -117,19 +114,6 @@ class CommonUtil:
                 folder_count += 1
         return folder_count
 
-    # 获得Chrome Driver全路径
-    @staticmethod
-    def get_chrome_driver_path():
-        # 读取配置文件
-        config_manager = ConfigManager(CommonUtil.get_resource_path(FsConstants.APP_CONFIG_FILE))
-        answer_driver = config_manager.get_answer_driver()
-        if answer_driver:
-            return answer_driver
-
-        # 使用内置配置路径
-        data_path = FsConstants.AUTO_ANSWERS_WIN_DRIVER_NAME if CommonUtil.check_win_os() else FsConstants.AUTO_ANSWERS_OTHER_DRIVER_NAME
-        full_path =os.path.join(FsConstants.AUTO_ANSWERS_DRIVER_PATH, data_path)
-        return CommonUtil.get_resource_path(full_path)
 
     # 获得按钮小图标全路径
     @staticmethod

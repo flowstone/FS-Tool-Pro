@@ -1,5 +1,6 @@
-import sqlite3
 from PyQt5.QtCore import QObject, pyqtSignal
+from loguru import logger
+from src.util.sqlite_connection_pool import SQLiteConnectionPool
 
 
 class SQLiteHelper(QObject):
@@ -10,7 +11,7 @@ class SQLiteHelper(QObject):
 
     def __init__(self, db_name):
         super().__init__()
-        self.db_name = db_name
+        self.db_pool = SQLiteConnectionPool(db_name, pool_size=3)
 
     # 创建表
     def create_table(self, table_name, columns):
@@ -19,15 +20,18 @@ class SQLiteHelper(QObject):
         :param table_name: 表名
         :param columns: 字段描述字典 {字段名: 字段类型}
         """
-        conn = sqlite3.connect(self.db_name)
-        cursor = conn.cursor()
+        conn = self.db_pool.get_connection()
+        try:
+            cursor = conn.cursor()
+            columns_definition = ", ".join([f"{col} {typ}" for col, typ in columns.items()])
+            sql = f"CREATE TABLE IF NOT EXISTS {table_name} ({columns_definition});"
 
-        columns_definition = ", ".join([f"{col} {typ}" for col, typ in columns.items()])
-        sql = f"CREATE TABLE IF NOT EXISTS {table_name} ({columns_definition});"
-
-        cursor.execute(sql)
-        conn.commit()
-        conn.close()
+            cursor.execute(sql)
+            conn.commit()
+        except Exception as e:
+            logger.warning(f"创建表失败：{str(e)}")
+        finally:
+            self.db_pool.release_connection(conn)
 
     # 插入数据
     def insert_data(self, table_name, data):
@@ -36,16 +40,21 @@ class SQLiteHelper(QObject):
         :param table_name: 表名
         :param data: 数据字典 {字段名: 值}
         """
-        conn = sqlite3.connect(self.db_name)
-        cursor = conn.cursor()
+        conn = self.db_pool.get_connection()
+        try:
+            cursor = conn.cursor()
 
-        columns = ", ".join(data.keys())
-        placeholders = ", ".join(["?" for _ in data])
-        sql = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
+            columns = ", ".join(data.keys())
+            placeholders = ", ".join(["?" for _ in data])
+            sql = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
 
-        cursor.execute(sql, tuple(data.values()))
-        conn.commit()
-        conn.close()
+            cursor.execute(sql, tuple(data.values()))
+            conn.commit()
+        except Exception as e:
+            logger.warning(f"插入数据失败：{str(e)}")
+        finally:
+            self.db_pool.release_connection(conn)
+
 
     # 查询数据（多条记录）
     def fetch_data(self, table_name, columns="*", condition=""):
@@ -55,16 +64,21 @@ class SQLiteHelper(QObject):
         :param columns: 选择的列（默认为 *）
         :param condition: 查询条件（可选）
         """
-        conn = sqlite3.connect(self.db_name)
-        cursor = conn.cursor()
+        conn = self.db_pool.get_connection()
+        try:
+            cursor = conn.cursor()
 
-        sql = f"SELECT {columns} FROM {table_name} {condition};"
-        cursor.execute(sql)
+            sql = f"SELECT {columns} FROM {table_name} {condition};"
+            cursor.execute(sql)
 
-        result = cursor.fetchall()
-        self.data_fetched.emit(result)  # 通过信号发送数据
+            result = cursor.fetchall()
+            self.data_fetched.emit(result)  # 通过信号发送数据
 
-        conn.close()
+        except Exception as e:
+            logger.warning(f"查询数据失败：{str(e)}")
+        finally:
+            self.db_pool.release_connection(conn)
+
 
     # 查询单条记录
     def fetch_one(self, table_name, columns="*", condition=""):
@@ -74,16 +88,20 @@ class SQLiteHelper(QObject):
         :param columns: 选择的列（默认为 *）
         :param condition: 查询条件（可选）
         """
-        conn = sqlite3.connect(self.db_name)
-        cursor = conn.cursor()
+        conn = self.db_pool.get_connection()
+        try:
+            cursor = conn.cursor()
 
-        sql = f"SELECT {columns} FROM {table_name} {condition} LIMIT 1;"
-        cursor.execute(sql)
+            sql = f"SELECT {columns} FROM {table_name} {condition} LIMIT 1;"
+            cursor.execute(sql)
 
-        result = cursor.fetchone()
-        self.single_row_fetched.emit(result)  # 通过信号发送单条数据
+            result = cursor.fetchone()
+            self.single_row_fetched.emit(result)  # 通过信号发送单条数据
 
-        conn.close()
+        except Exception as e:
+            logger.warning(f"查询单条数据失败：{str(e)}")
+        finally:
+            self.db_pool.release_connection(conn)
 
     # 分页查询
     def fetch_paginated_data(self, table_name, columns="*", page=1, page_size=10, condition=""):
@@ -96,24 +114,29 @@ class SQLiteHelper(QObject):
         :param condition: 查询条件（可选）
         """
         offset = (page - 1) * page_size
-        conn = sqlite3.connect(self.db_name)
-        cursor = conn.cursor()
+        conn = self.db_pool.get_connection()
+        try:
+            cursor = conn.cursor()
 
-        # 查询当前页数据
-        sql = f"SELECT {columns} FROM {table_name} {condition} LIMIT {page_size} OFFSET {offset};"
-        cursor.execute(sql)
-        result = cursor.fetchall()
+            # 查询当前页数据
+            sql = f"SELECT {columns} FROM {table_name} {condition} LIMIT {page_size} OFFSET {offset};"
+            cursor.execute(sql)
+            result = cursor.fetchall()
 
-        # 查询总记录数
-        count_sql = f"SELECT COUNT(*) FROM {table_name} {condition};"
-        cursor.execute(count_sql)
-        total_records = cursor.fetchone()[0]
-        total_pages = (total_records + page_size - 1) // page_size  # 计算总页数
+            # 查询总记录数
+            count_sql = f"SELECT COUNT(*) FROM {table_name} {condition};"
+            cursor.execute(count_sql)
+            total_records = cursor.fetchone()[0]
+            total_pages = (total_records + page_size - 1) // page_size  # 计算总页数
 
-        # 发出分页数据和总页数
-        self.paginated_data_fetched.emit(result, total_pages)
+            # 发出分页数据和总页数
+            self.paginated_data_fetched.emit(result, total_pages)
+        except Exception as e:
+            logger.warning(f"分页查询数据失败：{str(e)}")
+        finally:
+            self.db_pool.release_connection(conn)
 
-        conn.close()
+
 
     # 更新数据
     def update_data(self, table_name, data, condition):
@@ -123,15 +146,20 @@ class SQLiteHelper(QObject):
         :param data: 更新的数据字典 {字段名: 值}
         :param condition: 更新条件，例如 "WHERE id = ?"
         """
-        conn = sqlite3.connect(self.db_name)
-        cursor = conn.cursor()
+        conn = self.db_pool.get_connection()
+        try:
+            cursor = conn.cursor()
 
-        set_clause = ", ".join([f"{key} = ?" for key in data.keys()])
-        sql = f"UPDATE {table_name} SET {set_clause} {condition}"
+            set_clause = ", ".join([f"{key} = ?" for key in data.keys()])
+            sql = f"UPDATE {table_name} SET {set_clause} {condition}"
 
-        cursor.execute(sql, tuple(data.values()))
-        conn.commit()
-        conn.close()
+            cursor.execute(sql, tuple(data.values()))
+            conn.commit()
+        except Exception as e:
+            logger.warning(f"更新数据失败：{str(e)}")
+        finally:
+            self.db_pool.release_connection(conn)
+
 
     # 删除数据
     def delete_data(self, table_name, condition):
@@ -140,14 +168,22 @@ class SQLiteHelper(QObject):
         :param table_name: 表名
         :param condition: 删除条件，例如 "WHERE id = ?"
         """
-        conn = sqlite3.connect(self.db_name)
-        cursor = conn.cursor()
+        conn = self.db_pool.get_connection()
+        try:
+            cursor = conn.cursor()
+            sql = f"DELETE FROM {table_name} {condition}"
+            cursor.execute(sql)
+            conn.commit()
+        except Exception as e:
+            logger.warning(f"删除数据失败：{str(e)}")
+        finally:
+            self.db_pool.release_connection(conn)
 
-        sql = f"DELETE FROM {table_name} {condition}"
-        cursor.execute(sql)
-        conn.commit()
-        conn.close()
-
+    def close_connection(self):
+        """
+        关闭数据库连接
+        """
+        self.db_pool.close_all()
 
 # 示例使用
 if __name__ == "__main__":
@@ -179,3 +215,5 @@ if __name__ == "__main__":
 
     # 删除数据
     db.delete_data("users", "WHERE name = 'Charlie'")
+
+    db.close_connection()

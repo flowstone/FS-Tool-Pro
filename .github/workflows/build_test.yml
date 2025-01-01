@@ -27,11 +27,11 @@ jobs:
         run: pip install pyinstaller  # 安装PyInstaller打包工具
 
       - name: Build application with PyInstaller
-        run: pyinstaller --name "FS-Tool-Pro" --onefile --window --add-data "${{ env.Python_ROOT_DIR }}\lib\site-packages\PyQt5\Qt5\bin;./PyQt5/Qt/bin" --add-data "${{ env.Python_ROOT_DIR }}\lib\site-packages\PyQt5\Qt5\plugins;./PyQt5/Qt/plugins" --add-data "resources;resources" --add-data "config.json;."  --collect-all PyQt5 --icon=resources/images/app.ico app.py
+        run: pyinstaller --name "FS-Tool-Pro" --onefile --window --add-data "${{ env.Python_ROOT_DIR }}\lib\site-packages\PyQt5\Qt5\bin;./PyQt5/Qt/bin" --add-data "${{ env.Python_ROOT_DIR }}\lib\site-packages\PyQt5\Qt5\plugins;./PyQt5/Qt/plugins" --add-data "resources;resources" --add-data "app.ini;."  --collect-all PyQt5 --icon=resources/images/app.ico app.py
         #working-directory: ${{ github.repository }}  # 设置工作目录为仓库根目录
 
       - name: Build application portable with PyInstaller
-        run: pyinstaller --name "FS-Tool-Pro" --onedir --window --distpath dist_portable --add-data "${{ env.Python_ROOT_DIR }}\lib\site-packages\PyQt5\Qt5\bin;./PyQt5/Qt/bin" --add-data "${{ env.Python_ROOT_DIR }}\lib\site-packages\PyQt5\Qt5\plugins;./PyQt5/Qt/plugins" --add-data "resources;resources" --add-data "config.json;."  --collect-all PyQt5 --icon=resources/images/app.ico app.py
+        run: pyinstaller --name "FS-Tool-Pro" --onedir --window --distpath dist_portable --add-data "${{ env.Python_ROOT_DIR }}\lib\site-packages\PyQt5\Qt5\bin;./PyQt5/Qt/bin" --add-data "${{ env.Python_ROOT_DIR }}\lib\site-packages\PyQt5\Qt5\plugins;./PyQt5/Qt/plugins" --add-data "resources;resources" --add-data "app.ini;."  --collect-all PyQt5 --icon=resources/images/app.ico app.py
         #working-directory: ${{ github.repository }}  # 设置工作目录为仓库根目录
       - name: Zip the generated files (Windows)
         run: Compress-Archive -Path dist_portable/* -DestinationPath FS-Tool-Pro.zip  # 将生成文件压缩为zip包
@@ -94,9 +94,9 @@ jobs:
         # 安装 create-dmg 工具
 
       - name: Build application with PyInstaller
-        #run: pyinstaller --name "FS-Tool" --onefile --windowed --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/lib:./PyQt5/Qt/lib" --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/plugins:./PyQt5/Qt/plugins"   --add-data "resources:resources" --add-data "config.json:." --collect-all PyQt5 --icon=resources/app.ico app.py
+        #run: pyinstaller --name "FS-Tool" --onefile --windowed --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/lib:./PyQt5/Qt/lib" --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/plugins:./PyQt5/Qt/plugins"   --add-data "resources:resources" --add-data "app.ini:." --collect-all PyQt5 --icon=resources/app.ico app.py
         run: |
-          pyinstaller --name "FS-Tool-Pro" --onefile  --window   --add-data "resources:resources" --add-data "config.json:." --icon=resources/images/app.ico ./app.py
+          pyinstaller --name "FS-Tool-Pro" --onefile  --window   --add-data "resources:resources" --add-data "app.ini:." --icon=resources/images/app.ico ./app.py
 
       - name: Create DMG file from .app (macOS)
         run: |

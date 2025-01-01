@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
 from PyQt5.QtCore import Qt, QTimer, QEasingCurve
-from PyQt5.QtGui import QMouseEvent, QPixmap
+from PyQt5.QtGui import QMouseEvent, QPixmap, QPainter
 from loguru import logger
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsEllipseItem
 from PyQt5.QtCore import QTimer, QPointF
 from PyQt5.QtGui import QColor
 import random
+from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsEllipseItem
 
 class FloatingBall(QWidget):
 
@@ -42,10 +43,12 @@ class FloatingBall(QWidget):
         #self.breathing_light_window()
         # 悬浮球的缓慢漂浮（上下浮动）
         self.add_float_animation()
+        self.add_mask_animation()
+        #self.add_mask_breathing_effect()
         # 随机跑
         #self.add_random_walk()
 
-    # 启动呼吸灯效果（透明度周期性变化）
+    # ------ 启动呼吸灯效果（透明度周期性变化）[START]
     def breathing_light_window(self):
         logger.info("---- 悬浮球启动呼吸灯效果 ----")
         # 初始透明度
@@ -57,7 +60,18 @@ class FloatingBall(QWidget):
         # 设置定时器间隔为50毫秒，可根据需要调整呼吸节奏快慢
         self.timer.start(50)
 
+    # 更新透明度
+    def update_opacity(self):
+        self.opacity += self.direction
+        if self.opacity >= 1.0:
+            self.direction = -0.02  # 达到最大透明度后开始减小透明度
+        elif self.opacity <= 0.2:
+            self.direction = 0.02  # 达到最小透明度后开始增大透明度
+        self.setWindowOpacity(self.opacity)
+    # ------ 启动呼吸灯效果（透明度周期性变化）[END]
 
+
+    # ---------悬浮球的缓慢漂浮（上下浮动）[START]
     def add_float_animation(self):
         # 创建属性动画，调整窗口位置
         self.animation = QPropertyAnimation(self, b"pos")
@@ -81,7 +95,9 @@ class FloatingBall(QWidget):
             self.animation.setKeyValueAt(0.5, self.pos() + QPoint(0, 10))  # 下浮10像素
             self.animation.setEndValue(self.pos())  # 回到原位置
             self.animation.start()
+    # ---------悬浮球的缓慢漂浮（上下浮动）[END]
 
+    # -------- 随机出现位置 【START】
     def add_random_walk(self):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.random_move)
@@ -92,21 +108,44 @@ class FloatingBall(QWidget):
         new_x = random.randint(0, screen_geo.width() - self.width())
         new_y = random.randint(0, screen_geo.height() - self.height())
         self.move(new_x, new_y)
-
-    # 更新透明度
-    def update_opacity(self):
-        self.opacity += self.direction
-        if self.opacity >= 1.0:
-            self.direction = -0.02  # 达到最大透明度后开始减小透明度
-        elif self.opacity <= 0.2:
-            self.direction = 0.02  # 达到最小透明度后开始增大透明度
-        self.setWindowOpacity(self.opacity)
+    # -------- 随机出现位置 【END】
 
 
+    # ------ 添加遮罩 [START]
+    def add_mask(self):
+        self.mask = QLabel(self)
+        self.mask.setStyleSheet("background-color: rgba(0, 0, 0, 30%); border-radius: 10px;")
+        self.mask.resize(self.size())
+        # 偏移位置调整
+        offset_x = 15  # 向右偏移5像素
+        offset_y = 15  # 向下偏移5像素
+        self.mask.move(offset_x, offset_y)
+        self.mask.lower()  # 遮罩放在背景图的下层
 
+    # -------遮罩动态缩放（呼吸效果）
+    def add_mask_breathing_effect(self):
+        self.breathing_animation = QPropertyAnimation(self.mask, b"size")
+        self.breathing_animation.setDuration(4000)
+        self.breathing_animation.setStartValue(self.mask.size())  # 初始大小
+        self.breathing_animation.setEndValue(self.mask.size() * 0.8)  # 缩小到90%
+        self.breathing_animation.setLoopCount(-1)
+        self.breathing_animation.setEasingCurve(QEasingCurve.InOutSine)
+        self.breathing_animation.start()
+
+    # ------ 实现动态遮罩（移动效果）
+    def add_mask_animation(self):
+        self.mask_animation = QPropertyAnimation(self.mask, b"pos")
+        self.mask_animation.setDuration(2000)  # 动画时长
+        self.mask_animation.setStartValue(self.mask.pos())  # 初始位置
+        self.mask_animation.setKeyValueAt(0.5, self.mask.pos() + QPoint(0, 10))  # 向下偏移10像素
+        self.mask_animation.setEndValue(self.mask.pos())  # 回到初始位置
+        self.mask_animation.setEasingCurve(QEasingCurve.InOutQuad)  # 平滑效果
+        self.mask_animation.setLoopCount(-1)  # 无限循环
+        self.mask_animation.start()
+
+    # ------ 设置悬浮球背景
     def setup_background_image(self):
         logger.info("---- 初始化悬浮球背景图 ----")
-
         layout = QVBoxLayout()
         # 这里使用一个示例图片路径，你可以替换为真实路径
         pixmap = QPixmap(CommonUtil.get_mini_ico_full_path())
@@ -116,6 +155,10 @@ class FloatingBall(QWidget):
         self.background_label.resize(self.size())
         layout.addWidget(self.background_label)
         self.setLayout(layout)
+        # 添加遮罩
+        self.add_mask()
+
+
 
 
     def move_to_top_right(self):
@@ -145,6 +188,7 @@ class FloatingBall(QWidget):
     # 鼠标释放
     def mouseReleaseEvent(self, event: QMouseEvent):
         if event.button() == Qt.LeftButton:
+
             # 更新动画的位置
             if hasattr(self, "animation"):
                 self.update_animation_start_position()
@@ -165,6 +209,5 @@ class FloatingBall(QWidget):
     def mouseDoubleClickEvent(self, event: QMouseEvent):
         if event.button() == Qt.LeftButton:
             self.show_main_window()
-
 
 

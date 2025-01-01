@@ -12,6 +12,7 @@ import sys
 from src.const.color_constants import BLACK, BLUE
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 
 
@@ -145,7 +146,7 @@ class PortKillerApp(QWidget):
             if start_port < 1 or end_port > 65535 or start_port > end_port:
                 raise ValueError
         except ValueError:
-            QMessageBox.warning(self, "错误", "端口范围格式不正确，请输入有效范围 (例如: 1-1000)！")
+            MessageUtil.show_warning_message("端口范围格式不正确，请输入有效范围 (例如: 1-1000)！")
             return
 
         self.description_label.setText("正在扫描端口，请稍候...")
@@ -174,7 +175,7 @@ class PortKillerApp(QWidget):
         """显示错误信息"""
         self.progress_bar.hide()
         self.search_button.setEnabled(True)
-        QMessageBox.critical(self, "错误", error_message)
+        MessageUtil.show_error_message(error_message)
 
     def closeEvent(self, event):
         # 在关闭事件中发出信号
@@ -186,17 +187,14 @@ class PortKillerApp(QWidget):
         """停止选中端口对应的进程"""
         selected_item = self.port_list.currentItem()
         if not selected_item:
-            QMessageBox.warning(self, "警告", "请先选择一个端口！")
+            MessageUtil.show_warning_message("请先选择一个端口！")
             return
-        if not is_admin():
-            QMessageBox.warning(None, "权限不足", "请以管理员权限运行此程序！")
-            #run_as_admin()
-            return
+
         selected_text = selected_item.text()
         try:
             port = int(selected_text.split(":")[1].strip())
         except (IndexError, ValueError):
-            QMessageBox.warning(self, "错误", "无法解析选中的端口信息。")
+            MessageUtil.show_warning_message("无法解析选中的端口信息。")
             return
         try:
 
@@ -205,22 +203,22 @@ class PortKillerApp(QWidget):
                     pid = conn.pid
                     if pid:
                         psutil.Process(pid).terminate()
-                        QMessageBox.information(self, "成功", f"端口 {port} 已被成功释放！")
+                        MessageUtil.show_success_message(f"端口 {port} 已被成功释放！")
                         self.search_ports()  # 刷新端口列表
                         return
 
-        except PermissionError:
-            QMessageBox.critical(self, "权限错误", "操作被拒绝！请以管理员身份运行程序。")
+        except psutil.AccessDenied:
+            MessageUtil.show_error_message("操作被拒绝！请以管理员身份运行程序。")
             return
         except Exception as e:
-            QMessageBox.critical(self, "错误", f"无法终止进程：{str(e)}")
+            MessageUtil.show_error_message(f"无法终止进程：{str(e)}")
             return
-        QMessageBox.warning(self, "失败", f"未能找到占用端口 {port} 的进程。")
+        MessageUtil.show_warning_message(f"未能找到占用端口 {port} 的进程。")
 
 
 if __name__ == "__main__":
     if not is_admin():
-        QMessageBox.warning(None, "权限不足", "请以管理员权限运行此程序！")
+        MessageUtil.show_warning_message("请以管理员权限运行此程序！")
         run_as_admin()
     # 创建 QApplication 实例
     app = QApplication(sys.argv)

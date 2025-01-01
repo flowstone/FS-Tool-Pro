@@ -5,6 +5,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, pyqtSignal
 from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
+from src.util.message_util import MessageUtil
 from src.widget.hover_image_button import HoverImageButton
 from loguru import logger
 
@@ -111,13 +112,13 @@ class StickyNoteApp(QWidget):
         note_text = self.text_edit.toPlainText().strip()
         if note_text:
             logger.info(f'保存便签内容: {note_text}')
-            QMessageBox.information(self, '保存成功', '便签内容已成功保存！')
+            MessageUtil.show_success_message('便签内容已成功保存！')
         else:
-            QMessageBox.warning(self, '内容为空', '请输入便签内容后再保存哦！')
+            MessageUtil.show_warning_message('请输入便签内容后再保存哦！')
 
     def clear_text(self):
         self.text_edit.clear()
-        QMessageBox.information(self, '已清空', '便签内容已清空。')
+        MessageUtil.show_success_message('便签内容已清空。')
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLa
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt,pyqtSignal, QThread
 
+from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 from src.widget.progress_widget import ProgressWidget
 
@@ -110,7 +111,7 @@ class HeicToJpgApp(QWidget):
             if os.path.isdir(folder_path):
                 self.folder_path_input.setText(folder_path)
             else:
-                QMessageBox.warning(self, "警告", "拖入的不是有效文件夹！")
+                MessageUtil.show_warning_message("拖入的不是有效文件夹！")
 
     def start_operation(self):
         logger.info("---- 开始执行操作 ----")
@@ -128,18 +129,18 @@ class HeicToJpgApp(QWidget):
             self.progress_bar.show()
 
         else:
-            QMessageBox.warning(self, "警告", "请选择要操作的文件夹！")
+            MessageUtil.show_warning_message("请选择要操作的文件夹！")
 
     def operation_finished(self):
         self.progress_bar.hide()
         self.setEnabled(True)
-        QMessageBox.information(self, "提示", "移动文件完成！")
+        MessageUtil.show_success_message("移动文件完成！")
 
     def operation_error(self, error_msg):
         logger.error(f"出现异常：{error_msg}")
         self.progress_bar.hide()
         self.setEnabled(True)
-        QMessageBox.information(self, "警告", "遇到异常停止工作")
+        MessageUtil.show_warning_message("遇到异常停止工作")
 
     def closeEvent(self, event):
         # 在关闭事件中发出信号

@@ -12,6 +12,7 @@ from PyQt5.QtCore import Qt, pyqtSignal, QThread
 from src.util.common_util import CommonUtil
 from src.const.color_constants import BLUE, BLACK
 from src.const.font_constants import FontConstants
+from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 
 
@@ -211,7 +212,7 @@ class FileComparatorApp(QWidget):
     def start_comparison(self):
         """开始比较文件"""
         if not self.source_directory or not self.target_directory:
-            QMessageBox.warning(self, "警告", "请先选择源目录和目标目录！")
+            MessageUtil.show_warning_message("请先选择源目录和目标目录！")
             return
         self.compare_button.setEnabled(False)
         self.progress_bar.set_range(0,0)

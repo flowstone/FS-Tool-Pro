@@ -15,6 +15,7 @@ from loguru import logger
 from src.util.common_util import CommonUtil
 from src.const.color_constants import BLUE, BLACK
 from src.const.font_constants import FontConstants
+from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 
 
@@ -216,17 +217,17 @@ class FileEncryptorApp(QWidget):
             if os.path.isdir(folder_path):
                 self.folder_path_entry.setText(folder_path)
             else:
-                QMessageBox.warning(self, "警告", "拖入的不是有效文件夹！")
+                MessageUtil.show_warning_message("拖入的不是有效文件夹！")
 
     def encrypt_folder(self):
         """加密文件夹下的所有文件"""
         if not self.selected_folder:
-            QMessageBox.warning(self, "警告", "请先选择一个文件夹！")
+            MessageUtil.show_warning_message("请先选择一个文件夹！")
             return
 
         password = self.password_input.text()
         if len(password) < 8:
-            QMessageBox.warning(self, "警告", "密码长度必须至少8个字符！")
+            MessageUtil.show_warning_message("密码长度必须至少8个字符！")
             return
 
         key_length = int(self.key_length_combo.currentText())
@@ -242,12 +243,12 @@ class FileEncryptorApp(QWidget):
     def decrypt_folder(self):
         """解密文件夹下的所有加密文件"""
         if not self.selected_folder:
-            QMessageBox.warning(self, "警告", "请先选择一个文件夹！")
+            MessageUtil.show_warning_message("请先选择一个文件夹！")
             return
 
         password = self.password_input.text()
         if len(password) < 8:
-            QMessageBox.warning(self, "警告", "密码长度必须至少8个字符！")
+            MessageUtil.show_warning_message("密码长度必须至少8个字符！")
             return
 
         key_length = int(self.key_length_combo.currentText())
@@ -267,28 +268,28 @@ class FileEncryptorApp(QWidget):
         self.progress_bar.hide()
 
         """加密完成后的提示"""
-        QMessageBox.information(self, "成功", "文件夹内的文件已成功加密！")
+        MessageUtil.show_success_message("文件夹内的文件已成功加密！")
 
     def decryption_finished(self):
         self.setEnabled(True)
         self.progress_bar.hide()
 
         """解密完成后的提示"""
-        QMessageBox.information(self, "成功", "文件夹内的文件已成功解密！")
+        MessageUtil.show_success_message("文件夹内的文件已成功解密！")
 
     def encryption_error(self, error_msg):
         self.setEnabled(True)
         self.progress_bar.hide()
 
         """加密错误提示"""
-        QMessageBox.critical(self, "错误", f"加密过程中发生错误: {error_msg}")
+        MessageUtil.show_error_message(f"加密过程中发生错误: {error_msg}")
 
     def decryption_error(self, error_msg):
         self.setEnabled(True)
         self.progress_bar.hide()
 
         """解密错误提示"""
-        QMessageBox.critical(self, "错误", f"解密过程中发生错误: {error_msg}")
+        MessageUtil.show_error_message(f"解密过程中发生错误: {error_msg}")
 
     def derive_key(self, password: str, key_length: int):
         """通过 PBKDF2 生成密钥"""

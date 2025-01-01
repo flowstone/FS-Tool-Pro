@@ -10,6 +10,7 @@ from loguru import logger
 from src.util.common_util import CommonUtil
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 from src.widget.progress_widget import ProgressWidget,ProgressSignalEmitter
 from src.const.color_constants import BLUE, BLACK
@@ -111,7 +112,7 @@ class CreateFolderApp(QWidget):
             if os.path.isdir(folder_path):
                 self.folder_path_entry.setText(folder_path)
             else:
-                QMessageBox.warning(self, "警告", "拖入的不是有效文件夹！")
+                MessageUtil.show_warning_message("拖入的不是有效文件夹！")
 
     def start_operation(self):
         logger.info("---- 开始执行操作 ----")
@@ -127,19 +128,19 @@ class CreateFolderApp(QWidget):
             self.worker_thread.start()
             self.progress_bar.show()
         else:
-            QMessageBox.warning(self, "警告", "请选择要操作的文件夹！")
+            MessageUtil.show_warning_message("请选择要操作的文件夹！")
 
     def operation_finished(self):
         logger.info("---- 操作完成 ----")
         self.progress_bar.hide()
         self.setEnabled(True)
-        QMessageBox.information(self, "提示", "移动文件完成！")
+        MessageUtil.show_success_message("移动文件完成！")
 
     def operation_error(self, error_msg):
         logger.error(f"出现异常：{error_msg}")
         self.progress_bar.hide()
         self.setEnabled(True)
-        QMessageBox.information(self, "警告", "遇到异常停止工作")
+        MessageUtil.show_warning_message("遇到异常停止工作")
 
     def closeEvent(self, event):
         # 在关闭事件中发出信号

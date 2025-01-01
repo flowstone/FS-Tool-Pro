@@ -15,6 +15,7 @@ from loguru import logger
 from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 from src.widget.progress_widget import ProgressWidget
 
@@ -136,19 +137,19 @@ class RenameBaseApp(QWidget):
             self.progress_bar.show()
 
         else:
-            QMessageBox.warning(self, "警告", "请选择一个文件夹！")
+            MessageUtil.show_warning_message("请选择一个文件夹！")
             logger.warning("未选择文件夹")
 
     def operation_finished(self):
         self.progress_bar.hide()
         self.setEnabled(True)
-        QMessageBox.information(self, "提示", "重命名完成！")
+        MessageUtil.show_success_message("重命名完成！")
         logger.info("---- 重命名操作完成 ----")
 
     def operation_error(self, error_msg):
         self.progress_bar.hide()
         self.setEnabled(True)
-        QMessageBox.warning(self, "警告", f"遇到错误：{error_msg}")
+        MessageUtil.show_error_message(f"遇到错误：{error_msg}")
         logger.error(f"错误：{error_msg}")
 
     def closeEvent(self, event):

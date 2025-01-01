@@ -15,6 +15,7 @@ from src.const.color_constants import BLACK
 
 from src.util.common_util import CommonUtil
 from src.const.font_constants import FontConstants
+from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 
 
@@ -175,23 +176,23 @@ class FileGeneratorApp(QWidget):
             if os.path.isdir(folder_path):
                 self.folder_path_entry.setText(folder_path)
             else:
-                QMessageBox.warning(self, "警告", "拖入的不是有效文件夹！")
+                MessageUtil.show_warning_message("拖入的不是有效文件夹！")
     def start_file_generation(self):
         file_count = self.file_count_input.text()
         file_size = self.file_size_input.text()
         if not file_count.isdigit() or not file_size.isdigit():
-            self.show_message("警告", "请输入有效的文件数量和文件大小！")
+            MessageUtil.show_warning_message("请输入有效的文件数量和文件大小！")
             return
 
         file_count = int(file_count)
         file_size = int(file_size) * 1024  # 转换为字节
 
         if file_count <= 0 or file_size <= 0:
-            self.show_message("警告", "文件数量和文件大小必须大于零！")
+            MessageUtil.show_warning_message("文件数量和文件大小必须大于零！")
             return
 
         if not self.folder_path:
-            self.show_message("警告", "请先选择输出目录！")
+            MessageUtil.show_warning_message("请先选择输出目录！")
             return
 
         file_type = self.file_type_combo.currentText()
@@ -214,10 +215,8 @@ class FileGeneratorApp(QWidget):
     def file_generation_finished(self):
         self.generate_button.setEnabled(True)
         self.progress_bar.hide()
-        self.show_message("成功", "文件生成完成！")
+        MessageUtil.show_success_message("文件生成完成！")
 
-    def show_message(self, title, message):
-        QMessageBox.information(self, title, message)
 
     def closeEvent(self, event):
         # 在关闭事件中发出信号

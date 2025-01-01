@@ -13,6 +13,7 @@ from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
+from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 
 
@@ -76,7 +77,7 @@ class HashCalculatorThread(QThread):
             self.result_signal.emit(file_info, results)
 
         except Exception as e:
-            QMessageBox.critical(None, "错误", f"计算哈希失败：{str(e)}")
+            MessageUtil.show_error_message(f"计算哈希失败：{str(e)}")
 
 
 class HashCalculatorApp(QWidget):
@@ -175,12 +176,12 @@ class HashCalculatorApp(QWidget):
             if os.path.isfile(file_path):
                 self.file_path_entry.setText(file_path)
             else:
-                QMessageBox.warning(self, "警告", "拖入的不是有效文件！")
+                MessageUtil.show_warning_message("拖入的不是有效文件！")
 
     def start_hash_calculation(self):
         file_path = self.file_path_entry.text()
         if not file_path:
-            QMessageBox.warning(self, "警告", "请先选择一个文件！")
+            MessageUtil.show_warning_message("请先选择一个文件！")
             return
 
         hash_types = []
@@ -194,7 +195,7 @@ class HashCalculatorApp(QWidget):
             hash_types.append("CRC32")
 
         if not hash_types:
-            QMessageBox.warning(self, "警告", "请至少选择一种哈希类型！")
+            MessageUtil.show_warning_message("请至少选择一种哈希类型！")
             return
 
         self.calculate_button.setEnabled(False)

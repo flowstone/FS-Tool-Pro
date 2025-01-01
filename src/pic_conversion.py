@@ -11,6 +11,7 @@ from src.const.color_constants import BLACK
 from src.util.common_util import CommonUtil
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 from src.widget.progress_widget import ProgressWidget
 
@@ -128,7 +129,7 @@ class PicConversionApp(QWidget):
 
         if not self.image_path:
             logger.warning("---- 请先上传图片! ----")
-            QMessageBox.information(self, "警告", "请先上传图片!")
+            MessageUtil.show_warning_message("请先上传图片!")
             return
 
         self.setEnabled(False)
@@ -145,14 +146,14 @@ class PicConversionApp(QWidget):
         self.setEnabled(True)
         logger.info(
             f"图片已成功转换为所选格式，保存路径分别为: {[f'{os.path.splitext(self.image_path)[0]}.{f.lower()}' for f in self.selected_formats]}")
-        QMessageBox.information(self, "提示", "移动文件完成！")
+        MessageUtil.show_success_message("移动文件完成！")
 
 
     def conversion_error(self, error_msg):
         logger.error(f"转换图片时出错: {error_msg}")
         self.progress_bar.hide()
         self.setEnabled(True)
-        QMessageBox.information(self, "警告", "遇到异常停止工作")
+        MessageUtil.show_warning_message("遇到异常停止工作")
 
     def closeEvent(self, event):
         # 在关闭事件中发出信号

@@ -60,7 +60,7 @@ class DesktopClockApp(QWidget):
             "粉色": "pink",
             "红色": "red",
             "绿色": "green",
-            "blue": "blue"
+            "蓝色": "blue"
         }
         self.current_time.setStyleSheet(f"color: {color_css[self.selected_time_color]};")
         self.count_time.setStyleSheet(f"color: {color_css[self.selected_timer_color]};")
@@ -76,6 +76,19 @@ class DesktopClockApp(QWidget):
         time_str = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
         self.count_time.setText(time_str)
 
+    def move_to_position(self, position):
+        screen_geo = QApplication.desktop().screenGeometry()
+
+        if position == "左上角":
+            x, y = 10, 10
+        elif position == "右上角":
+            x, y = screen_geo.width() - self.width() - 100, 10
+        elif position == "左下角":
+            x, y = 10, screen_geo.height() - self.height() - 10
+        elif position == "右下角":
+            x, y = screen_geo.width() - self.width() - 100, screen_geo.height() - self.height() - 10
+
+        self.move(x, y)
 
 class ColorSettingDialog(QDialog):
     # 定义一个信号，在窗口关闭时触发
@@ -86,7 +99,7 @@ class ColorSettingDialog(QDialog):
 
     def init_ui(self):
         self.setWindowTitle("颜色设置")
-        self.setFixedSize(250, 150)  # 设置固定大小，让界面更规整
+        self.setFixedSize(250, 200)  # 设置固定大小，让界面更规整
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
         layout = QVBoxLayout()
@@ -117,6 +130,15 @@ class ColorSettingDialog(QDialog):
         timer_row_layout.addWidget(self.timer_color_combobox)
         layout.addLayout(timer_row_layout)
 
+        # 创建窗口位置选择行
+        position_row_layout = QHBoxLayout()
+        position_label = QLabel("窗口位置")
+        self.position_combobox = QComboBox(self)
+        self.position_combobox.addItems(["左上角", "右上角", "左下角", "右下角"])
+        position_row_layout.addWidget(position_label)
+        position_row_layout.addWidget(self.position_combobox)
+        layout.addLayout(position_row_layout)
+
         # 确定按钮
         ok_button = QPushButton("确定")
         ok_button.clicked.connect(self.start_operation)
@@ -129,12 +151,17 @@ class ColorSettingDialog(QDialog):
     def get_selected_timer_color(self):
         return self.timer_color_combobox.currentText()
 
+    def get_selected_position(self):
+        return self.position_combobox.currentText()
+
     def start_operation(self):
         time_color = self.get_selected_time_color()
         timer_color = self.get_selected_timer_color()
+        position = self.get_selected_position()
 
         self.window = DesktopClockApp()
         self.window.show_with_colors(time_color, timer_color)
+        self.window.move_to_position(position)  # 移动窗口到所选位置
         self.hide()
 
 

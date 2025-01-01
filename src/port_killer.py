@@ -3,7 +3,7 @@ import socket
 import psutil
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout,
-    QPushButton, QListWidget, QLabel, QMessageBox, QProgressBar, QLineEdit
+    QPushButton, QListWidget, QLabel, QMessageBox, QProgressBar, QLineEdit, QHBoxLayout
 )
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
 import os
@@ -107,19 +107,21 @@ class PortKillerApp(QWidget):
         self.port_input.setPlaceholderText("例如: 1-1000")
         self.port_input.setText("1-65535")
 
-        # 搜索按钮
-        self.search_button = QPushButton("搜索")
-        self.search_button.clicked.connect(self.search_ports)
-
         # 进度条
         self.progress_bar = CustomProgressBar()
         self.progress_bar.hide()
-        # 显示端口列表
-        self.port_list = QListWidget()
-
+        button_layout = QHBoxLayout()
+        # 搜索按钮
+        self.search_button = QPushButton("搜索")
+        self.search_button.clicked.connect(self.search_ports)
         # 停止按钮
         self.kill_button = QPushButton("停止")
         self.kill_button.clicked.connect(self.kill_port)
+        button_layout.addWidget(self.search_button)
+        button_layout.addWidget(self.kill_button)
+        # 显示端口列表
+        self.port_list = QListWidget()
+
 
         # 添加到布局
         self.layout.addWidget(self.description_label)
@@ -127,10 +129,9 @@ class PortKillerApp(QWidget):
         self.layout.addWidget(self.ip_input)
         self.layout.addWidget(self.port_input_label)
         self.layout.addWidget(self.port_input)
-        self.layout.addWidget(self.search_button)
+        self.layout.addLayout(button_layout)
         self.layout.addWidget(self.progress_bar)
         self.layout.addWidget(self.port_list)
-        self.layout.addWidget(self.kill_button)
 
     def search_ports(self):
         """搜索被占用的端口"""

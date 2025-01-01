@@ -117,13 +117,13 @@ class RenameCustomApp(QWidget):
         self.start_button.clicked.connect(self.start_operation)
 
 
-        self.exit_button = QPushButton("退出")
-        self.exit_button.setObjectName("exit_button")
-        self.exit_button.clicked.connect(self.close)
+        # self.exit_button = QPushButton("退出")
+        # self.exit_button.setObjectName("exit_button")
+        # self.exit_button.clicked.connect(self.close)
 
 
         button_layout.addWidget(self.start_button)
-        button_layout.addWidget(self.exit_button)
+        # button_layout.addWidget(self.exit_button)
         layout.addLayout(button_layout)
 
         self.setLayout(layout)

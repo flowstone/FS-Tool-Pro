@@ -28,7 +28,7 @@ class PicConversionApp(QWidget):
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
         #self.setFixedSize(FsConstants.PIC_CONVERSION_WINDOW_WIDTH, FsConstants.PIC_CONVERSION_WINDOW_HEIGHT)
-        self.setFixedWidth(FsConstants.PIC_CONVERSION_WINDOW_WIDTH)
+        #self.setFixedWidth(FsConstants.PIC_CONVERSION_WINDOW_WIDTH)
         # 用于存储上传的图片路径
         self.image_path = None
 
@@ -89,10 +89,10 @@ class PicConversionApp(QWidget):
         button_layout.addWidget(self.convert_button)
 
         # 关闭按钮
-        self.close_button = QPushButton("关闭")
-        self.close_button.setObjectName("exit_button")
-        self.close_button.clicked.connect(self.close)
-        button_layout.addWidget(self.close_button)
+        # self.close_button = QPushButton("关闭")
+        # self.close_button.setObjectName("exit_button")
+        # self.close_button.clicked.connect(self.close)
+        # button_layout.addWidget(self.close_button)
 
         layout.addLayout(button_layout)
 

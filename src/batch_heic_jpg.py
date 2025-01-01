@@ -34,6 +34,7 @@ class HeicToJpgApp(QWidget):
         self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
         self.setFixedHeight(300)
+        self.setFixedWidth(600)
 
 
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
@@ -72,13 +73,13 @@ class HeicToJpgApp(QWidget):
         start_button.clicked.connect(self.start_operation)
 
 
-        exit_button = QPushButton("退出")
-        exit_button.setObjectName("exit_button")
-        exit_button.clicked.connect(self.close)
+        # exit_button = QPushButton("退出")
+        # exit_button.setObjectName("exit_button")
+        # exit_button.clicked.connect(self.close)
 
 
         button_layout.addWidget(start_button)
-        button_layout.addWidget(exit_button)
+        #button_layout.addWidget(exit_button)
 
         # 布局组合
         layout.addWidget(description_label)

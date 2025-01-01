@@ -50,6 +50,25 @@ QLineEdit:focus {
     border-radius: 1px;
 }
 
+QTextEdit {
+    background-color: white;
+    border: 1px solid #388E3C;
+    border-radius: 5px;
+    padding: 6px;
+    font-size: 14px;
+}
+QTextEdit:read-only {
+    background-color: #f9f9f9;
+}
+
+QListWidget{
+    background-color: white;
+    border: 1px solid #388E3C;
+    border-radius: 5px;
+    padding: 6px;
+    font-size: 14px;
+}
+
 QPushButton {
     background-color: #1E90FF;
     color: white;

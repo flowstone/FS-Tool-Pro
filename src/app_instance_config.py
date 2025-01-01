@@ -1,6 +1,7 @@
 # config.py
 from src.batch_heic_jpg import HeicToJpgApp
 from src.desktop_clock import ColorSettingDialog
+from src.image_tool import ImageToolApp
 from src.network_tool import NetworkToolApp
 from src.pic_conversion import PicConversionApp
 from src.batch_file_renamer import RenameFileApp
@@ -28,10 +29,8 @@ app_instance_config = [
      "class": RSAKeyGeneratorApp},
     {"key": "rename_file", "icon": FsConstants.BUTTON_FILE_ICON, "title": FsConstants.FILE_RENAMER_WINDOW_TITLE,
      "class": RenameFileApp},
-    {"key": "heic_to_jpg", "icon": FsConstants.BUTTON_HEIC_ICON, "title": FsConstants.HEIC_JPG_BUTTON_TITLE,
-     "class": HeicToJpgApp},
-    {"key": "pic_conversion", "icon": FsConstants.BUTTON_PIC_ICON, "title": FsConstants.PIC_CONVERSION_WINDOW_TITLE,
-     "class": PicConversionApp},
+    {"key": "image_tool", "icon": FsConstants.BUTTON_HEIC_ICON, "title": FsConstants.IMAGE_TOOL_BUTTON_TITLE,
+     "class": ImageToolApp},
     {"key": "file_generator", "icon": FsConstants.BUTTON_FILE_GENERATOR_ICON, "title": FsConstants.FILE_GENERATOR_WINDOW_TITLE,
      "class": FileGeneratorApp},
     {"key": "create_folder", "icon": FsConstants.BUTTON_FOLDER_ICON, "title": FsConstants.CREATE_FOLDER_WINDOW_TITLE,

@@ -25,8 +25,9 @@
 
 ### 🖥️ 应用演示
 
-![应用截图](https://raw.githubusercontent.com/flowstone/fs-tool-pro/main/resources/preview/preview_app_main.png)
-![应用截图](https://raw.githubusercontent.com/flowstone/fs-tool-pro/main/resources/preview/preview_app_float.png)
+<img src="https://raw.githubusercontent.com/flowstone/fs-tool-pro/main/resources/preview/preview_app_main.png" alt="应用截图" width="500px">
+<img src="https://raw.githubusercontent.com/flowstone/fs-tool-pro/main/resources/preview/preview_app_float.png" alt="应用截图" width="90px">
+
 
 
 ---

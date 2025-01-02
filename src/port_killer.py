@@ -13,30 +13,13 @@ from src.const.color_constants import BLACK, BLUE
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.message_util import MessageUtil
+from src.util.permission_util import check_admin
 from src.widget.custom_progress_widget import CustomProgressBar
 
 
-def is_admin():
-    """检查当前程序是否以管理员身份运行"""
-    if sys.platform == "win32":
-        import ctypes
-        return ctypes.windll.shell32.IsUserAnAdmin() != 0
-    elif sys.platform == "darwin":
-        return os.geteuid() == 0
-    return False
 
-def run_as_admin():
-    """以管理员权限重新运行程序"""
-    if sys.platform == "win32":
-        import ctypes
-        ctypes.windll.shell32.ShellExecuteW(
-            None, "runas", sys.executable, " ".join(sys.argv), None, 1
-        )
-        sys.exit(0)
-    elif sys.platform == "darwin":
-        os.execvp("sudo", ["sudo", sys.executable] + sys.argv)
-    else:
-        raise NotImplementedError("仅支持 Windows 和 macOS")
+
+
 
 def get_open_ports(target_ip, start_port, end_port, progress_callback, error_callback):
     """扫描指定 IP 的指定端口范围"""
@@ -197,7 +180,7 @@ class PortKillerApp(QWidget):
             MessageUtil.show_warning_message("无法解析选中的端口信息。")
             return
         try:
-
+            check_admin()
             for conn in psutil.net_connections(kind="inet"):
                 if conn.laddr and conn.laddr.port == port:
                     pid = conn.pid
@@ -217,9 +200,6 @@ class PortKillerApp(QWidget):
 
 
 if __name__ == "__main__":
-    if not is_admin():
-        MessageUtil.show_warning_message("请以管理员权限运行此程序！")
-        run_as_admin()
     # 创建 QApplication 实例
     app = QApplication(sys.argv)
     killer_app = PortKillerApp()

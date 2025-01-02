@@ -29,6 +29,15 @@ class CommonUtil:
     def check_win_os():
         return sys.platform.startswith('win')
 
+    # 当前系统是Mac 返回True
+    @staticmethod
+    def check_mac_os():
+        return sys.platform.startswith("darwin")
+
+    # 当前系统是Linux 返回True
+    @staticmethod
+    def check_linux_os():
+        return sys.platform.startswith('linux')
 
     #获得应用图标全路径
     @staticmethod

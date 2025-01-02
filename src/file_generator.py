@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QApplication, QVBoxLayout, QLineEdit, QPushButton, Q
     QWidget, QComboBox, QHBoxLayout
 from loguru import logger
 
-from src.const.color_constants import BLACK
+from src.const.color_constants import BLACK, BLUE
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
@@ -118,6 +118,11 @@ class FileGeneratorApp(QWidget):
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         layout.addWidget(title_label)
+        # 应用说明
+        desc_label = QLabel("批量文件生成工具，支持选择目录、设置文件数量、大小及类型")
+        desc_label.setStyleSheet(f"color: {BLUE.name()};")
+        desc_label.setWordWrap(True)
+        layout.addWidget(desc_label)
 
         output_folder_label = QLabel("输出目录")
         layout.addWidget(output_folder_label)

@@ -15,30 +15,50 @@ from src.const.fs_constants import FsConstants
 from src.util.message_util import MessageUtil
 from src.util.permission_util import check_admin
 from src.widget.custom_progress_widget import CustomProgressBar
+from concurrent.futures import ThreadPoolExecutor
 
-
-
-
+def scan_port(ip, port):
+    """
+    扫描单个端口
+    """
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.settimeout(0.05)  # 降低超时时间
+            if s.connect_ex((ip, port)) == 0:
+                return port
+    except Exception as e:
+        print(f"Error scanning port {port}: {e}")  # 打印错误信息
+        return None
 
 
 def get_open_ports(target_ip, start_port, end_port, progress_callback, error_callback):
-    """扫描指定 IP 的指定端口范围"""
+    """
+    扫描指定 IP 的端口范围，使用线程池并发
+    """
     open_ports = []
     total_ports = end_port - start_port + 1
-    try:
-        for i, port in enumerate(range(start_port, end_port + 1)):
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.settimeout(0.1)
-                if s.connect_ex((target_ip, port)) == 0:
-                    open_ports.append(port)
+    progress = 0
 
-            # 更新进度条
-            progress_callback.emit(int((i + 1) / total_ports * 100))
+    try:
+        with ThreadPoolExecutor(max_workers=50) as executor:  # 设置线程池大小
+            futures = [
+                executor.submit(scan_port, target_ip, port)
+                for port in range(start_port, end_port + 1)
+            ]
+
+            for i, future in enumerate(futures):
+                result = future.result()
+                if result is not None:
+                    open_ports.append(result)
+
+                # 更新进度条
+                progress = int((i + 1) / total_ports * 100)
+                progress_callback.emit(progress)
+
     except Exception as e:
         error_callback.emit(str(e))  # 捕获错误并通过信号传递错误信息
 
     return open_ports
-
 class PortScannerThread(QThread):
     progress_signal = pyqtSignal(int)
     result_signal = pyqtSignal(list)

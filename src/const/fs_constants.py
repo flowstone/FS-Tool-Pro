@@ -19,36 +19,45 @@ class FsConstants:
     TOOLBAR_README_TITLE = "说明"
     TOOLBAR_AUTHOR_TITLE = "作者"
 
-    DESKTOP_CLOCK_WINDOW_TITLE = "透明时间"
-    CREATE_FOLDER_WINDOW_TITLE = "创建文件夹"
-    FILE_RENAMER_WINDOW_TITLE = "重命名使者"
+    # 主界面APP列表名
+    APP_TITLE_DESKTOP_CLOCK = "透明时间"
+    APP_TITLE_STICK_NOTE = "快捷便签"
+    APP_TITLE_PASSWORD_GENERATOR = "密码生成器"
+    APP_TITLE_RSA_GENERATOR = "RSA生成器"
+    APP_TITLE_RENAMER_TOOL = "重命名工具"
+    APP_TITLE_IMAGE_TOOL = "图片工具"
+    APP_TITLE_FILE_TOOL = "文件工具"
+    APP_TITLE_CREATE_FOLDER = "创建文件夹"
+    APP_TITLE_HASH_CALCULATOR = "HASH校验"
+    APP_TITLE_IP_TOOL = "网络工具"
+    APP_TITLE_APP_SIGNER = "应用签名"
 
-    IMAGE_TOOL_BUTTON_TITLE = "图片工具"
-    HEIC_JPG_BUTTON_TITLE = "HEIC作家"
-    PIC_CONVERSION_WINDOW_TITLE = "图转大师"
-    AUTO_ANSWERS_WINDOW_TITLE = "自动答题"
-    STICK_NOTE_WINDOW_TITLE = "快捷便签"
-    PASSWORD_GENERATOR_TITLE = "密码生成器"
+    WINDOW_TITLE_DESKTOP_CLOCK = "透明时间"
+    WINDOW_TITLE_STICK_NOTE = "快捷便签"
+    WINDOW_TITLE_PASSWORD_GENERATOR = "密码生成器"
+    WINDOW_TITLE_RSA_GENERATOR = "RSA生成器"
+    WINDOW_TITLE_RENAME_TOOL = "重命名工具"
+    WINDOW_TITLE_RENAME_GENERATE = "重命名生成"
+    WINDOW_TITLE_RENAME_REPLACE = "重命名替换"
+    WINDOW_TITLE_IMAGE_TOOL = "图片工具"
+    WINDOW_TITLE_IMAGE_CONVERT = "图片转换"
+    WINDOW_TITLE_IMAGE_HEIC_JPG = "批量HEIC转JPG"
+    WINDOW_TITLE_FILE_TOOL = "文件工具"
+    WINDOW_TITLE_FILE_GENERATOR = "文件批量生成"
+    WINDOW_TITLE_FILE_COMPARATOR = "文件比较"
+    WINDOW_TITLE_FILE_ENCRYPTOR = "文件批量加密"
+    WINDOW_TITLE_CREATE_FOLDER = "创建文件夹"
+    WINDOW_TITLE_HASH_CALCULATOR = "HASH校验"
+    WINDOW_TITLE_IP_INFO_TOOL = "网络工具"
+    WINDOW_TITLE_IP_INFO = "网络信息"
+    WINDOW_TITLE_IP_INFO_PORT_SCANNER = "端口扫描"
+    WINDOW_TITLE_IP_INFO_PORT_KILLER = "关闭端口"
+    WINDOW_TITLE_APP_SIGNER_TOOL = "应用签名工具"
+    WINDOW_TITLE_APP_SIGNER = "应用签名"
+    WINDOW_TITLE_APP_SIGNER_GENERATE_CERTIFICATE = "证书生成"
+    WINDOW_TITLE_APP_SIGNER_PUBLIC_KEY_EXTRACTOR = "证书转换"
 
-    APP_SIGNER_TOOL_WINDOW_TITLE = "应用签名"
-    APP_SIGNER_WINDOW_TITLE = "签名"
-    GENERATE_CERTIFICATE_WINDOW_TITLE = "生成证书"
-    PUBLIC_KEY_EXTRACTOR_WINDOW_TITLE = "证书转换"
 
-
-    FILE_TOOL_WINDOW_TITLE = "文件工具"
-    FILE_GENERATOR_WINDOW_TITLE = "文件生成"
-    FILE_COMPARATOR_WINDOW_TITLE = "文件比较"
-    FILE_ENCRYPTOR_WINDOW_TITLE = "文件加密"
-    RSA_KEY_GENERATOR_WINDOW_TITLE = "RSA生成器"
-    HASH_CALCULATOR_WINDOW_TITLE = "HASH校验"
-
-    NETWORK_TOOL_WINDOW_TITLE = "网络工具"
-    PORT_SCANNER_WINDOW_TITLE = "端口扫描器"
-    PORT_KILLER_WINDOW_TITLE = "端口杀手"
-    IP_TOOL_WINDOW_TITLE = "IP信息"
-
-    APP_SIGNER_WINDOW_TITLE = "应用签名"
 
 
     # 桌面时钟相关常量
@@ -81,22 +90,12 @@ class FsConstants:
     STICK_NOTE_WINDOW_MIN_WIDTH = 300
     STICK_NOTE_WINDOW_MIN_HEIGHT = 200
 
-    #密码生成器
 
-    # 颜色相关常量
-    BACKGROUND_COLOR = "#f0f0f0"
-    BUTTON_COLOR_NORMAL = "#3498db"
-    BUTTON_COLOR_HOVER = "#2980b9"
-    BUTTON_COLOR_PRESS = "#1f618d"
-
-    # 字体相关常量
-    DEFAULT_FONT_FAMILY = "Arial"
-    DEFAULT_FONT_SIZE = 12
 
     # 共用的常量，应用图标
-    APP_ICON_PATH = "resources/images/app.ico"
-    APP_MINI_ICON_PATH = "resources/images/app_mini.ico"
-    APP_BAR_ICON_PATH = "resources/images/app_bar.ico"
+    APP_ICON_FULL_PATH = "resources/images/app.ico"
+    APP_MINI_ICON_FULL_PATH = "resources/images/app_mini.ico"
+    APP_BAR_ICON_FULL_PATH = "resources/images/app_bar.ico"
     AUTHOR_MAIL = "xueyao.me@gmail.com"
     AUTHOR_BLOG = "https://blog.xueyao.tech"
     AUTHOR_GITHUB = "https://github.com/flowstone"
@@ -104,24 +103,20 @@ class FsConstants:
     BASE_QSS_PATH = "resources/qss/base.qss"
     BASE_COLOR_MAP = "resources/images/img_colormap.gif"
 
-    BUTTON_ICON_PATH = "resources/images/icon/"
-    BUTTON_TIME_ICON = "time-icon.svg"
-    BUTTON_PIC_ICON = "img_conv-icon.svg"
-    BUTTON_FOLDER_ICON = "folder-icon.svg"
-    BUTTON_FILE_ICON = "move-icon.svg"
-    BUTTON_HEIC_ICON = "heic_jpg-icon.svg"
-    BUTTON_ANSWERS_ICON = "auto_answers-icon.svg"
-    BUTTON_PASSWORD_ICON = "unlock-icon.svg"
-    BUTTON_STICK_NOTE_ICON = "business-icon.svg"
-    BUTTON_FILE_GENERATOR_ICON = "file_generator-icon.svg"
-    BUTTON_FILE_COMPARATOR_ICON = "file_comparator-icon.svg"
-    BUTTON_FILE_ENCRYPTOR_ICON = "file_encryptor-icon.svg"
-    BUTTON_RSA_KEY_GENERATOR_ICON = "rsa-icon.svg"
-    BUTTON_HASH_CALCULATOR_ICON = "MD5-icon.svg"
-    BUTTON_PORT_SCANNER_ICON = "port-scanner-icon.svg"
-    BUTTON_PORT_KILLER_ICON = "port-killer-icon.svg"
-    BUTTON_NETWORK_TOOL_ICON = "network-tool-icon.svg"
-    BUTTON_APP_SIGNER_ICON = "designer-icon.svg"
+
+    APP_ICON_RESOURCE_PATH = "resources/images/icon/"
+    APP_ICON_DESKTOP_CLOCK = "desktop_clock_icon.svg"
+    APP_ICON_STICK_NOTE = "stick_note_icon.svg"
+    APP_ICON_PASSWORD_GENERATOR = "password_generator_icon.svg"
+    APP_ICON_RSA_GENERATOR = "rsa_generator_icon.svg"
+    APP_ICON_RENAMER_TOOL = "renamer_tool_icon.svg"
+    APP_ICON_IMAGE_TOOL = "image_tool_icon.svg"
+    APP_ICON_FILE_TOOL = "file_tool_icon.svg"
+    APP_ICON_CREATE_FOLDER = "create_folder_icon.svg"
+    APP_ICON_HASH_CALCULATOR = "hash_calculator_icon.svg"
+    APP_ICON_IP_TOOL = "ip_tool_icon.svg"
+    APP_ICON_APP_SIGNER = "app_signer_icon.svg"
+
 
 
     BUTTON_IMAGE_LOCK_OPEN = "resources/btn/lock-open-solid.svg"

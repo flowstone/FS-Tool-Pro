@@ -28,8 +28,10 @@ class HeicToJpgApp(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        logger.info("---- 初始化HEIC转JPG ----")
-        self.setWindowTitle(FsConstants.HEIC_JPG_WINDOW_TITLE)
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_IMAGE_HEIC_JPG} ----")
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_IMAGE_HEIC_JPG)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+
         self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
         self.setFixedHeight(300)
@@ -68,7 +70,6 @@ class HeicToJpgApp(QWidget):
         # 操作按钮
         button_layout = QHBoxLayout()
         start_button = QPushButton("开始")
-        start_button.setObjectName("start_button")
         start_button.clicked.connect(self.start_operation)
 
 

@@ -1,6 +1,7 @@
 import sys
 from datetime import datetime, timedelta
 
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
     QLineEdit, QTextEdit, QFileDialog, QMessageBox
@@ -9,14 +10,20 @@ from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.x509.oid import NameOID
+from loguru import logger
 
 from src.const.fs_constants import FsConstants
+from src.util.common_util import CommonUtil
 
 
 class GenerateCertificateApp(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(FsConstants.GENERATE_CERTIFICATE_WINDOW_TITLE)
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_APP_SIGNER_GENERATE_CERTIFICATE} ----")
+
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_APP_SIGNER_GENERATE_CERTIFICATE)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+
         #self.setGeometry(100, 100, 600, 500)
 
         # 界面组件

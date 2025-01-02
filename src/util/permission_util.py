@@ -53,6 +53,6 @@ def check_admin():
 
         if result == QMessageBox.Yes:
             run_as_admin()
-        else:
-            sys.exit(0)
+        #else:
+            #sys.exit(0)
 

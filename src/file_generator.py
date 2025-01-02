@@ -14,6 +14,7 @@ from loguru import logger
 
 from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
+from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
@@ -99,10 +100,13 @@ class FileGeneratorApp(QWidget):
     def __init__(self):
         super().__init__()
         self.folder_path = None
-        self.setWindowTitle("批量生成文件")
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_FILE_GENERATOR} ----")
+
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_FILE_GENERATOR)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+
         self.setFixedSize(750, 400)
 
-        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setAcceptDrops(True)
 
         layout = QVBoxLayout()
@@ -148,7 +152,6 @@ class FileGeneratorApp(QWidget):
 
         button_layout = QHBoxLayout()
         self.generate_button = QPushButton("生成文件")
-        self.generate_button.setObjectName("start_button")
         self.generate_button.clicked.connect(self.start_file_generation)
         button_layout.addWidget(self.generate_button)
 

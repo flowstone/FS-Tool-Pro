@@ -5,14 +5,17 @@ from concurrent.futures import ThreadPoolExecutor
 
 import psutil
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout,
     QPushButton, QListWidget, QLabel, QLineEdit, QHBoxLayout
 )
+from loguru import logger
 
 from src.const.color_constants import BLACK, BLUE
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.util.permission_util import check_admin
 from src.widget.custom_progress_widget import CustomProgressBar
@@ -82,16 +85,19 @@ class PortKillerApp(QWidget):
     closed_signal = pyqtSignal()
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(FsConstants.PORT_KILLER_WINDOW_TITLE)
-        #self.setGeometry(100, 100, 600, 500)
-        self.setFixedWidth(600)
-        self.initUI()
 
-    def initUI(self):
+        self.init_ui()
+
+    def init_ui(self):
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_IP_INFO_PORT_KILLER} ----")
+
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_IP_INFO_PORT_KILLER)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+        self.setFixedWidth(600)
         # 主界面布局
         self.layout = QVBoxLayout(self)
 
-        title_label = QLabel(FsConstants.PORT_KILLER_WINDOW_TITLE)
+        title_label = QLabel(FsConstants.WINDOW_TITLE_IP_INFO_PORT_KILLER)
         title_label.setAlignment(Qt.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)

@@ -3,14 +3,16 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout,
     QPushButton, QTextEdit, QLabel, QLineEdit
 )
-
+from loguru import logger
 from src.const.color_constants import BLACK, BLUE
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.util.common_util import CommonUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 
 
@@ -81,16 +83,20 @@ class PortScannerApp(QWidget):
     closed_signal = pyqtSignal()
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(FsConstants.PORT_SCANNER_WINDOW_TITLE)
-        self.setGeometry(100, 100, 600, 500)
-        self.initUI()
 
-    def initUI(self):
-        # 主界面布局
+        self.init_ui()
+
+    def init_ui(self):
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_IP_INFO_PORT_SCANNER} ----")
+
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_IP_INFO_PORT_SCANNER)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+
+        self.setGeometry(100, 100, 600, 500)
 
         # 主界面布局
         self.layout = QVBoxLayout(self)
-        title_label = QLabel(FsConstants.PORT_SCANNER_WINDOW_TITLE)
+        title_label = QLabel(FsConstants.WINDOW_TITLE_IP_INFO_PORT_SCANNER)
         title_label.setAlignment(Qt.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)

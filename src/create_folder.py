@@ -24,8 +24,9 @@ class CreateFolderApp(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        logger.info("---- 初始化创建文件夹并移动文件 ----")
-        self.setWindowTitle(FsConstants.CREATE_FOLDER_WINDOW_TITLE)
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_CREATE_FOLDER} ----")
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_CREATE_FOLDER)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
 
         # 设置窗口背景色为淡灰色
@@ -33,7 +34,6 @@ class CreateFolderApp(QWidget):
         self.setAcceptDrops(True)
 
 
-        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
         layout = QVBoxLayout()
         title_label = QLabel("批量生成文件夹")
@@ -69,11 +69,9 @@ class CreateFolderApp(QWidget):
         # 操作按钮
         button_layout = QHBoxLayout()
         start_button = QPushButton("开始")
-        start_button.setObjectName("start_button")
         start_button.clicked.connect(self.start_operation)
 
         exit_button = QPushButton("退出")
-        exit_button.setObjectName("exit_button")
         exit_button.clicked.connect(self.close)
 
         button_layout.addWidget(start_button)

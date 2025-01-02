@@ -24,12 +24,11 @@ class ImageConvertApp(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        logger.info("---- 初始化图片格式转换应用 ----")
-        self.setWindowTitle(FsConstants.PIC_CONVERSION_WINDOW_TITLE)
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_IMAGE_CONVERT} ----")
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_IMAGE_CONVERT)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
-        #self.setFixedSize(FsConstants.PIC_CONVERSION_WINDOW_WIDTH, FsConstants.PIC_CONVERSION_WINDOW_HEIGHT)
-        #self.setFixedWidth(FsConstants.PIC_CONVERSION_WINDOW_WIDTH)
+
         # 用于存储上传的图片路径
         self.image_path = None
 
@@ -85,7 +84,6 @@ class ImageConvertApp(QWidget):
         # 转换按钮
         self.convert_button = QPushButton("转换")
         self.convert_button.setEnabled(False)
-        self.convert_button.setObjectName("start_button")
         self.convert_button.clicked.connect(self.convert_image)
         button_layout.addWidget(self.convert_button)
 

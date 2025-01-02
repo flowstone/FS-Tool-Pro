@@ -1,20 +1,27 @@
 import sys
 
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QFileDialog, QLineEdit
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 from cryptography.x509 import load_pem_x509_certificate, load_der_x509_certificate
+from loguru import logger
 
 from src.const.fs_constants import FsConstants
+from src.util.common_util import CommonUtil
 
 
 class PublicKeyExtractorApp(QWidget):
     def __init__(self):
         super().__init__()
-        self.initUI()
+        self.init_ui()
 
-    def initUI(self):
-        self.setWindowTitle(FsConstants.PUBLIC_KEY_EXTRACTOR_WINDOW_TITLE)
+    def init_ui(self):
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_APP_SIGNER_PUBLIC_KEY_EXTRACTOR} ----")
+
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_APP_SIGNER_PUBLIC_KEY_EXTRACTOR)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+
         #self.setGeometry(100, 100, 400, 300)
         layout = QVBoxLayout()
 

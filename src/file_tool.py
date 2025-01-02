@@ -20,8 +20,8 @@ class FileToolApp(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        logger.info(f"---- 初始化{FsConstants.FILE_TOOL_WINDOW_TITLE} ----")
-        self.setWindowTitle(FsConstants.FILE_TOOL_WINDOW_TITLE)
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_FILE_TOOL} ----")
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_FILE_TOOL)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
@@ -39,9 +39,9 @@ class FileToolApp(QWidget):
 
 
     def add_tabs(self):
-        self.tab_widget.addTab(FileGeneratorApp(), FsConstants.FILE_GENERATOR_WINDOW_TITLE)
-        self.tab_widget.addTab(FileComparatorApp(), FsConstants.FILE_COMPARATOR_WINDOW_TITLE)
-        self.tab_widget.addTab(FileEncryptorApp(), FsConstants.FILE_ENCRYPTOR_WINDOW_TITLE)
+        self.tab_widget.addTab(FileGeneratorApp(), "文件生成")
+        self.tab_widget.addTab(FileComparatorApp(), "文件比较")
+        self.tab_widget.addTab(FileEncryptorApp(), "文件加密")
 
     def closeEvent(self, event):
         # 在关闭事件中发出信号

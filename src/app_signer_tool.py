@@ -19,16 +19,13 @@ class AppSignerTool(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("应用程序签名工具")
-        #self.setGeometry(200, 200, 700, 500)
-        self.setFixedWidth(700)
-        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.init_ui()
 
     def init_ui(self):
-        logger.info(f"---- 初始化{FsConstants.FILE_TOOL_WINDOW_TITLE} ----")
-        self.setWindowTitle(FsConstants.APP_SIGNER_TOOL_WINDOW_TITLE)
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_APP_SIGNER_TOOL} ----")
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_APP_SIGNER_TOOL)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+        self.setFixedWidth(700)
         self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
 
@@ -44,9 +41,9 @@ class AppSignerTool(QWidget):
         self.setLayout(layout)
 
     def add_tabs(self):
-        self.tab_widget.addTab(AppSignerApp(), FsConstants.APP_SIGNER_WINDOW_TITLE)
-        self.tab_widget.addTab(GenerateCertificateApp(), FsConstants.GENERATE_CERTIFICATE_WINDOW_TITLE)
-        self.tab_widget.addTab(PublicKeyExtractorApp(), FsConstants.PUBLIC_KEY_EXTRACTOR_WINDOW_TITLE)
+        self.tab_widget.addTab(AppSignerApp(), "应用签名")
+        self.tab_widget.addTab(GenerateCertificateApp(), "证书生成")
+        self.tab_widget.addTab(PublicKeyExtractorApp(), "证书转换")
 
     def closeEvent(self, event):
         # 在关闭事件中发出信号

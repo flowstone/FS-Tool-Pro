@@ -20,9 +20,8 @@ class IpInfoToolApp(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        logger.info(f"---- 初始化{FsConstants.NETWORK_TOOL_WINDOW_TITLE} ----")
-        self.setWindowTitle(FsConstants.NETWORK_TOOL_WINDOW_TITLE)
-        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_IP_INFO_TOOL} ----")
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_IP_INFO_TOOL)
         self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
 

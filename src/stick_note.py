@@ -19,8 +19,11 @@ class StickyNoteApp(QWidget):
         self.init_ui()
 
     def init_ui(self):
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_STICK_NOTE} ----")
+
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_STICK_NOTE)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setWindowTitle(FsConstants.STICK_NOTE_WINDOW_TITLE)
+
         self.setWindowOpacity(0.95)  # 设置为更加透明的效果
         self.text_edit = QTextEdit(self)
         self.text_edit.setPlaceholderText("请输入便签内容...")
@@ -50,7 +53,6 @@ class StickyNoteApp(QWidget):
         """)
 
         self.save_button = QPushButton('保存', self)
-        self.save_button.setObjectName("start_button")
         self.save_button.setEnabled(False)
         self.save_button.clicked.connect(self.save_note)
 

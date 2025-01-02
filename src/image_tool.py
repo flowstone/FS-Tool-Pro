@@ -19,8 +19,8 @@ class ImageToolApp(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        logger.info(f"---- 初始化{FsConstants.IMAGE_TOOL_BUTTON_TITLE} ----")
-        self.setWindowTitle(FsConstants.IMAGE_TOOL_BUTTON_TITLE)
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_IMAGE_TOOL} ----")
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_IMAGE_TOOL)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
@@ -38,8 +38,8 @@ class ImageToolApp(QWidget):
 
 
     def add_tabs(self):
-        self.tab_widget.addTab(ImageConvertApp(), FsConstants.PIC_CONVERSION_WINDOW_TITLE)
-        self.tab_widget.addTab(HeicToJpgApp(), FsConstants.HEIC_JPG_BUTTON_TITLE)
+        self.tab_widget.addTab(ImageConvertApp(), "图片转换")
+        self.tab_widget.addTab(HeicToJpgApp(), "HEIC转JPG")
 
     def closeEvent(self, event):
         # 在关闭事件中发出信号

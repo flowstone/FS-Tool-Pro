@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QLabel, QFileDialog, QLineEdit, QTextEdit, QCheckBox
 )
+from loguru import logger
 
 from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
@@ -89,9 +90,11 @@ class HashCalculatorApp(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle(FsConstants.HASH_CALCULATOR_WINDOW_TITLE)
-        self.setFixedSize(500, 350)
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_HASH_CALCULATOR} ----")
+
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_HASH_CALCULATOR)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+        self.setFixedSize(500, 350)
         self.setAcceptDrops(True)
 
         layout = QVBoxLayout()
@@ -106,7 +109,6 @@ class HashCalculatorApp(QWidget):
 
         self.file_label = QLabel("选择的文件:")
         self.file_path_entry = QLineEdit()
-        #self.file_path_entry.setReadOnly(True)
         browse_button = QPushButton("选择")
         browse_button.setObjectName("browse_button")
         browse_button.clicked.connect(self.browse_file)
@@ -134,15 +136,8 @@ class HashCalculatorApp(QWidget):
         # 按钮布局
         button_layout = QHBoxLayout()
         self.calculate_button = QPushButton("计算")
-        self.calculate_button.setObjectName("start_button")
         self.calculate_button.clicked.connect(self.start_hash_calculation)
-        exit_button = QPushButton("退出")
-        exit_button.setObjectName("exit_button")
-
-        exit_button.clicked.connect(self.close)
-
         button_layout.addWidget(self.calculate_button)
-        button_layout.addWidget(exit_button)
 
         # 文件信息显示框
         self.file_info_text = QTextEdit()

@@ -8,9 +8,11 @@ from PyQt5.QtWidgets import (
     QApplication, QVBoxLayout, QHBoxLayout, QPushButton, QFileDialog, QLabel, QWidget, QComboBox,
     QTextEdit
 )
+from loguru import logger
 
 from src.const.color_constants import BLUE, BLACK
 from src.const.font_constants import FontConstants
+from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
@@ -127,9 +129,12 @@ class FileComparatorApp(QWidget):
     closed_signal = pyqtSignal()
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("文件比较")
-        #self.setFixedSize(800, 600)
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_FILE_COMPARATOR} ----")
+
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_FILE_COMPARATOR)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+
+        #self.setFixedSize(800, 600)
 
         layout = QVBoxLayout()
         title_label = QLabel("批量文件比较")
@@ -171,7 +176,6 @@ class FileComparatorApp(QWidget):
         self.progress_bar.hide()
         layout.addWidget(self.progress_bar)
         self.compare_button = QPushButton("开始比较")
-        self.compare_button.setObjectName("start_button")
         self.compare_button.clicked.connect(self.start_comparison)
         layout.addWidget(self.compare_button)
 

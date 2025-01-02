@@ -14,7 +14,7 @@ from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
-
+from loguru import logger
 from PyQt5.QtCore import QThread, pyqtSignal
 
 class PasswordGeneratorThread(QThread):
@@ -56,15 +56,23 @@ class PasswordGeneratorApp(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(FsConstants.PASSWORD_GENERATOR_TITLE)
-        self.setFixedSize(500, 350)
-        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+
         self.init_ui()
 
     def init_ui(self):
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_PASSWORD_GENERATOR} ----")
+
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_PASSWORD_GENERATOR)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+        self.setFixedSize(500, 350)
+
         # 初始化界面元素
+        title_label = QLabel("密码生成器")
+        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setStyleSheet(f"color: {BLACK.name()};")
+        title_label.setFont(FontConstants.H1)
+        
         self.label = QLabel("生成的密码:")
-        self.label.setAlignment(Qt.AlignCenter)
         self.generated_password = QLineEdit(self)
         self.generated_password.setReadOnly(True)
         # 复制按钮
@@ -93,10 +101,7 @@ class PasswordGeneratorApp(QWidget):
         self.generate_button.clicked.connect(self.start_password_generation)
 
         layout = QVBoxLayout()
-        title_label = QLabel("密码生成器")
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+
         layout.addWidget(title_label)
         options_layout = QHBoxLayout()
         options_layout.addWidget(self.include_digits)

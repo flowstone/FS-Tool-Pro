@@ -8,6 +8,7 @@ from PyQt5.QtCore import Qt, pyqtSignal, QThread
 from Crypto.PublicKey import RSA
 
 from src.const.color_constants import BLACK
+from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.const.font_constants import FontConstants
 from loguru import logger
@@ -52,9 +53,7 @@ class RSAKeyGeneratorApp(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("RSA密钥生成器")
-        self.setFixedSize(700, 600)
-        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+       
 
         # 初始化界面组件
         self.init_ui()
@@ -67,6 +66,11 @@ class RSAKeyGeneratorApp(QWidget):
         self.thread = None
 
     def init_ui(self):
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_RSA_GENERATOR} ----")
+
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_RSA_GENERATOR)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+        self.setFixedSize(700, 600)
         # 第一行：密钥长度选择和加密方式选择
         key_length_label = QLabel("密钥长度:")
         self.key_length_combo = QComboBox()

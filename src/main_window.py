@@ -27,11 +27,11 @@ class MainWindow(QMainWindow):
         self.init_ui()
 
     def init_ui(self):
-        layout = QVBoxLayout()
-
-        logger.info(f"调用了主界面的初始化,悬浮球标志位 = {self.is_floating_ball_visible}")
         self.setWindowTitle(FsConstants.APP_WINDOW_TITLE)
         #self.setFixedSize(FsConstants.APP_WINDOW_WIDTH, FsConstants.APP_WINDOW_HEIGHT)
+
+        layout = QVBoxLayout()
+        logger.info(f"调用了主界面的初始化,悬浮球标志位 = {self.is_floating_ball_visible}")
 
         # ---- 工具栏 START
         self.menubar = MenuBar(self)
@@ -77,7 +77,7 @@ class MainWindow(QMainWindow):
         # 创建系统托盘图标
         self.tray_icon = QSystemTrayIcon(self)
         self.tray_icon.setIcon(
-            QIcon(CommonUtil.get_resource_path(FsConstants.APP_BAR_ICON_PATH)))  # 这里需要一个名为icon.png的图标文件，可以替换为真实路径
+            QIcon(CommonUtil.get_resource_path(FsConstants.APP_BAR_ICON_FULL_PATH)))  # 这里需要一个名为icon.png的图标文件，可以替换为真实路径
         self.tray_icon.activated.connect(self.tray_icon_activated)
 
         # 创建托盘菜单

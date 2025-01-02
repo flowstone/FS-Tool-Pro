@@ -11,15 +11,15 @@ class CustomProgressBar(QProgressBar):
         self.setAlignment(Qt.AlignCenter)
         self.setStyleSheet("""
             QProgressBar {
-                border: 2px solid #8f8f91;
                 border-radius: 5px;
                 text-align: center;
+                font-size: 14px;
                 color: black;
-                background: #f3f3f3;
             }
             QProgressBar::chunk {
                 border-radius: 5px;
                 background-color: #00cc66;
+                font-size: 14px;
                 width: 10px;
                 margin: 1px;
             }
@@ -44,6 +44,7 @@ class CustomProgressBar(QProgressBar):
             self.setStyleSheet("""
                 QProgressBar::chunk {
                     border-radius: 5px;
+                    font-size: 14px;
                     background-color: #ff6666;  /* 红色 */
                 }
             """)
@@ -51,6 +52,7 @@ class CustomProgressBar(QProgressBar):
             self.setStyleSheet("""
                 QProgressBar::chunk {
                     border-radius: 5px;
+                    font-size: 14px;
                     background-color: #ffcc00;  /* 黄色 */
                 }
             """)
@@ -58,6 +60,7 @@ class CustomProgressBar(QProgressBar):
             self.setStyleSheet("""
                 QProgressBar::chunk {
                     border-radius: 5px;
+                    font-size: 14px;
                     background-color: #00cc66;  /* 绿色 */
                 }
             """)

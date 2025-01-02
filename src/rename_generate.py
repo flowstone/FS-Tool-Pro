@@ -5,6 +5,7 @@ import uuid
 
 from PyQt5.QtCore import QThread
 from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QApplication, QGroupBox, QRadioButton, QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QLineEdit, QPushButton, QFileDialog
@@ -14,6 +15,7 @@ from loguru import logger
 from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 
@@ -28,8 +30,9 @@ class RenameGenerateApp(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        logger.info("---- 初始化批量命名工具 ----")
-
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_RENAME_GENERATE} ----")
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_RENAME_GENERATE)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
 
@@ -43,7 +46,7 @@ class RenameGenerateApp(QWidget):
         layout.addWidget(title_label)
 
         # 文件类型选择
-        group_box = QGroupBox("*文件类型")
+        group_box = QGroupBox("文件类型")
         radio_btn_layout = QHBoxLayout()
         self.file_rbtn = QRadioButton("文件")
         self.folder_rbtn = QRadioButton("文件夹")
@@ -58,7 +61,7 @@ class RenameGenerateApp(QWidget):
 
         # 文件夹选择
         folder_layout = QHBoxLayout()
-        self.folder_label = QLabel("*选择文件夹：")
+        self.folder_label = QLabel("选择文件夹：")
         self.folder_entry = QLineEdit()
         self.folder_entry.setFixedWidth(300)
         self.folder_entry.setObjectName("folder_path_input")
@@ -93,7 +96,6 @@ class RenameGenerateApp(QWidget):
         # 操作按钮
         button_layout = QHBoxLayout()
         self.start_button = QPushButton("开始")
-        self.start_button.setObjectName("start_button")
         self.start_button.clicked.connect(self.start_operation)
         # self.exit_button = QPushButton("退出")
         # self.exit_button.setObjectName("exit_button")

@@ -4,9 +4,11 @@ import sys
 import psutil
 import requests
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLabel
 )
+from loguru import logger
 
 from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
@@ -178,10 +180,14 @@ class IpInfoApp(QWidget):
     closed_signal = pyqtSignal()
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(FsConstants.IP_TOOL_WINDOW_TITLE)
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_IP_INFO} ----")
+
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_IP_INFO)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+
         self.setGeometry(100, 100, 500, 400)
 
-        title_label = QLabel(FsConstants.IP_TOOL_WINDOW_TITLE)
+        title_label = QLabel(FsConstants.WINDOW_TITLE_IP_INFO)
         title_label.setAlignment(Qt.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)

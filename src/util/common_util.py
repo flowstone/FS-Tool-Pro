@@ -42,12 +42,12 @@ class CommonUtil:
     #获得应用图标全路径
     @staticmethod
     def get_ico_full_path():
-        return CommonUtil.get_resource_path(FsConstants.APP_ICON_PATH)
+        return CommonUtil.get_resource_path(FsConstants.APP_ICON_FULL_PATH)
 
     # 获得应用小图标全路径
     @staticmethod
     def get_mini_ico_full_path():
-        return CommonUtil.get_resource_path(FsConstants.APP_MINI_ICON_PATH)
+        return CommonUtil.get_resource_path(FsConstants.APP_MINI_ICON_FULL_PATH)
 
 
     # 获得数据库文件全路径
@@ -126,8 +126,8 @@ class CommonUtil:
 
     # 获得按钮小图标全路径
     @staticmethod
-    def get_button_ico_path(button_icon):
-        full_path = os.path.join(FsConstants.BUTTON_ICON_PATH, button_icon)
+    def get_button_ico_path(app_icon):
+        full_path = os.path.join(FsConstants.APP_ICON_RESOURCE_PATH, app_icon)
         return CommonUtil.get_resource_path(full_path)
 
     @staticmethod

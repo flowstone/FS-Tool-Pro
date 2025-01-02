@@ -4,7 +4,9 @@ import time
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QDialog, QComboBox, QHBoxLayout
+from loguru import logger
 
+from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 
 
@@ -18,13 +20,16 @@ class DesktopClockApp(QWidget):
         self.selected_timer_color = "pink"
 
     def init_ui(self):
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_DESKTOP_CLOCK} ----")
+
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_DESKTOP_CLOCK)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+
         # 设置窗口无边框、无标题栏
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Tool)
         self.setAttribute(Qt.WA_TranslucentBackground, True)  # 设置窗口背景透明
-        self.setWindowTitle("桌面时钟")
         # 设置窗口透明度
         self.setWindowOpacity(0.8)
-        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
         self.setGeometry(0, 0, 200, 80)
 

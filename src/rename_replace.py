@@ -24,8 +24,8 @@ class RenameReplaceApp(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        logger.info("---- 初始化文件名批量修改工具 ----")
-        self.setWindowTitle(FsConstants.FILE_RENAMER_WINDOW_TITLE)
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_RENAME_REPLACE} ----")
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_RENAME_REPLACE)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
@@ -38,7 +38,7 @@ class RenameReplaceApp(QWidget):
         title_label.setFont(FontConstants.H1)
         layout.addWidget(title_label)
         # 创建第一个单选按钮组（文件类型）
-        group_box = QGroupBox('*文件类型')
+        group_box = QGroupBox('文件类型')
         radio_btn_layout = QHBoxLayout()
 
         # 创建两个单选按钮
@@ -58,7 +58,7 @@ class RenameReplaceApp(QWidget):
 
         # 选择文件夹相关部件
         folder_path_layout = QHBoxLayout()
-        self.folder_path_label = QLabel("*选择文件夹：")
+        self.folder_path_label = QLabel("选择文件夹：")
         self.folder_path_entry = QLineEdit()
         self.folder_path_entry.setFixedWidth(300)
         self.folder_path_entry.setObjectName("folder_path_input")
@@ -114,7 +114,6 @@ class RenameReplaceApp(QWidget):
         # 操作按钮
         button_layout = QHBoxLayout()
         self.start_button = QPushButton("开始")
-        self.start_button.setObjectName("start_button")
         self.start_button.clicked.connect(self.start_operation)
 
 

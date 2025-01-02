@@ -14,6 +14,7 @@ from loguru import logger
 
 from src.const.color_constants import BLUE, BLACK
 from src.const.font_constants import FontConstants
+from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
@@ -112,10 +113,13 @@ class FileEncryptorApp(QWidget):
     closed_signal = pyqtSignal()
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("批量文件加密")
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_FILE_ENCRYPTOR} ----")
+
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_FILE_ENCRYPTOR)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+
         #self.setFixedSize(500, 550)  # 调整窗口大小
         self.setFixedHeight(400)
-        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setAcceptDrops(True)
 
         layout = QVBoxLayout()
@@ -181,13 +185,11 @@ class FileEncryptorApp(QWidget):
 
         # 加密按钮
         self.encrypt_button = QPushButton("加密文件")
-        self.encrypt_button.setObjectName("start_button")
         self.encrypt_button.clicked.connect(self.encrypt_folder)
         button_layout.addWidget(self.encrypt_button)
 
         # 解密按钮
         self.decrypt_button = QPushButton("解密文件")
-        self.decrypt_button.setObjectName("exit_button")
         self.decrypt_button.clicked.connect(self.decrypt_folder)
         button_layout.addWidget(self.decrypt_button)
 

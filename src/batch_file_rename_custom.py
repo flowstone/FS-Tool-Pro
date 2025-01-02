@@ -63,7 +63,7 @@ class RenameCustomApp(QWidget):
         self.folder_path_entry.setFixedWidth(300)
         self.folder_path_entry.setObjectName("folder_path_input")
 
-        self.browse_button = QPushButton("浏览")
+        self.browse_button = QPushButton("选择")
         self.browse_button.setObjectName("browse_button")
         self.browse_button.clicked.connect(self.browse_folder)
 

@@ -50,7 +50,7 @@ class CreateFolderApp(QWidget):
         folder_path_label = QLabel("选择文件夹：")
         self.folder_path_entry = QLineEdit()
         self.folder_path_entry.setObjectName("folder_path_input")
-        browse_button = QPushButton("浏览")
+        browse_button = QPushButton("选择")
         browse_button.setObjectName("browse_button")
         browse_button.clicked.connect(self.browse_folder)
 

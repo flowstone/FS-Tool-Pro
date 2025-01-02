@@ -10,18 +10,17 @@ from PyQt5.QtCore import Qt, pyqtSignal
 
 from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
+from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 
 
-class AppSigner(QWidget):
+class AppSignerApp(QWidget):
     closed_signal = pyqtSignal()
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("应用程序签名工具")
-        #self.setGeometry(200, 200, 700, 500)
-        self.setFixedWidth(700)
+        self.setWindowTitle(FsConstants.APP_SIGNER_WINDOW_TITLE)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.init_ui()
 
@@ -203,6 +202,6 @@ class AppSigner(QWidget):
 
 if __name__ == "__main__":
     app = QApplication([])
-    window = AppSigner()
+    window = AppSignerApp()
     window.show()
     app.exec_()

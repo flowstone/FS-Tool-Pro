@@ -106,7 +106,7 @@ class HashCalculatorApp(QWidget):
         self.file_label = QLabel("选择的文件:")
         self.file_path_entry = QLineEdit()
         #self.file_path_entry.setReadOnly(True)
-        browse_button = QPushButton("选择文件")
+        browse_button = QPushButton("选择")
         browse_button.setObjectName("browse_button")
         browse_button.clicked.connect(self.browse_file)
 

@@ -1,34 +1,39 @@
 import sys
 from PyQt5.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QPushButton, QLabel,
+    QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
     QLineEdit, QTextEdit, QFileDialog, QMessageBox
 )
 from PyQt5.QtCore import Qt
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography import x509
 from cryptography.x509.oid import NameOID
 from datetime import datetime, timedelta
+
+from src.const.fs_constants import FsConstants
 
 
 class GenerateCertificateApp(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("应用程序自签名工具")
-        self.setGeometry(100, 100, 600, 500)
+        self.setWindowTitle(FsConstants.GENERATE_CERTIFICATE_WINDOW_TITLE)
+        #self.setGeometry(100, 100, 600, 500)
 
         # 界面组件
         self.label_common_name = QLabel("Common Name (CN):")
         self.input_common_name = QLineEdit()
+        self.input_common_name.setText("CN")
         self.label_organization = QLabel("Organization (O):")
         self.input_organization = QLineEdit()
-        self.label_country = QLabel("Country Code (C):")
+        self.label_country = QLabel("Country Code (CN):")
         self.input_country = QLineEdit()
-        self.button_generate = QPushButton("生成自签名证书")
-        self.button_save = QPushButton("保存证书和私钥")
+        self.input_country.setText("CN")
         self.text_output = QTextEdit()
         self.text_output.setReadOnly(True)
+
+        # 按钮
+        self.button_generate = QPushButton("生成签名证书")
+        self.button_save = QPushButton("保存证书和私钥")
 
         # 布局
         layout = QVBoxLayout()
@@ -38,8 +43,13 @@ class GenerateCertificateApp(QWidget):
         layout.addWidget(self.input_organization)
         layout.addWidget(self.label_country)
         layout.addWidget(self.input_country)
-        layout.addWidget(self.button_generate)
-        layout.addWidget(self.button_save)
+
+        # 创建水平布局用于放置按钮
+        button_layout = QHBoxLayout()
+        button_layout.addWidget(self.button_generate)
+        button_layout.addWidget(self.button_save)
+
+        layout.addLayout(button_layout)  # 将按钮布局添加到主垂直布局
         layout.addWidget(self.text_output)
         self.setLayout(layout)
 

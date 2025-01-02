@@ -59,7 +59,7 @@ class HeicToJpgApp(QWidget):
         self.folder_path_input.setObjectName("folder_path_input")
         self.folder_path_input.setStyleSheet("padding: 5px; border-radius: 4px; border: 1px solid #ccc;")
 
-        browse_button = QPushButton("浏览")
+        browse_button = QPushButton("选择")
         browse_button.setObjectName("browse_button")
         browse_button.clicked.connect(self.browse_folder)
 

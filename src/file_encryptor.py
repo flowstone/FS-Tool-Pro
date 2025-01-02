@@ -141,7 +141,7 @@ class FileEncryptorApp(QWidget):
         self.folder_path_entry.setPlaceholderText("请选择要加密的目录")
         self.folder_path_entry.setObjectName("folder_path_input")
         # 文件夹选择按钮
-        self.select_folder_button = QPushButton("选择文件夹")
+        self.select_folder_button = QPushButton("选择")
         self.select_folder_button.setObjectName("browse_button")
         self.select_folder_button.clicked.connect(self.select_folder)
         browse_layout.addWidget(self.folder_label)

@@ -117,7 +117,7 @@ class FileGeneratorApp(QWidget):
         self.output_folder_label.setAlignment(Qt.AlignCenter)
         self.folder_path_entry = QLineEdit()
         self.folder_path_entry.setPlaceholderText("请选择要生成文件的目录")
-        self.select_folder_button = QPushButton("浏览")
+        self.select_folder_button = QPushButton("选择")
         self.select_folder_button.setObjectName("browse_button")
         self.select_folder_button.clicked.connect(self.select_folder)
         browse_layout.addWidget(self.output_folder_label)

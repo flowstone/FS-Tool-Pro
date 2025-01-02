@@ -19,6 +19,9 @@ from src.util.common_util import CommonUtil
 class GenerateCertificateApp(QWidget):
     def __init__(self):
         super().__init__()
+        self.init_ui()
+
+    def init_ui(self):
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_APP_SIGNER_GENERATE_CERTIFICATE} ----")
 
         self.setWindowTitle(FsConstants.WINDOW_TITLE_APP_SIGNER_GENERATE_CERTIFICATE)

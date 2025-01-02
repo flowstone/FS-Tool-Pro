@@ -34,7 +34,7 @@ class HeicToJpgApp(QWidget):
 
         self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
-        self.setFixedHeight(300)
+        self.setFixedHeight(200)
         self.setFixedWidth(600)
 
 
@@ -50,20 +50,16 @@ class HeicToJpgApp(QWidget):
         description_label = QLabel("说明：请选择HEIC文件所在的文件夹，系统将自动将其中的HEIC文件转换为JPG格式。")
         description_label.setStyleSheet(f"color: {BLUE.name()};")
         description_label.setWordWrap(True)
-
+        folder_path_label = QLabel("选择文件夹：")
         # 选择文件夹相关部件
         folder_path_layout = QHBoxLayout()
-        folder_path_label = QLabel("选择文件夹：")
         self.folder_path_input = QLineEdit()
-        self.folder_path_input.setFixedWidth(300)
         self.folder_path_input.setObjectName("folder_path_input")
-        self.folder_path_input.setStyleSheet("padding: 5px; border-radius: 4px; border: 1px solid #ccc;")
 
         browse_button = QPushButton("选择")
         browse_button.setObjectName("browse_button")
         browse_button.clicked.connect(self.browse_folder)
 
-        folder_path_layout.addWidget(folder_path_label)
         folder_path_layout.addWidget(self.folder_path_input)
         folder_path_layout.addWidget(browse_button)
 
@@ -83,6 +79,8 @@ class HeicToJpgApp(QWidget):
 
         # 布局组合
         layout.addWidget(description_label)
+        layout.addWidget(folder_path_label)
+
         layout.addLayout(folder_path_layout)
         self.progress_bar = CustomProgressBar()
         self.progress_bar.hide()

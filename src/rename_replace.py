@@ -37,7 +37,24 @@ class RenameReplaceApp(QWidget):
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         layout.addWidget(title_label)
+
+        folder_path_label = QLabel("选择文件夹：")
+        layout.addWidget(folder_path_label)
+        # 选择文件夹相关部件
+        folder_path_layout = QHBoxLayout()
+        self.folder_path_entry = QLineEdit()
+        self.folder_path_entry.setObjectName("folder_path_input")
+
+        self.browse_button = QPushButton("选择")
+        self.browse_button.setObjectName("browse_button")
+        self.browse_button.clicked.connect(self.browse_folder)
+
+        folder_path_layout.addWidget(self.folder_path_entry)
+        folder_path_layout.addWidget(self.browse_button)
+        layout.addLayout(folder_path_layout)
+
         # 创建第一个单选按钮组（文件类型）
+        group_box_layout = QVBoxLayout()
         group_box = QGroupBox('文件类型')
         radio_btn_layout = QHBoxLayout()
 
@@ -52,25 +69,12 @@ class RenameReplaceApp(QWidget):
         radio_btn_layout.addWidget(self.file_rbtn)
         radio_btn_layout.addWidget(self.folder_rbtn)
         group_box.setLayout(radio_btn_layout)
-        layout.addWidget(group_box)
+        group_box_layout.addWidget(group_box)
+        layout.addLayout(group_box_layout)
 
 
 
-        # 选择文件夹相关部件
-        folder_path_layout = QHBoxLayout()
-        self.folder_path_label = QLabel("选择文件夹：")
-        self.folder_path_entry = QLineEdit()
-        self.folder_path_entry.setFixedWidth(300)
-        self.folder_path_entry.setObjectName("folder_path_input")
 
-        self.browse_button = QPushButton("选择")
-        self.browse_button.setObjectName("browse_button")
-        self.browse_button.clicked.connect(self.browse_folder)
-
-        folder_path_layout.addWidget(self.folder_path_label)
-        folder_path_layout.addWidget(self.folder_path_entry)
-        folder_path_layout.addWidget(self.browse_button)
-        layout.addLayout(folder_path_layout)
 
         # 文件名前缀输入部件
         prefix_layout = QHBoxLayout()

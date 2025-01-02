@@ -99,6 +99,9 @@ class FileGeneratorApp(QWidget):
     closed_signal = pyqtSignal()
     def __init__(self):
         super().__init__()
+        self.init_ui()
+
+    def init_ui(self):
         self.folder_path = None
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_FILE_GENERATOR} ----")
 
@@ -116,15 +119,15 @@ class FileGeneratorApp(QWidget):
         title_label.setFont(FontConstants.H1)
         layout.addWidget(title_label)
 
+        output_folder_label = QLabel("输出目录")
+        layout.addWidget(output_folder_label)
         browse_layout = QHBoxLayout()
-        self.output_folder_label = QLabel("输出目录")
-        self.output_folder_label.setAlignment(Qt.AlignCenter)
+
         self.folder_path_entry = QLineEdit()
         self.folder_path_entry.setPlaceholderText("请选择要生成文件的目录")
         self.select_folder_button = QPushButton("选择")
         self.select_folder_button.setObjectName("browse_button")
         self.select_folder_button.clicked.connect(self.select_folder)
-        browse_layout.addWidget(self.output_folder_label)
         browse_layout.addWidget(self.folder_path_entry)
         browse_layout.addWidget(self.select_folder_button)
         layout.addLayout(browse_layout)

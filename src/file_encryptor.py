@@ -113,6 +113,9 @@ class FileEncryptorApp(QWidget):
     closed_signal = pyqtSignal()
     def __init__(self):
         super().__init__()
+        self.init_ui()
+
+    def init_ui(self):
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_FILE_ENCRYPTOR} ----")
 
         self.setWindowTitle(FsConstants.WINDOW_TITLE_FILE_ENCRYPTOR)
@@ -138,9 +141,11 @@ class FileEncryptorApp(QWidget):
         desc_label.setWordWrap(True)
         layout.addWidget(desc_label)
 
+        folder_label = QLabel("选择目录")
+        layout.addWidget(folder_label)
+
         browse_layout = QHBoxLayout()
         # 文件夹路径显示
-        self.folder_label = QLabel("选择目录")
         self.folder_path_entry = QLineEdit()
         self.folder_path_entry.setPlaceholderText("请选择要加密的目录")
         self.folder_path_entry.setObjectName("folder_path_input")
@@ -148,7 +153,6 @@ class FileEncryptorApp(QWidget):
         self.select_folder_button = QPushButton("选择")
         self.select_folder_button.setObjectName("browse_button")
         self.select_folder_button.clicked.connect(self.select_folder)
-        browse_layout.addWidget(self.folder_label)
         browse_layout.addWidget(self.folder_path_entry)
         browse_layout.addWidget(self.select_folder_button)
         layout.addLayout(browse_layout)

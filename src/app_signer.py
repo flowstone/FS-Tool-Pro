@@ -19,7 +19,6 @@ class AppSignerApp(QWidget):
 
     def __init__(self):
         super().__init__()
-
         self.init_ui()
 
     def init_ui(self):
@@ -49,9 +48,9 @@ class AppSignerApp(QWidget):
         self.upload_app_btn.setObjectName("browse_button")
         self.upload_app_btn.clicked.connect(self.upload_application_file)
         app_layout = QHBoxLayout()
-        app_layout.addWidget(app_file_label)
         app_layout.addWidget(self.app_file_input)
         app_layout.addWidget(self.upload_app_btn)
+        sign_app_layout.addWidget(app_file_label)
         sign_app_layout.addLayout(app_layout)
 
         # 上传私钥文件
@@ -61,13 +60,13 @@ class AppSignerApp(QWidget):
         self.upload_key_btn.setObjectName("browse_button")
         self.upload_key_btn.clicked.connect(self.upload_key_file)
         key_layout = QHBoxLayout()
-        key_layout.addWidget(key_file_label)
         key_layout.addWidget(self.key_file_input)
         key_layout.addWidget(self.upload_key_btn)
+        sign_app_layout.addWidget(key_file_label)
         sign_app_layout.addLayout(key_layout)
 
         # 签名按钮
-        self.sign_app_btn = QPushButton("签名应用程序")
+        self.sign_app_btn = QPushButton("签名应用")
         self.sign_app_btn.clicked.connect(self.sign_application)
         sign_app_layout.addWidget(self.sign_app_btn)
 
@@ -85,9 +84,9 @@ class AppSignerApp(QWidget):
         self.upload_verify_app_btn.setObjectName("browse_button")
         self.upload_verify_app_btn.clicked.connect(self.upload_verify_application_file)
         verify_app_layout = QHBoxLayout()
-        verify_app_layout.addWidget(verify_app_file_label)
         verify_app_layout.addWidget(self.verify_app_file_input)
         verify_app_layout.addWidget(self.upload_verify_app_btn)
+        verify_sign_layout.addWidget(verify_app_file_label)
         verify_sign_layout.addLayout(verify_app_layout)
 
         # 上传签名文件
@@ -97,9 +96,9 @@ class AppSignerApp(QWidget):
         self.upload_signature_btn.setObjectName("browse_button")
         self.upload_signature_btn.clicked.connect(self.upload_signature_file)
         signature_layout = QHBoxLayout()
-        signature_layout.addWidget(signature_file_label)
         signature_layout.addWidget(self.signature_file_input)
         signature_layout.addWidget(self.upload_signature_btn)
+        verify_sign_layout.addWidget(signature_file_label)
         verify_sign_layout.addLayout(signature_layout)
 
         # 上传证书文件
@@ -109,9 +108,9 @@ class AppSignerApp(QWidget):
         self.upload_cert_btn.setObjectName("browse_button")
         self.upload_cert_btn.clicked.connect(self.upload_cert_file)
         cert_layout = QHBoxLayout()
-        cert_layout.addWidget(cert_file_label)
         cert_layout.addWidget(self.cert_file_input)
         cert_layout.addWidget(self.upload_cert_btn)
+        verify_sign_layout.addWidget(cert_file_label)
         verify_sign_layout.addLayout(cert_layout)
 
         # 验证签名按钮

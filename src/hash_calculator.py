@@ -94,26 +94,27 @@ class HashCalculatorApp(QWidget):
 
         self.setWindowTitle(FsConstants.WINDOW_TITLE_HASH_CALCULATOR)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setFixedSize(500, 350)
+        self.setFixedSize(500, 450)
         self.setAcceptDrops(True)
 
         layout = QVBoxLayout()
 
         # 文件选择布局
-        file_layout = QHBoxLayout()
         title_label = QLabel("HASH校验")
         title_label.setAlignment(Qt.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         layout.addWidget(title_label)
 
-        self.file_label = QLabel("选择的文件:")
+        file_label = QLabel("选择的文件:")
+        layout.addWidget(file_label)
+
+        file_layout = QHBoxLayout()
         self.file_path_entry = QLineEdit()
         browse_button = QPushButton("选择")
         browse_button.setObjectName("browse_button")
         browse_button.clicked.connect(self.browse_file)
 
-        file_layout.addWidget(self.file_label)
         file_layout.addWidget(self.file_path_entry)
         file_layout.addWidget(browse_button)
 

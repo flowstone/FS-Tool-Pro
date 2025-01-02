@@ -53,15 +53,11 @@ class RSAKeyGeneratorApp(QWidget):
 
     def __init__(self):
         super().__init__()
-       
-
         # 初始化界面组件
         self.init_ui()
-
         # 初始化密钥内容
         self.public_key = None
         self.private_key = None
-
         # 初始化线程对象
         self.thread = None
 

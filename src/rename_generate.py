@@ -44,9 +44,22 @@ class RenameGenerateApp(QWidget):
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         layout.addWidget(title_label)
+        # 文件夹选择
+        folder_label = QLabel("选择文件夹：")
+        layout.addWidget(folder_label)
+        folder_layout = QHBoxLayout()
+        self.folder_entry = QLineEdit()
+        self.folder_entry.setObjectName("folder_path_input")
+        self.browse_button = QPushButton("选择")
+        self.browse_button.setObjectName("browse_button")
+        self.browse_button.clicked.connect(self.browse_folder)
+        folder_layout.addWidget(self.folder_entry)
+        folder_layout.addWidget(self.browse_button)
+        layout.addLayout(folder_layout)
 
         # 文件类型选择
-        group_box = QGroupBox("文件类型")
+        file_group_layout = QVBoxLayout()
+        file_group = QGroupBox("文件类型")
         radio_btn_layout = QHBoxLayout()
         self.file_rbtn = QRadioButton("文件")
         self.folder_rbtn = QRadioButton("文件夹")
@@ -56,24 +69,14 @@ class RenameGenerateApp(QWidget):
         self.folder_rbtn.toggled.connect(self.radio_btn_toggled)
         radio_btn_layout.addWidget(self.file_rbtn)
         radio_btn_layout.addWidget(self.folder_rbtn)
-        group_box.setLayout(radio_btn_layout)
-        layout.addWidget(group_box)
+        file_group.setLayout(radio_btn_layout)
+        file_group_layout.addWidget(file_group)
+        layout.addLayout(file_group_layout)
 
-        # 文件夹选择
-        folder_layout = QHBoxLayout()
-        self.folder_label = QLabel("选择文件夹：")
-        self.folder_entry = QLineEdit()
-        self.folder_entry.setFixedWidth(300)
-        self.folder_entry.setObjectName("folder_path_input")
-        self.browse_button = QPushButton("选择")
-        self.browse_button.setObjectName("browse_button")
-        self.browse_button.clicked.connect(self.browse_folder)
-        folder_layout.addWidget(self.folder_label)
-        folder_layout.addWidget(self.folder_entry)
-        folder_layout.addWidget(self.browse_button)
-        layout.addLayout(folder_layout)
+
 
         # 命名规则选择
+        naming_group_layout = QVBoxLayout()
         naming_group = QGroupBox("命名规则")
         naming_layout = QVBoxLayout()
         self.naming_rbtns = {
@@ -87,7 +90,8 @@ class RenameGenerateApp(QWidget):
             btn.toggled.connect(self.naming_toggled)
             naming_layout.addWidget(btn)
         naming_group.setLayout(naming_layout)
-        layout.addWidget(naming_group)
+        naming_group_layout.addWidget(naming_group)
+        layout.addLayout(naming_group_layout)
 
         self.progress_bar = CustomProgressBar()
         self.progress_bar.hide()
@@ -97,11 +101,8 @@ class RenameGenerateApp(QWidget):
         button_layout = QHBoxLayout()
         self.start_button = QPushButton("开始")
         self.start_button.clicked.connect(self.start_operation)
-        # self.exit_button = QPushButton("退出")
-        # self.exit_button.setObjectName("exit_button")
-        # self.exit_button.clicked.connect(self.close)
+
         button_layout.addWidget(self.start_button)
-        # button_layout.addWidget(self.exit_button)
         layout.addLayout(button_layout)
 
         self.setLayout(layout)

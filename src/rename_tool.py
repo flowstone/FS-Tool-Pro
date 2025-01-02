@@ -22,6 +22,7 @@ class RenameToolApp(QWidget):
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_RENAME_TOOL} ----")
         self.setWindowTitle(FsConstants.WINDOW_TITLE_RENAME_TOOL)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+        self.setFixedWidth(600)
         self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
 

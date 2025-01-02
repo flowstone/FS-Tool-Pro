@@ -1,4 +1,5 @@
 # config.py
+from src.app_signer import AppSigner
 from src.batch_heic_jpg import HeicToJpgApp
 from src.desktop_clock import ColorSettingDialog
 from src.file_tool import FileToolApp
@@ -42,4 +43,7 @@ app_instance_config = [
     {"key": "network_tool", "icon": FsConstants.BUTTON_NETWORK_TOOL_ICON,
          "title": FsConstants.NETWORK_TOOL_WINDOW_TITLE,
          "class": NetworkToolApp},
+    {"key": "app_signer", "icon": FsConstants.BUTTON_APP_SIGNER_ICON,
+     "title": FsConstants.APP_SIGNER_WINDOW_TITLE,
+     "class": AppSigner},
 ]

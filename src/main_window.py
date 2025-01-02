@@ -111,7 +111,7 @@ class MainWindow(QMainWindow):
 
         if not self.is_floating_ball_visible:
             self.create_floating_ball()
-        logger.info(f"成功关闭主窗口，悬浮球标志位 = ,{self.is_floating_ball_visible}")
+        logger.info(f"成功关闭主窗口，悬浮球标志位 = {self.is_floating_ball_visible}")
 
     def create_floating_ball(self):
         logger.info("---- 创建悬浮球 ----")

@@ -51,3 +51,4 @@ whatimage
 pycryptodome
 pyperclip
 psutil
+cryptography

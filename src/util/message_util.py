@@ -1,7 +1,11 @@
 #显示通用消息框
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMessageBox, QDialog, QVBoxLayout, QLabel, QPushButton, QTextEdit
 from PyQt5.QtCore import Qt
 from loguru import logger
+
+from src.util.common_util import CommonUtil
+
 
 class MessageUtil:
     @staticmethod
@@ -41,7 +45,7 @@ class MessageUtil:
 
         msg_box.setWindowTitle(title)
         msg_box.setText(message)
-
+        msg_box.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         # 添加详细信息按钮
         if details:
             msg_box.setDetailedText(details)

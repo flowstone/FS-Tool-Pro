@@ -1,5 +1,3 @@
-import json
-
 from PyQt5.QtCore import QSettings
 from loguru import logger
 

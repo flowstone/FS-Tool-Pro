@@ -1,15 +1,14 @@
-import sys
 import os
+import sys
 import time
 import uuid
-from PyQt5.QtCore import QThread, pyqtSignal
+
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import (
     QApplication, QGroupBox, QRadioButton, QWidget, QVBoxLayout, QHBoxLayout, QLabel,
-    QLineEdit, QPushButton, QFileDialog, QMessageBox
+    QLineEdit, QPushButton, QFileDialog
 )
-
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt, pyqtSignal
 from loguru import logger
 
 from src.const.color_constants import BLACK
@@ -17,16 +16,14 @@ from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
-from src.widget.progress_widget import ProgressWidget
 
 
-class RenameBaseApp(QWidget):
+class RenameGenerateApp(QWidget):
     closed_signal = pyqtSignal()
 
-    def __init__(self, parent_self):
+    def __init__(self):
         super().__init__()
         self.check_type_text = None
-        self.parent_self = parent_self
         self.naming_type = "序号"
         self.init_ui()
 

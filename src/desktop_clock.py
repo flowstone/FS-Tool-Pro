@@ -1,11 +1,12 @@
 import sys
 import time
 
-from PyQt5.QtWidgets import QApplication, QFormLayout, QWidget, QLabel, QVBoxLayout, QPushButton, QDialog, QComboBox, QHBoxLayout
-from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QDialog, QComboBox, QHBoxLayout
+
 from src.util.common_util import CommonUtil
-from loguru import logger
+
 
 class DesktopClockApp(QWidget):
 

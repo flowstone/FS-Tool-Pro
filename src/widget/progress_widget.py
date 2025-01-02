@@ -1,6 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QProgressBar, QHBoxLayout, QLabel
 from PyQt5.QtCore import pyqtSignal, QObject, Qt, QTimer
-from PyQt5.QtGui import QColor, QPalette
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QProgressBar, QLabel
 from loguru import logger
 
 

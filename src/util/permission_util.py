@@ -4,7 +4,6 @@ import sys
 from PyQt5.QtWidgets import QMessageBox
 
 from src.util.common_util import CommonUtil
-from src.util.message_util import MessageUtil
 
 
 def is_admin():

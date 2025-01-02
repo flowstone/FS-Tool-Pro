@@ -1,13 +1,14 @@
-import sys
 import hashlib
-import zlib
 import os
+import sys
+import zlib
+
+from PyQt5.QtCore import Qt, pyqtSignal, QThread
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout,
-    QPushButton, QLabel, QFileDialog, QMessageBox, QLineEdit, QTextEdit, QCheckBox, QProgressBar
+    QPushButton, QLabel, QFileDialog, QLineEdit, QTextEdit, QCheckBox
 )
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
 
 from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants

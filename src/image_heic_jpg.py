@@ -1,24 +1,22 @@
 import os
 import sys
 
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt,pyqtSignal, QThread
-
-from src.util.message_util import MessageUtil
-from src.widget.custom_progress_widget import CustomProgressBar
-from src.widget.progress_widget import ProgressWidget
-
-from PyQt5.QtWidgets import QMessageBox
-from loguru import logger
-from src.util.common_util import CommonUtil
-from src.const.fs_constants import FsConstants
-import whatimage
 import pillow_heif
-from PIL import Image,ImageOps
+import whatimage
+from PIL import Image, ImageOps
+from PyQt5.QtCore import Qt, pyqtSignal, QThread
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
+from loguru import logger
 from pillow_heif import register_heif_opener
+
 from src.const.color_constants import BLUE, BLACK
 from src.const.font_constants import FontConstants
+from src.const.fs_constants import FsConstants
+from src.util.common_util import CommonUtil
+from src.util.message_util import MessageUtil
+from src.widget.custom_progress_widget import CustomProgressBar
+
 # 注册HEIC文件 opener，使得PIL能够识别并打开HEIC格式文件，仅限V2方法使用
 register_heif_opener()
 

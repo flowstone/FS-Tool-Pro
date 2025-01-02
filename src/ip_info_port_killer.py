@@ -1,13 +1,14 @@
-import sys
 import socket
+import socket
+import sys
+from concurrent.futures import ThreadPoolExecutor
+
 import psutil
+from PyQt5.QtCore import QThread, pyqtSignal, Qt
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout,
-    QPushButton, QListWidget, QLabel, QMessageBox, QProgressBar, QLineEdit, QHBoxLayout
+    QPushButton, QListWidget, QLabel, QLineEdit, QHBoxLayout
 )
-from PyQt5.QtCore import QThread, pyqtSignal, Qt
-import os
-import sys
 
 from src.const.color_constants import BLACK, BLUE
 from src.const.font_constants import FontConstants
@@ -15,7 +16,7 @@ from src.const.fs_constants import FsConstants
 from src.util.message_util import MessageUtil
 from src.util.permission_util import check_admin
 from src.widget.custom_progress_widget import CustomProgressBar
-from concurrent.futures import ThreadPoolExecutor
+
 
 def scan_port(ip, port):
     """

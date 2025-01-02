@@ -1,17 +1,17 @@
-import sys
-import os
 import hashlib
+import os
+import sys
 
+from PyQt5.QtCore import Qt, pyqtSignal, QThread
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QApplication, QVBoxLayout, QHBoxLayout, QPushButton, QFileDialog, QLabel, QWidget, QComboBox,
-    QMessageBox, QTextEdit
+    QTextEdit
 )
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
 
-from src.util.common_util import CommonUtil
 from src.const.color_constants import BLUE, BLACK
 from src.const.font_constants import FontConstants
+from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 

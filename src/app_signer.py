@@ -1,12 +1,11 @@
-import os
 import subprocess
-from loguru import logger
 
-from PyQt5.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QFileDialog, QMessageBox, QGroupBox, QHBoxLayout, QLineEdit
-)
-from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QFileDialog, QGroupBox, QHBoxLayout, QLineEdit
+)
+from loguru import logger
 
 from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants

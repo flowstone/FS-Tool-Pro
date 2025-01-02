@@ -1,20 +1,17 @@
 import sys
-import os
 
-from PyQt5.QtWidgets import QApplication, QGroupBox, QRadioButton, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, \
-    QPushButton, QFileDialog, QMessageBox, QTabWidget, QMainWindow
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 from loguru import logger
 
-from src.const.color_constants import BLACK
-from src.ip_tool import IpToolApp
-from src.port_killer import PortKillerApp
-from src.port_scanner import PortScannerApp
-from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
+from src.rename_generate import RenameGenerateApp
+from src.rename_replace import RenameReplaceApp
+from src.util.common_util import CommonUtil
 
-class NetworkToolApp(QWidget):
+
+class RenameFileApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
     closed_signal = pyqtSignal()
     def __init__(self):
@@ -22,8 +19,8 @@ class NetworkToolApp(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        logger.info(f"---- 初始化{FsConstants.NETWORK_TOOL_WINDOW_TITLE} ----")
-        self.setWindowTitle(FsConstants.NETWORK_TOOL_WINDOW_TITLE)
+        logger.info("---- 初始化文件名批量修改工具 ----")
+        self.setWindowTitle(FsConstants.FILE_RENAMER_WINDOW_TITLE)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
@@ -41,9 +38,8 @@ class NetworkToolApp(QWidget):
 
 
     def add_tabs(self):
-        self.tab_widget.addTab(IpToolApp(), "IP信息")
-        self.tab_widget.addTab(PortScannerApp(), "端口扫描")
-        self.tab_widget.addTab(PortKillerApp(), "端口关闭")
+        self.tab_widget.addTab(RenameGenerateApp(), "基础")
+        self.tab_widget.addTab(RenameReplaceApp(), "高级")
 
     def closeEvent(self, event):
         # 在关闭事件中发出信号
@@ -52,6 +48,6 @@ class NetworkToolApp(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = NetworkToolApp()
+    window = RenameFileApp()
     window.show()
     sys.exit(app.exec_())

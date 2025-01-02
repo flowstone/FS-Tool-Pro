@@ -1,19 +1,18 @@
-import sys
 import os
 import shutil
+import sys
 
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog, QMessageBox
-from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, pyqtSignal, QThread
-
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
 from loguru import logger
-from src.util.common_util import CommonUtil
+
+from src.const.color_constants import BLUE, BLACK
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
-from src.widget.progress_widget import ProgressWidget,ProgressSignalEmitter
-from src.const.color_constants import BLUE, BLACK
 
 
 class CreateFolderApp(QWidget):

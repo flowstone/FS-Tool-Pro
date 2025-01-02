@@ -1,20 +1,20 @@
-import sys
+import csv
+import json
 import os
 import random
 import string
-import json
-import csv
+import sys
+
+from PIL import Image
+from PyQt5.QtCore import Qt, pyqtSignal, QThread
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QVBoxLayout, QLineEdit, QPushButton, QFileDialog, QLabel, \
     QWidget, QComboBox, QHBoxLayout
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtGui import QIcon
-from PIL import Image
 from loguru import logger
-from src.const.color_constants import BLACK
 
-from src.util.common_util import CommonUtil
+from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
+from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 
@@ -152,10 +152,7 @@ class FileGeneratorApp(QWidget):
         self.generate_button.clicked.connect(self.start_file_generation)
         button_layout.addWidget(self.generate_button)
 
-        # self.exit_button = QPushButton("退出")
-        # self.exit_button.setObjectName("exit_button")
-        # self.exit_button.clicked.connect(self.close)
-        # button_layout.addWidget(self.exit_button)
+
         layout.addLayout(button_layout)
         self.setLayout(layout)
 
@@ -206,7 +203,6 @@ class FileGeneratorApp(QWidget):
         self.progress_bar.show()
 
     def update_progress(self, message):
-        # Update progress label or display
         logger.info(message)
 
     def file_generated(self, index, file_type):

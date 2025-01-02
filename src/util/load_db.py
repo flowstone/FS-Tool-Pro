@@ -1,7 +1,8 @@
-import sqlite3
+from loguru import logger
+
 from src.util.common_util import CommonUtil
 from src.util.sqlite_connection_pool import SQLiteConnectionPool
-from loguru import logger
+
 
 class LoadDB:
     def __init__(self, db_name):

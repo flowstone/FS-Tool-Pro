@@ -1,22 +1,22 @@
-import sys
 import os
+import sys
 
-from PyQt5.QtWidgets import QApplication, QScrollArea, QWidget, QVBoxLayout, QPushButton, QLabel, QCheckBox, QFileDialog, QHBoxLayout, QMessageBox
-from PyQt5.QtGui import QPixmap, QIcon
 from PIL import Image
 from PyQt5.QtCore import Qt, pyqtSignal, QThread
+from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtWidgets import QApplication, QScrollArea, QWidget, QVBoxLayout, QPushButton, QLabel, QCheckBox, \
+    QFileDialog, QHBoxLayout
 from loguru import logger
 
 from src.const.color_constants import BLACK
-from src.util.common_util import CommonUtil
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
+from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
-from src.widget.progress_widget import ProgressWidget
 
 
-class PicConversionApp(QWidget):
+class ImageConvertApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
     closed_signal =  pyqtSignal()
     def __init__(self):
@@ -193,6 +193,6 @@ class ImageConversionThread(QThread):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = PicConversionApp()
+    window = ImageConvertApp()
     window.show()
     sys.exit(app.exec_())

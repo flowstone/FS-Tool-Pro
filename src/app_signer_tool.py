@@ -1,24 +1,17 @@
-import os
-import subprocess
 import sys
 
-from loguru import logger
-
-from PyQt5.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QFileDialog, QMessageBox, QGroupBox, QHBoxLayout,
-    QLineEdit, QTabWidget
-)
-from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QVBoxLayout, QTabWidget
+)
+from loguru import logger
 
 from src.app_signer import AppSignerApp
 from src.app_signer_generate_certificate import GenerateCertificateApp
-from src.app_signer_public_key_extractor import  PublicKeyExtractorApp
-from src.const.color_constants import BLACK
-from src.const.font_constants import FontConstants
+from src.app_signer_public_key_extractor import PublicKeyExtractorApp
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
-from src.util.message_util import MessageUtil
 
 
 class AppSignerTool(QWidget):

@@ -1,20 +1,15 @@
 import sys
-import os
 
-from PyQt5.QtWidgets import QApplication, QGroupBox, QRadioButton, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, \
-    QPushButton, QFileDialog, QMessageBox, QTabWidget, QMainWindow
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 from loguru import logger
 
-from src.batch_heic_jpg import HeicToJpgApp
-from src.const.color_constants import BLACK
-from src.ip_tool import IpToolApp
-from src.pic_conversion import PicConversionApp
-from src.port_killer import PortKillerApp
-from src.port_scanner import PortScannerApp
-from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
+from src.image_convert import ImageConvertApp
+from src.image_heic_jpg import HeicToJpgApp
+from src.util.common_util import CommonUtil
+
 
 class ImageToolApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
@@ -43,7 +38,7 @@ class ImageToolApp(QWidget):
 
 
     def add_tabs(self):
-        self.tab_widget.addTab(PicConversionApp(), FsConstants.PIC_CONVERSION_WINDOW_TITLE)
+        self.tab_widget.addTab(ImageConvertApp(), FsConstants.PIC_CONVERSION_WINDOW_TITLE)
         self.tab_widget.addTab(HeicToJpgApp(), FsConstants.HEIC_JPG_BUTTON_TITLE)
 
     def closeEvent(self, event):

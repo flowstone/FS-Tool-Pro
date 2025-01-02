@@ -1,11 +1,12 @@
-import sys
 import socket
+import sys
+
 import psutil
 import requests
-from PyQt5.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QProgressBar, QLabel
-)
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLabel
+)
 
 from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
@@ -172,7 +173,7 @@ class NetworkInfoWorker(QThread):
         except Exception as e:
             self.error_signal.emit(str(e))  # 发送错误信号
 
-class IpToolApp(QWidget):
+class IpInfoApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
     closed_signal = pyqtSignal()
     def __init__(self):
@@ -237,6 +238,6 @@ class IpToolApp(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = NetworkInfoApp()
+    window = IpInfoApp()
     window.show()
     sys.exit(app.exec_())

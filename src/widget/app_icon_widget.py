@@ -1,7 +1,7 @@
 # app_icon_widget.py
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsOpacityEffect, QGraphicsColorizeEffect
 from PyQt5.QtCore import pyqtSignal, Qt, QPropertyAnimation, QEasingCurve
 from PyQt5.QtGui import QPixmap, QColor
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsColorizeEffect
 
 
 class AppIconWidget(QWidget):

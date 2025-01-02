@@ -1,15 +1,15 @@
+import random
+
+from PyQt5.QtCore import QPropertyAnimation, QPoint
+from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import Qt, QEasingCurve
+from PyQt5.QtGui import QMouseEvent, QPixmap
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
-from PyQt5.QtCore import Qt, QTimer, QEasingCurve
-from PyQt5.QtGui import QMouseEvent, QPixmap, QPainter
 from loguru import logger
+
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
-from PyQt5.QtCore import QPropertyAnimation, QPoint
-from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsEllipseItem
-from PyQt5.QtCore import QTimer, QPointF
-from PyQt5.QtGui import QColor
-import random
-from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsEllipseItem
+
 
 class FloatingBall(QWidget):
 

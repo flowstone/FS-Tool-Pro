@@ -117,16 +117,18 @@ class ServerThread(QThread):
                 self.new_message.emit(f"[{addr[0]}]: {text}")
 
             elif data_type == "FILE":
-                # 接收文件名
-                filename_raw = client_socket.recv(1024)
-                try:
-                    filename = filename_raw.decode("utf-8").strip()
-                except UnicodeDecodeError:
-                    filename = "unknown_file"
+                # 接收文件名，直到换行符为止
+                filename_raw = b""
+                while True:
+                    chunk = client_socket.recv(1)  # 按字节接收，直到遇到换行符
+                    if not chunk or chunk == b"\n":
+                        break
+                    filename_raw += chunk
+                filename = filename_raw.decode("utf-8").strip()
 
+                # 确保保存目录存在
                 file_path = os.path.join(self.save_dir, filename)
-                self.new_message.emit(f"接收文件: {filename} ({addr[0]})")
-                logger.info(f"接收文件: {filename} ({addr[0]})")
+                os.makedirs(self.save_dir, exist_ok=True)
 
                 # 接收文件数据
                 with open(file_path, "wb") as f:
@@ -283,7 +285,7 @@ class FastSenderApp(QWidget):
             client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client_socket.connect((selected_ip, TRANSFER_PORT))
             client_socket.sendall(b"FILE")
-            client_socket.sendall(filename.encode("utf-8"))
+            client_socket.sendall((filename + "\n").encode("utf-8"))
 
             with open(file_path, "rb") as f:
                 while chunk := f.read(BUFFER_SIZE):

@@ -63,6 +63,14 @@ class CommonUtil:
         # 构建数据库文件的相对路径,假设数据库文件名为database.db
         return os.path.join(data_path, FsConstants.DATABASE_FILE)
 
+    # 获得Fast Sender全路径
+    @staticmethod
+    def get_fast_sender_dir():
+        # 使用内置配置路径
+        data_path = FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
+        # 构建数据库文件的相对路径,假设数据库文件名为database.db
+        return os.path.join(data_path, FsConstants.FAST_SENDER_DIR)
+
     # 静止外部类调用这个方法
     @staticmethod
     def get_mac_user_path():

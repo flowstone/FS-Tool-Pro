@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 import subprocess
 
@@ -12,6 +13,8 @@ from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 
+# 设置 FLASK_APP 环境变量
+os.environ['FLASK_APP'] = 'flask_server.py'
 
 class FastSenderMiniApp(QWidget):
     closed_signal = pyqtSignal()
@@ -67,7 +70,10 @@ class FastSenderMiniApp(QWidget):
         """启动 Flask 服务"""
         if self.flask_process is None:
             self.log("正在启动 Flask 服务...")
-            self.flask_process = subprocess.Popen([sys.executable, 'flask_server.py'])
+            self.flask_process = subprocess.Popen(
+                #[sys.executable, 'flask_server.py'],  # 使用 sys.executable 启动 Flask
+                [sys.executable, '-m', 'flask', 'run', '--host', '0.0.0.0', '--port', '5678', '--debug'],  # 使用 flask run 命令
+            )
             self.log("Flask 服务已启动。")
             self.log(f"服务器根目录: {CommonUtil.get_flask_mini_dir()}")
             self.log("127.0.0.1:5678")
@@ -90,6 +96,7 @@ class FastSenderMiniApp(QWidget):
 
     def log(self, message):
         """记录日志信息到文本框"""
+        logger.info(message)
         self.log_text.append(message)
 
     def closeEvent(self, event):

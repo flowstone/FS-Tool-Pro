@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 
-from src.const.color_constants import BLACK
+from src.const.color_constants import BLACK, BLUE
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
@@ -64,19 +64,8 @@ class ServerThread(QThread):
         self.server_socket = None
 
         # 获取本机 IP
-        self.local_ip = self.get_local_ip()
+        self.local_ip = CommonUtil.get_local_ip()
 
-    @staticmethod
-    def get_local_ip():
-        try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.connect(("8.8.8.8", 80))  # 使用公网 IP 测试本地地址
-            ip = s.getsockname()[0]
-            s.close()
-            return ip
-        except Exception as e:
-            logger.warning(f"{e}")
-            return "127.0.0.1"
 
     def run(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -189,7 +178,7 @@ class FastSenderApp(QWidget):
         self.broadcast_thread.start()
 
     def init_ui(self):
-        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_FILE_COMPARATOR} ----")
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_FAST_SENDER} ----")
 
         self.setWindowTitle(FsConstants.WINDOW_TITLE_FAST_SENDER)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
@@ -200,6 +189,9 @@ class FastSenderApp(QWidget):
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
 
+        # 说明文本
+        description_label = QLabel("多设备之间传输文本/文件(暂不支持Win->MacOS)")
+        description_label.setStyleSheet(f"color: {BLUE.name()};")
         # 左侧设备列表
         self.device_list = QListWidget(self)
         self.device_list_label = QLabel("发现的设备:")
@@ -245,6 +237,7 @@ class FastSenderApp(QWidget):
         main_layout = QVBoxLayout()
 
         main_layout.addWidget(title_label)
+        main_layout.addWidget(description_label)
         main_layout.addWidget(splitter)
         main_layout.addLayout(input_layout)
 

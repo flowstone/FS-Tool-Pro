@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File and Text Sender</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="{{ url_for('static', type='text/css', filename='bootstrap.min.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        header {
+            background-color: #28a745;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-custom {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-custom:hover {
+            background-color: #218838;
+        }
+
+        .file-list a {
+            color: #28a745;
+            text-decoration: none;
+        }
+
+        .file-list a:hover {
+            text-decoration: underline;
+        }
+
+        .form-control {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>文本/文件发送器</h1>
+    </header>
+
+    <div class="container mt-5">
+        <!-- Send Text Form -->
+        <h2>发送文本</h2>
+        <!-- 错误信息提示 -->
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+        <form method="POST" action="/send_text">
+            <div class="mb-3">
+                <textarea class="form-control" name="text" placeholder="输入文本信息..." rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-custom">发送文本</button>
+        </form>
+
+        <!-- Upload File Form -->
+        <h2 class="mt-4">上传文件</h2>
+        <form method="POST" enctype="multipart/form-data" action="/upload">
+            <div class="mb-3">
+                <input class="form-control" type="file" name="file" />
+            </div>
+            <button type="submit" class="btn btn-custom">上传文件</button>
+        </form>
+
+        <!-- Uploaded Texts -->
+        <h2 class="mt-4">已上传的文本:</h2>
+        <ul class="list-group">
+            {% for text in texts %}
+            <li class="list-group-item"><pre>{{ text }}</pre></li>
+            {% endfor %}
+        </ul>
+
+        <!-- Uploaded Files -->
+        <h2 class="mt-4">已上传的文件:</h2>
+        <ul class="list-group file-list">
+            {% for file in files %}
+            <li class="list-group-item">
+                <a href="{{ url_for('uploaded_file', filename=file) }}">{{ file }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- 引入 Bootstrap JS 和 Popper.js -->
+    <script src="{{ url_for('static', filename='popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+
+</body>
+
+</html>

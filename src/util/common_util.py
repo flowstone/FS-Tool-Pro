@@ -1,7 +1,7 @@
 import sys
 import os
 import datetime
-
+import socket
 
 from src.const.fs_constants import FsConstants
 from src.util.load_config import get_sqlite_path
@@ -70,6 +70,14 @@ class CommonUtil:
         data_path = FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
         # 构建数据库文件的相对路径,假设数据库文件名为database.db
         return os.path.join(data_path, FsConstants.FAST_SENDER_DIR)
+
+    # 获得Flask Mini全路径
+    @staticmethod
+    def get_flask_mini_dir():
+        # 使用内置配置路径
+        data_path = FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
+        # 构建数据库文件的相对路径,假设数据库文件名为database.db
+        return os.path.join(data_path, FsConstants.FLASK_MINI_DIR)
 
     # 静止外部类调用这个方法
     @staticmethod
@@ -146,3 +154,15 @@ class CommonUtil:
         # 格式化时间，这里使用了常见的年-月-日 时:分:秒格式
         # 格式化时间为指定格式
         return dt_object.strftime(format)
+
+    # 本地IP
+    @staticmethod
+    def get_local_ip():
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("8.8.8.8", 80))  # 使用公网 IP 测试本地地址
+            ip = s.getsockname()[0]
+            s.close()
+            return ip
+        except Exception as e:
+            return "127.0.0.1"

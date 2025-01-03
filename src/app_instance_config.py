@@ -1,6 +1,6 @@
 from src.app_signer_tool import AppSignerTool
 from src.desktop_clock import ColorSettingDialog
-from src.fast_sender import FastSenderApp
+from src.fast_sender_tool import FastSenderToolApp
 from src.file_tool import FileToolApp
 from src.image_tool import ImageToolApp
 from src.ip_info_tool import IpInfoToolApp
@@ -82,8 +82,8 @@ app_instance_config = [
         },
         {
             "key": "fast_sender",
-            "icon": FsConstants.APP_ICON_FAST_SENDER,
-            "title": FsConstants.APP_TITLE_FAST_SENDER,
-            "class": FastSenderApp
+            "icon": FsConstants.APP_ICON_FAST_SENDER_TOOL,
+            "title": FsConstants.APP_TITLE_FAST_SENDER_TOOL,
+            "class": FastSenderToolApp
         },
 ]

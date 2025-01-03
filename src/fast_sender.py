@@ -82,7 +82,7 @@ class ServerThread(QThread):
         self.new_message.emit("服务器已启动，等待连接...")
         logger.info("服务器已启动，等待连接...")
         self.new_message.emit(f"本机IP: {self.local_ip}, 端口: {TRANSFER_PORT}")
-        logger.info("f本机IP: {self.local_ip}, 端口: {TRANSFER_PORT}")
+        logger.info(f"本机IP: {self.local_ip}, 端口: {TRANSFER_PORT}")
 
         while self.running:
             try:
@@ -96,26 +96,41 @@ class ServerThread(QThread):
                 logger.error(f"服务器错误: {e}")
                 break
 
-
     def handle_client(self, client_socket, addr):
         try:
-            data_type = client_socket.recv(1024).decode("utf-8").strip()
+            # 接收数据类型 (TEXT 或 FILE)
+            raw_data = client_socket.recv(1024)
+            try:
+                data_type = raw_data.decode("utf-8").strip()
+            except UnicodeDecodeError:
+                self.new_message.emit(f"[{addr[0]}]: 无效的 UTF-8 数据")
+                return
+
             if data_type == "TEXT":
-                text = client_socket.recv(4096).decode("utf-8")
+                # 如果是文本消息，继续接收文本内容
+                raw_text = client_socket.recv(4096)
+                try:
+                    text = raw_text.decode("utf-8")
+                except UnicodeDecodeError:
+                    self.new_message.emit(f"[{addr[0]}]: 无效的 UTF-8 文本内容")
+                    return
                 self.new_message.emit(f"[{addr[0]}]: {text}")
+
             elif data_type == "FILE":
-                filename = client_socket.recv(1024).decode("utf-8").strip()
+                # 如果是文件，直接接收并保存
+                filename_raw = client_socket.recv(1024)
+                try:
+                    filename = filename_raw.decode("utf-8").strip()
+                except UnicodeDecodeError:
+                    filename = "unknown_file"
+
                 file_path = os.path.join(self.save_dir, filename)
-
                 with open(file_path, "wb") as f:
-                    while True:
-                        file_data = client_socket.recv(BUFFER_SIZE)
-                        if not file_data:
-                            break
-                        f.write(file_data)
+                    while chunk := client_socket.recv(BUFFER_SIZE):
+                        f.write(chunk)
 
-                self.new_message.emit(f"文件接收完成: {filename} ({addr[0]})")
-                logger.info(f"文件接收完成: {filename} ({addr[0]})")
+                self.new_message.emit(f"文件接收完成: {os.path.basename(file_path)} ({addr[0]})")
+                logger.info(f"文件接收完成: {os.path.basename(file_path)} ({addr[0]})")
         except Exception as e:
             self.new_message.emit(f"客户端错误: {e}")
             logger.warning(f"客户端错误: {e}")
@@ -240,7 +255,7 @@ class FastSenderApp(QWidget):
             client_socket.sendall(b"TEXT")
             client_socket.sendall(text.encode("utf-8"))
             self.log_message(f"发送到 {selected_ip}: {text}")
-            logger.info(f"发送到 {selected_ip}: {text}")
+            logger.info(f"发送到 {selected_ip}\n: {text}")
         except Exception as e:
             self.log_message(f"发送失败: {e}")
             logger.warning(f"发送失败: {e}")

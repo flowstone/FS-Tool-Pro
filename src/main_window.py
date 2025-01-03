@@ -12,6 +12,8 @@ from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
 from src.widget.app_icon_widget import AppIconWidget
 from src.util.menu_bar import MenuBar
+from src.widget.tray_menu import TrayMenu
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -22,6 +24,8 @@ class MainWindow(QMainWindow):
         self.floating_ball = FloatingBall(self)
         self.is_floating_ball_visible = False
         self.icon_config = app_instance_config
+        self.tray_menu = TrayMenu(self)
+
         # 使用字典动态管理所有应用实例
         self.app_instances = {config["key"]: None for config in self.icon_config}
         self.init_ui()
@@ -46,9 +50,10 @@ class MainWindow(QMainWindow):
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
 
-
         # 初始化应用托盘图标
-        self.init_tray_menu()
+        self.tray_menu.init_tray_menu(self)
+        self.tray_menu.activated_signal.connect(self.tray_icon_activated)
+        self.tray_menu.show_main_signal.connect(self.tray_menu_show_main)
 
         # 处理窗口关闭事件，使其最小化到托盘
         self.closeEvent = self.handle_close_event
@@ -70,29 +75,9 @@ class MainWindow(QMainWindow):
         app_icon.iconClicked.connect(lambda _, name=key: self.open_feature_window(name))
         return app_icon
 
-    # 初始化应用托盘图标
-    def init_tray_menu(self):
-        logger.info("---- 初始化任务栏图标 ----")
-
-        # 创建系统托盘图标
-        self.tray_icon = QSystemTrayIcon(self)
-        self.tray_icon.setIcon(
-            QIcon(CommonUtil.get_resource_path(FsConstants.APP_BAR_ICON_FULL_PATH)))  # 这里需要一个名为icon.png的图标文件，可以替换为真实路径
-        self.tray_icon.activated.connect(self.tray_icon_activated)
-
-        # 创建托盘菜单
-        tray_menu = QMenu()
-        show_action = QAction("主界面", self)
-        show_action.triggered.connect(self.tray_menu_show_main)
-        quit_action = QAction("退出", self)
-        quit_action.triggered.connect(sys.exit)
-        tray_menu.addAction(show_action)
-        tray_menu.addAction(quit_action)
-        self.tray_icon.setContextMenu(tray_menu)
 
 
-
-    # 从托盘菜单点击显示窗口
+    # 从托盘菜单点击显示主界面
     def tray_menu_show_main(self):
         logger.info("---- 托盘菜单点击显示窗口 ----")
         # 悬浮球退出
@@ -101,13 +86,11 @@ class MainWindow(QMainWindow):
         self.show()
 
 
-
     # 处理窗口关闭事件
     def handle_close_event(self, event):
         logger.info(f"开始关闭主窗口，悬浮球标志位 = ,{self.is_floating_ball_visible}")
         event.ignore()
         self.hide()
-        self.tray_icon.show()
 
         if not self.is_floating_ball_visible:
             self.create_floating_ball()

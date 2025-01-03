@@ -2,11 +2,15 @@ import sys
 import os
 import socket
 import threading
+
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QFileDialog, QListWidget, QSplitter
 )
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 
+from src.const.color_constants import BLACK
+from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from loguru import logger
@@ -138,8 +142,8 @@ class ServerThread(QThread):
                             break
                         f.write(chunk)
 
-                self.new_message.emit(f"文件接收完成: {os.path.basename(file_path)} ({addr[0]})")
-                logger.info(f"文件接收完成: {os.path.basename(file_path)} ({addr[0]})")
+                self.new_message.emit(f"[{addr[0]}]: {os.path.basename(file_path)}")
+                logger.info(f"[{addr[0]}]: {os.path.basename(file_path)}")
         except Exception as e:
             self.new_message.emit(f"客户端错误: {e}")
             logger.warning(f"客户端错误: {e}")
@@ -183,8 +187,16 @@ class FastSenderApp(QWidget):
         self.broadcast_thread.start()
 
     def init_ui(self):
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_FILE_COMPARATOR} ----")
+
         self.setWindowTitle(FsConstants.WINDOW_TITLE_FAST_SENDER)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setGeometry(100, 100, 800, 600)
+
+        title_label = QLabel(FsConstants.WINDOW_TITLE_FAST_SENDER)
+        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setStyleSheet(f"color: {BLACK.name()};")
+        title_label.setFont(FontConstants.H1)
 
         # 左侧设备列表
         self.device_list = QListWidget(self)
@@ -229,6 +241,8 @@ class FastSenderApp(QWidget):
 
         # 整体布局
         main_layout = QVBoxLayout()
+
+        main_layout.addWidget(title_label)
         main_layout.addWidget(splitter)
         main_layout.addLayout(input_layout)
 
@@ -242,6 +256,9 @@ class FastSenderApp(QWidget):
         return widget
 
     def add_device(self, ip):
+        # 如果发现的 IP 是自己的 IP，直接忽略
+        if ip == self.server_thread.local_ip:
+            return
         if ip not in self.devices:
             self.devices.add(ip)
             self.device_list.addItem(ip)
@@ -263,8 +280,8 @@ class FastSenderApp(QWidget):
             client_socket.connect((selected_ip, TRANSFER_PORT))
             client_socket.sendall(b"TEXT")
             client_socket.sendall(text.encode("utf-8"))
-            self.log_message(f"发送到 {selected_ip}:\n {text}")
-            logger.info(f"发送到 {selected_ip}: {text}")
+            self.log_message(f"[{selected_ip}]: {text}")
+            logger.info(f"[{selected_ip}]: {text}")
         except Exception as e:
             self.log_message(f"发送失败: {e}")
             logger.warning(f"发送失败: {e}")
@@ -291,8 +308,8 @@ class FastSenderApp(QWidget):
                 while chunk := f.read(BUFFER_SIZE):
                     client_socket.sendall(chunk)
 
-            self.log_message(f"发送文件到 {selected_ip}: {filename}")
-            logger.info(f"发送文件到 {selected_ip}: {filename}")
+            self.log_message(f"[{selected_ip}]: {filename}")
+            logger.info(f"[{selected_ip}]: {filename}")
         except Exception as e:
             self.log_message(f"文件发送失败: {e}")
             logger.error(f"文件发送失败: {e}")

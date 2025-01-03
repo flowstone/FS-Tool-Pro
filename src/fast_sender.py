@@ -155,27 +155,15 @@ class FastSenderApp(QWidget):
         super().__init__()
         self.init_ui()
 
+        # 初始化设备和线程，但不启动它们
         self.devices = set()
         self.broadcast_listener = BroadcastListenerThread()
         self.broadcast_listener.device_discovered.connect(self.add_device)
-        self.broadcast_listener.start()
-
         self.server_thread = ServerThread(CommonUtil.get_fast_sender_dir())
         self.server_thread.new_message.connect(self.log_message)
-        self.server_thread.start()
-        self.start_broadcast_discovery()
 
-    def start_broadcast_discovery(self):
-        def broadcast_discovery():
-            udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-            while self.broadcast_running:
-                udp_socket.sendto(b"DISCOVER", ("<broadcast>", BROADCAST_PORT))
-                threading.Event().wait(5)
-
-        self.broadcast_running = True
-        self.broadcast_thread = threading.Thread(target=broadcast_discovery, daemon=True)
-        self.broadcast_thread.start()
+        self.broadcast_running = False
+        self.broadcast_thread = None
 
     def init_ui(self):
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_FAST_SENDER} ----")
@@ -223,10 +211,22 @@ class FastSenderApp(QWidget):
         self.send_file_button = QPushButton("发送文件", self)
         self.send_file_button.clicked.connect(self.send_file)
 
+        # 新增按钮：开启服务
+        self.start_service_button = QPushButton("启动服务", self)
+        self.start_service_button.clicked.connect(self.start_service)
+
+        # 新增按钮：关闭服务
+        self.stop_service_button = QPushButton("停止服务", self)
+        self.stop_service_button.clicked.connect(self.stop_service)
+        self.stop_service_button.setEnabled(False)  # 禁用关闭按钮
+
         # 按钮水平布局
         button_layout = QHBoxLayout()
+        button_layout.addWidget(self.start_service_button)
+        button_layout.addWidget(self.stop_service_button)
         button_layout.addWidget(self.send_text_button)
         button_layout.addWidget(self.send_file_button)
+
 
         # 整体输入区垂直布局
         input_layout = QVBoxLayout()
@@ -249,6 +249,41 @@ class FastSenderApp(QWidget):
         widget = QWidget()
         widget.setLayout(layout)
         return widget
+
+    def start_service(self):
+        """启动广播监听和服务器线程"""
+        if not self.broadcast_running:
+            self.broadcast_running = True
+            self.broadcast_thread = threading.Thread(target=self.broadcast_discovery, daemon=True)
+            self.broadcast_thread.start()
+
+        if not self.broadcast_listener.isRunning():
+            self.broadcast_listener.start()
+
+        if not self.server_thread.isRunning():
+            self.server_thread.start()
+
+        self.start_service_button.setEnabled(False)  # 禁用按钮，防止重复点击
+        self.stop_service_button.setEnabled(True)   # 启用关闭按钮
+        self.log_message("服务已启动，等待设备连接...")
+
+    def stop_service(self):
+        """停止广播监听和服务器线程"""
+        self.broadcast_running = False  # 停止广播线程
+        self.broadcast_listener.stop()
+        self.server_thread.stop()
+
+        self.start_service_button.setEnabled(True)  # 启用启动按钮
+        self.stop_service_button.setEnabled(False)  # 禁用关闭按钮
+        self.log_message("服务已停止。")
+
+    def broadcast_discovery(self):
+        """广播设备发现请求"""
+        udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        while self.broadcast_running:
+            udp_socket.sendto(b"DISCOVER", ("<broadcast>", BROADCAST_PORT))
+            threading.Event().wait(5)
 
     def add_device(self, ip):
         # 如果发现的 IP 是自己的 IP，直接忽略

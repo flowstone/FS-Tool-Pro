@@ -52,6 +52,7 @@ class FastSenderMiniApp(QWidget):
         self.start_button = QPushButton("启动服务", self)
         self.start_button.clicked.connect(self.start_flask)
         self.stop_button = QPushButton("停止服务", self)
+        self.stop_button.setEnabled(False)  # 禁用关闭按钮
         self.stop_button.clicked.connect(self.stop_flask)
 
         # 按钮布局
@@ -73,6 +74,8 @@ class FastSenderMiniApp(QWidget):
             self.log(f"{CommonUtil.get_local_ip()}:5678")
         else:
             self.log("Flask 服务已经在运行中。")
+        self.start_button.setEnabled(False)  # 禁用按钮，防止重复点击
+        self.stop_button.setEnabled(True)  # 启用关闭按钮
 
     def stop_flask(self):
         """停止 Flask 服务"""
@@ -82,6 +85,8 @@ class FastSenderMiniApp(QWidget):
             self.log("Flask 服务已停止。")
         else:
             self.log("Flask 服务没有在运行。")
+        self.start_button.setEnabled(True)  # 启用启动按钮
+        self.stop_button.setEnabled(False)  # 禁用关闭按钮
 
     def log(self, message):
         """记录日志信息到文本框"""

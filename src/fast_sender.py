@@ -87,6 +87,8 @@ class ServerThread(QThread):
         logger.info("服务器已启动，等待连接...")
         self.new_message.emit(f"本机IP: {self.local_ip}, 端口: {TRANSFER_PORT}")
         logger.info(f"本机IP: {self.local_ip}, 端口: {TRANSFER_PORT}")
+        self.new_message.emit(f"存储路径: {self.save_dir}")
+        logger.info(f"存储路径: {self.save_dir}")
 
         while self.running:
             try:

@@ -280,6 +280,7 @@ class FastSenderApp(QWidget):
         try:
             client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client_socket.connect((selected_ip, TRANSFER_PORT))
+            logger.info(f"连接成功：{selected_ip} ({TRANSFER_PORT})")
             client_socket.sendall(b"TEXT")
             client_socket.sendall(text.encode("utf-8"))
             self.log_message(f"[{selected_ip}]: {text}")
@@ -303,6 +304,8 @@ class FastSenderApp(QWidget):
             filename = os.path.basename(file_path)
             client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client_socket.connect((selected_ip, TRANSFER_PORT))
+            logger.info(f"连接成功：{selected_ip} ({TRANSFER_PORT})")
+
             client_socket.sendall(b"FILE")
             client_socket.sendall((filename + "\n").encode("utf-8"))
 

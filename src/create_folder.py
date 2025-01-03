@@ -44,24 +44,20 @@ class CreateFolderApp(QWidget):
         description_label = QLabel("说明：根据输入的分割字符，取前部分创建文件夹，符合相关的文件都移动到对应文件夹中")
         description_label.setStyleSheet(f"color: {BLUE.name()};")
         # 选择文件夹相关部件
-        folder_path_layout = QHBoxLayout()
         folder_path_label = QLabel("选择文件夹：")
+        folder_path_layout = QHBoxLayout()
         self.folder_path_entry = QLineEdit()
         self.folder_path_entry.setObjectName("folder_path_input")
         browse_button = QPushButton("选择")
         browse_button.setObjectName("browse_button")
         browse_button.clicked.connect(self.browse_folder)
 
-        folder_path_layout.addWidget(folder_path_label)
         folder_path_layout.addWidget(self.folder_path_entry)
         folder_path_layout.addWidget(browse_button)
 
         # 指定分割字符相关部件
-        slice_layout = QHBoxLayout()
         slice_label = QLabel("指定分割字符：")
         self.slice_entry = QLineEdit()
-        slice_layout.addWidget(slice_label)
-        slice_layout.addWidget(self.slice_entry)
 
 
 
@@ -78,8 +74,10 @@ class CreateFolderApp(QWidget):
 
         # 布局调整
         layout.addWidget(description_label)
+        layout.addWidget(folder_path_label)
         layout.addLayout(folder_path_layout)
-        layout.addLayout(slice_layout)
+        layout.addWidget(slice_label)
+        layout.addWidget(self.slice_entry)
         self.progress_bar = CustomProgressBar()
         self.progress_bar.hide()
         layout.addWidget(self.progress_bar)

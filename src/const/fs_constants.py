@@ -31,6 +31,7 @@ class FsConstants:
     APP_TITLE_HASH_CALCULATOR = "HASH校验"
     APP_TITLE_IP_TOOL = "网络工具"
     APP_TITLE_APP_SIGNER = "应用签名"
+    APP_TITLE_FAST_SENDER_TOOL = "快速发送"
 
     WINDOW_TITLE_DESKTOP_CLOCK = "透明时间"
     WINDOW_TITLE_STICK_NOTE = "快捷便签"
@@ -56,6 +57,9 @@ class FsConstants:
     WINDOW_TITLE_APP_SIGNER = "应用签名"
     WINDOW_TITLE_APP_SIGNER_GENERATE_CERTIFICATE = "证书生成"
     WINDOW_TITLE_APP_SIGNER_PUBLIC_KEY_EXTRACTOR = "证书转换"
+    WINDOW_TITLE_FAST_SENDER_TOOL = "局域网文件传输"
+    WINDOW_TITLE_FAST_SENDER = "局域网文件传输"
+    WINDOW_TITLE_FAST_SENDER_MINI = "Flask Mini 服务"
 
 
 
@@ -116,6 +120,7 @@ class FsConstants:
     APP_ICON_HASH_CALCULATOR = "hash_calculator_icon.svg"
     APP_ICON_IP_TOOL = "ip_tool_icon.svg"
     APP_ICON_APP_SIGNER = "app_signer_icon.svg"
+    APP_ICON_FAST_SENDER_TOOL = "fast_sender_icon.svg"
 
 
 
@@ -126,6 +131,8 @@ class FsConstants:
     SAVE_FILE_PATH_WIN = "C:\\"
     SAVE_FILE_PATH_MAC = "~"
     DATABASE_FILE = "fs-tool-pro.db"
+    FAST_SENDER_DIR = "fs_received_files"
+    FLASK_MINI_DIR = "fs_flask_web"
 
     APP_INI_FILE = "app.ini"
     HELP_PDF_FILE_PATH = "resources/pdf/help.pdf"

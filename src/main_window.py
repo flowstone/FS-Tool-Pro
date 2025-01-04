@@ -54,8 +54,7 @@ class MainWindow(QMainWindow):
         self.tray_menu.activated_signal.connect(self.tray_icon_activated)
         self.tray_menu.show_main_signal.connect(self.tray_menu_show_main)
 
-        # 处理窗口关闭事件，使其最小化到托盘
-        self.closeEvent = self.handle_close_event
+
 
     def create_icon_grid(self):
         """动态创建图标的网格布局"""
@@ -113,6 +112,8 @@ class MainWindow(QMainWindow):
             logger.info("---- 双击任务栏托盘，打开窗口 ----")
             self.show()
 
+    def closeEvent(self, event):
+        self.handle_close_event(event)
 
     def open_feature_window(self, key):
         """打开对应的功能窗口"""
@@ -124,6 +125,9 @@ class MainWindow(QMainWindow):
         # 如果实例不存在，则动态创建
         if self.app_instances[key] is None:
             app_class = next((item["class"] for item in self.icon_config if item["key"] == key), None)
+            if not app_class:
+                logger.error(f"未找到有效的类配置，key: {key}")
+                return
             if app_class:
                 try:
                     self.app_instances[key] = app_class()

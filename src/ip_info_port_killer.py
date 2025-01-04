@@ -121,7 +121,7 @@ class PortKillerApp(QWidget):
         self.progress_bar = CustomProgressBar()
         self.progress_bar.hide()
         button_layout = QHBoxLayout()
-        self.admin_button = QPushButton("授权(Mac)")
+        self.admin_button = QPushButton("授权")
         self.admin_button.clicked.connect(self.get_admin)
         # 搜索按钮
         self.search_button = QPushButton("搜索")

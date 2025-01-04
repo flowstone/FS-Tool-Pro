@@ -1,8 +1,8 @@
 import sys
 
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit, QPushButton, QMessageBox, QHBoxLayout
-from PyQt6.QtGui import QIcon
-from PyQt6.QtCore import Qt, pyqtSignal
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit, QPushButton, QMessageBox, QHBoxLayout
+from PySide6.QtGui import QIcon
+from PySide6.QtCore import Qt, Signal
 from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
 from src.util.message_util import MessageUtil
@@ -11,7 +11,7 @@ from loguru import logger
 
 class StickyNoteApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal =  pyqtSignal()
+    closed_signal =  Signal()
     def __init__(self):
         super().__init__()
         # 标记窗口当前是否可操作（初始设为可操作）

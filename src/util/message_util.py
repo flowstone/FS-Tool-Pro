@@ -1,7 +1,7 @@
 #显示通用消息框
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QMessageBox, QDialog, QVBoxLayout, QLabel, QPushButton, QTextEdit
-from PyQt6.QtCore import Qt
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QMessageBox, QDialog, QVBoxLayout, QLabel, QPushButton, QTextEdit
+from PySide6.QtCore import Qt
 from loguru import logger
 
 from src.util.common_util import CommonUtil

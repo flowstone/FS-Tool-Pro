@@ -2,9 +2,9 @@ import os
 import sys
 
 from PIL import Image
-from PyQt6.QtCore import Qt, pyqtSignal, QThread
-from PyQt6.QtGui import QPixmap, QIcon
-from PyQt6.QtWidgets import QApplication, QScrollArea, QWidget, QVBoxLayout, QPushButton, QLabel, QCheckBox, \
+from PySide6.QtCore import Qt, Signal, QThread
+from PySide6.QtGui import QPixmap, QIcon
+from PySide6.QtWidgets import QApplication, QScrollArea, QWidget, QVBoxLayout, QPushButton, QLabel, QCheckBox, \
     QFileDialog, QHBoxLayout
 from loguru import logger
 
@@ -18,7 +18,7 @@ from src.widget.custom_progress_widget import CustomProgressBar
 
 class ImageConvertApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal =  pyqtSignal()
+    closed_signal =  Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -159,8 +159,8 @@ class ImageConvertApp(QWidget):
         super().closeEvent(event)
 
 class ImageConversionThread(QThread):
-    finished_signal = pyqtSignal()
-    error_signal = pyqtSignal(str)
+    finished_signal = Signal()
+    error_signal = Signal(str)
 
     def __init__(self, image_path, selected_formats):
         super().__init__()

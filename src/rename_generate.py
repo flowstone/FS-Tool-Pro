@@ -3,10 +3,10 @@ import sys
 import time
 import uuid
 
-from PyQt6.QtCore import QThread
-from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import QThread
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QGroupBox, QRadioButton, QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QLineEdit, QPushButton, QFileDialog
 )
@@ -21,7 +21,7 @@ from src.widget.custom_progress_widget import CustomProgressBar
 
 
 class RenameGenerateApp(QWidget):
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
 
     def __init__(self):
         super().__init__()
@@ -159,8 +159,8 @@ class RenameGenerateApp(QWidget):
 
 
 class FileRenameThread(QThread):
-    finished_signal = pyqtSignal()
-    error_signal = pyqtSignal(str)
+    finished_signal = Signal()
+    error_signal = Signal(str)
 
     def __init__(self, folder_path, check_type, naming_type):
         super().__init__()

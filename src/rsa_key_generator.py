@@ -1,10 +1,10 @@
 import sys
 import zipfile
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QApplication, QWidget, QLabel, QComboBox, QPushButton, QVBoxLayout, QHBoxLayout, QTextEdit, QFileDialog
 )
-from PyQt6.QtGui import QIcon
-from PyQt6.QtCore import Qt, pyqtSignal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtCore import Qt, Signal, QThread
 from Crypto.PublicKey import RSA
 
 from src.const.color_constants import BLACK
@@ -15,8 +15,8 @@ from loguru import logger
 
 
 class RSAKeyGeneratorThread(QThread):
-    result_signal = pyqtSignal(str, str)  # 用于将公钥和私钥传递回主线程
-    error_signal = pyqtSignal(str)  # 用于传递错误消息
+    result_signal = Signal(str, str)  # 用于将公钥和私钥传递回主线程
+    error_signal = Signal(str)  # 用于传递错误消息
 
     def __init__(self, key_length, encryption_method):
         super().__init__()
@@ -49,7 +49,7 @@ class RSAKeyGeneratorThread(QThread):
 
 class RSAKeyGeneratorApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
 
     def __init__(self):
         super().__init__()

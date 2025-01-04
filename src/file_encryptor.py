@@ -5,9 +5,9 @@ from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto.Protocol.KDF import PBKDF2
 from Crypto.Util.Padding import pad, unpad
-from PyQt6.QtCore import Qt, pyqtSignal, QThread
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, Signal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QLabel, QVBoxLayout, QLineEdit, QPushButton, QFileDialog, QWidget, QComboBox, QHBoxLayout
 )
 from loguru import logger
@@ -21,9 +21,9 @@ from src.widget.custom_progress_widget import CustomProgressBar
 
 
 class EncryptThread(QThread):
-    progress = pyqtSignal(int)  # 信号用于传递进度
-    finished = pyqtSignal()     # 信号用于标记加密完成
-    error = pyqtSignal(str)    # 信号用于报告错误
+    progress = Signal(int)  # 信号用于传递进度
+    finished = Signal()     # 信号用于标记加密完成
+    error = Signal(str)    # 信号用于报告错误
 
     def __init__(self, folder_path, key, parent=None):
         super().__init__(parent)
@@ -63,9 +63,9 @@ class EncryptThread(QThread):
             self.finished.emit()
 
 class DecryptThread(QThread):
-    progress = pyqtSignal(int)  # 信号用于传递进度
-    finished = pyqtSignal()     # 信号用于标记解密完成
-    error = pyqtSignal(str)    # 信号用于报告错误
+    progress = Signal(int)  # 信号用于传递进度
+    finished = Signal()     # 信号用于标记解密完成
+    error = Signal(str)    # 信号用于报告错误
 
     def __init__(self, folder_path, key, parent=None):
         super().__init__(parent)
@@ -110,7 +110,7 @@ class DecryptThread(QThread):
 
 class FileEncryptorApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()

@@ -2,9 +2,9 @@ import os
 import shutil
 import sys
 
-from PyQt6.QtCore import Qt, pyqtSignal, QThread
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
+from PySide6.QtCore import Qt, Signal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
 from loguru import logger
 
 from src.const.color_constants import BLUE, BLACK
@@ -17,7 +17,7 @@ from src.widget.custom_progress_widget import CustomProgressBar
 
 class CreateFolderApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal =  pyqtSignal()
+    closed_signal =  Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -142,9 +142,9 @@ class CreateFolderApp(QWidget):
         super().closeEvent(event)
 
 class FileOperationThread(QThread):
-    progress_signal = pyqtSignal(int)
-    finished_signal = pyqtSignal()
-    error_signal = pyqtSignal(str)
+    progress_signal = Signal(int)
+    finished_signal = Signal()
+    error_signal = Signal(str)
 
     def __init__(self, folder_path, slice_char):
         super().__init__()

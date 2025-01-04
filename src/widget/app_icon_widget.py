@@ -1,12 +1,12 @@
 # app_icon_widget.py
-from PyQt6.QtCore import pyqtSignal, Qt, QPropertyAnimation, QEasingCurve
-from PyQt6.QtGui import QPixmap, QColor
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsColorizeEffect
+from PySide6.QtCore import Signal, Qt, QPropertyAnimation, QEasingCurve
+from PySide6.QtGui import QPixmap, QColor
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsColorizeEffect
 
 
 class AppIconWidget(QWidget):
     # 定义一个信号，当图标被点击时发出
-    iconClicked = pyqtSignal(str)  # 传递图标名称
+    iconClicked = Signal(str)  # 传递图标名称
 
     def __init__(self, icon_path, name, parent=None):
         super().__init__(parent)

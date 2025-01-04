@@ -1,8 +1,8 @@
 import subprocess
 
-from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QFileDialog, QGroupBox, QHBoxLayout, QLineEdit
 )
 from loguru import logger
@@ -15,7 +15,7 @@ from src.util.message_util import MessageUtil
 
 
 class AppSignerApp(QWidget):
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
 
     def __init__(self):
         super().__init__()

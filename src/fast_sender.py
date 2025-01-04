@@ -3,11 +3,11 @@ import os
 import socket
 import threading
 
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import (
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QFileDialog, QListWidget, QSplitter
 )
-from PyQt6.QtCore import Qt, QThread, pyqtSignal
+from PySide6.QtCore import Qt, QThread, Signal
 
 from src.const.color_constants import BLACK, BLUE
 from src.const.font_constants import FontConstants
@@ -21,7 +21,7 @@ BUFFER_SIZE = 4096
 
 
 class BroadcastListenerThread(QThread):
-    device_discovered = pyqtSignal(str)
+    device_discovered = Signal(str)
 
     def __init__(self):
         super().__init__()
@@ -54,7 +54,7 @@ class BroadcastListenerThread(QThread):
 
 
 class ServerThread(QThread):
-    new_message = pyqtSignal(str)
+    new_message = Signal(str)
 
     def __init__(self, save_dir="received_files"):
         super().__init__()
@@ -143,7 +143,7 @@ class ServerThread(QThread):
 
 
 class FastSenderApp(QWidget):
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
 
     def __init__(self):
         super().__init__()

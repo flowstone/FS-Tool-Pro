@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QProgressBar
-from PyQt6.QtCore import Qt
+from PySide6.QtWidgets import QProgressBar
+from PySide6.QtCore import Qt
 
 
 class CustomProgressBar(QProgressBar):

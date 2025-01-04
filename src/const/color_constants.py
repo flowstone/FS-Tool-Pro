@@ -1,4 +1,4 @@
-from PyQt6.QtGui import QColor, QFont
+from PySide6.QtGui import QColor, QFont
 
 
 # 基本颜色常量

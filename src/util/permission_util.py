@@ -1,7 +1,7 @@
 import os
 import sys
 
-from PyQt6.QtWidgets import QMessageBox
+from PySide6.QtWidgets import QMessageBox
 
 from src.util.common_util import CommonUtil
 
@@ -32,7 +32,7 @@ def run_as_admin():
         )
         sys.exit(0)
     elif CommonUtil.check_mac_os():
-        from PyQt6.QtCore import QProcess
+        from PySide6.QtCore import QProcess
         process = QProcess()
         script = f'do shell script "{sys.executable} {" ".join(sys.argv)}" with administrator privileges'
         process.start("osascript", ["-e", script])

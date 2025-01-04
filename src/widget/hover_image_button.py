@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QPushButton
-from PyQt6.QtGui import QPixmap, QIcon
+from PySide6.QtWidgets import QPushButton
+from PySide6.QtGui import QPixmap, QIcon
 from src.util.common_util import CommonUtil
 
 # 图片按钮

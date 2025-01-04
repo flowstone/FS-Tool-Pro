@@ -4,9 +4,9 @@ import sys
 import pillow_heif
 import whatimage
 from PIL import Image, ImageOps
-from PyQt6.QtCore import Qt, pyqtSignal, QThread
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
+from PySide6.QtCore import Qt, Signal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
 from loguru import logger
 from pillow_heif import register_heif_opener
 
@@ -22,7 +22,7 @@ register_heif_opener()
 
 class HeicToJpgApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal =  pyqtSignal()
+    closed_signal =  Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -147,8 +147,8 @@ class HeicToJpgApp(QWidget):
 
 
 class HeicToJpgAppThread(QThread):
-    finished_signal = pyqtSignal()
-    error_signal = pyqtSignal(str)  # 新增信号，用于发送错误信息
+    finished_signal = Signal()
+    error_signal = Signal(str)  # 新增信号，用于发送错误信息
 
     def __init__(self, folder_path):
         super().__init__()

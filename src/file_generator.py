@@ -6,9 +6,9 @@ import string
 import sys
 
 from PIL import Image
-from PyQt6.QtCore import Qt, pyqtSignal, QThread
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QVBoxLayout, QLineEdit, QPushButton, QFileDialog, QLabel, \
+from PySide6.QtCore import Qt, Signal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication, QVBoxLayout, QLineEdit, QPushButton, QFileDialog, QLabel, \
     QWidget, QComboBox, QHBoxLayout
 from loguru import logger
 
@@ -22,9 +22,9 @@ from src.widget.custom_progress_widget import CustomProgressBar
 
 class FileGenerationThread(QThread):
     # Signals to communicate with the main thread
-    update_progress_signal = pyqtSignal(str)
-    file_generated_signal = pyqtSignal(int, str)
-    finished_signal = pyqtSignal()
+    update_progress_signal = Signal(str)
+    file_generated_signal = Signal(int, str)
+    finished_signal = Signal()
 
     def __init__(self, folder_path, file_count, file_size, file_type):
         super().__init__()
@@ -96,7 +96,7 @@ class FileGenerationThread(QThread):
 
 class FileGeneratorApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()

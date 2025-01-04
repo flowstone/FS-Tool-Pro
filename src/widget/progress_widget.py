@@ -1,5 +1,5 @@
-from PyQt6.QtCore import pyqtSignal, QObject, Qt, QTimer
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QProgressBar, QLabel
+from PySide6.QtCore import Signal, QObject, Qt, QTimer
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QProgressBar, QLabel
 from loguru import logger
 
 
@@ -104,7 +104,7 @@ class ProgressWidget(QWidget):
 
 
 class ProgressSignalEmitter(QObject):
-    progress_signal = pyqtSignal(int)
+    progress_signal = Signal(int)
     """用于在有进度更新时发出信号的类，方便在不同任务中触发进度更新"""
 
     def update_progress(self, value):

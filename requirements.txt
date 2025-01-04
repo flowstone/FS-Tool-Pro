@@ -9,9 +9,7 @@ loguru==0.7.2
 packaging==24.2
 pillow==11.0.0
 pyasn1==0.6.1
-PyQt6
-PyQt6-Qt6
-PyQt6_sip
+PySide6
 pystray==0.19.5
 rsa==4.9
 six==1.16.0

@@ -1,7 +1,7 @@
 import sys
 import psutil
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLabel
-from PyQt6.QtCore import QThread, pyqtSignal
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLabel
+from PySide6.QtCore import QThread, Signal
 
 
 def get_open_ports():
@@ -23,7 +23,7 @@ def get_open_ports():
 
 
 class PortScannerWorker(QThread):
-    result_signal = pyqtSignal(list)  # 信号，用于返回结果
+    result_signal = Signal(list)  # 信号，用于返回结果
 
     def run(self):
         ports_info = get_open_ports()

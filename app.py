@@ -4,14 +4,14 @@
 # nuitka-project-else:
 #    nuitka-project: --mode=standalonealone
 
-# The PyQt6 plugin covers qt-plugins
-# nuitka-project: --enable-plugin=pyqt6
+# The PySide6 plugin covers qt-plugins
+# nuitka-project: --enable-plugin=PySide6
 # nuitka-project: --include-qt-plugins=qml
 
 import sys
 
-from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import QApplication
+from PySide6.QtGui import QFont
+from PySide6.QtWidgets import QApplication
 from src.main_window import MainWindow
 from src.util.load_db import LoadDB
 from src.util.common_util import CommonUtil

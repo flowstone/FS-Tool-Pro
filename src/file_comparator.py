@@ -2,9 +2,9 @@ import hashlib
 import os
 import sys
 
-from PyQt6.QtCore import Qt, pyqtSignal, QThread
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, Signal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QVBoxLayout, QHBoxLayout, QPushButton, QFileDialog, QLabel, QWidget, QComboBox,
     QTextEdit
 )
@@ -19,9 +19,9 @@ from src.widget.custom_progress_widget import CustomProgressBar
 
 
 class CompareThread(QThread):
-    update_signal = pyqtSignal(str)
-    break_signal = pyqtSignal(str)
-    done_signal = pyqtSignal(int, int)  # 返回比较结果，(相同文件数量, 不同文件数量)
+    update_signal = Signal(str)
+    break_signal = Signal(str)
+    done_signal = Signal(int, int)  # 返回比较结果，(相同文件数量, 不同文件数量)
 
     def __init__(self, source_directory, target_directory, method):
         super().__init__()
@@ -126,7 +126,7 @@ class CompareThread(QThread):
 
 class FileComparatorApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()

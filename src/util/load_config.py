@@ -1,4 +1,4 @@
-from PyQt6.QtCore import QSettings
+from PySide6.QtCore import QSettings
 from loguru import logger
 
 from src.const.fs_constants import FsConstants

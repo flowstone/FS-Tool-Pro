@@ -1,9 +1,9 @@
 import sys
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QSystemTrayIcon, QMenu, QMainWindow
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QSystemTrayIcon, QMenu, QMainWindow
 
 from src.app_instance_config import app_instance_config
 
-from PyQt6.QtGui import QIcon
+from PySide6.QtGui import QIcon
 
 from src.util.message_util import MessageUtil
 from src.widget.app_mini import FloatingBall
@@ -18,7 +18,6 @@ from src.widget.tray_menu import TrayMenu
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.closeEvent = None
         self.menubar = None
         self.floating_ball = FloatingBall(self)
         self.is_floating_ball_visible = False

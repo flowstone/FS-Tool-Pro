@@ -1,8 +1,8 @@
 import sys
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QColorDialog
-from PyQt6.QtGui import QColor, QPalette
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QColorDialog
+from PySide6.QtGui import QColor, QPalette
 
 class ColorPaletteApp(QWidget):
     def __init__(self):

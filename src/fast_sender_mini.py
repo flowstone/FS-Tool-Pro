@@ -4,9 +4,9 @@ import sys
 import subprocess
 from threading import Thread
 
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLabel
-from PyQt6.QtCore import Qt, pyqtSignal, QTimer, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLabel
+from PySide6.QtCore import Qt, Signal, QTimer, QThread
 from loguru import logger
 
 from src.const.color_constants import BLACK, BLUE
@@ -17,7 +17,7 @@ from src.util.common_util import CommonUtil
 
 
 class FastSenderMiniApp(QWidget):
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
 
     def __init__(self):
         super().__init__()

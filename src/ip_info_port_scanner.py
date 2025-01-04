@@ -2,9 +2,9 @@ import socket
 import sys
 from concurrent.futures import ThreadPoolExecutor
 
-from PyQt6.QtCore import Qt, QThread, pyqtSignal
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, QThread, Signal
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout,
     QPushButton, QTextEdit, QLabel, QLineEdit
 )
@@ -60,9 +60,9 @@ def get_open_ports(target_ip, start_port, end_port, progress_callback, error_cal
 
 
 class WorkerThread(QThread):
-    progress_signal = pyqtSignal(int)
-    result_signal = pyqtSignal(list)
-    error_signal = pyqtSignal(str)
+    progress_signal = Signal(int)
+    result_signal = Signal(list)
+    error_signal = Signal(str)
 
     def __init__(self, target_ip, start_port, end_port):
         super().__init__()
@@ -80,7 +80,7 @@ class WorkerThread(QThread):
 
 class PortScannerApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()

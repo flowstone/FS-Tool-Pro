@@ -1,10 +1,10 @@
 import random
 
-from PyQt6.QtCore import QPropertyAnimation, QPoint
-from PyQt6.QtCore import QTimer
-from PyQt6.QtCore import Qt, QEasingCurve
-from PyQt6.QtGui import QMouseEvent, QPixmap, QGuiApplication
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
+from PySide6.QtCore import QPropertyAnimation, QPoint
+from PySide6.QtCore import QTimer
+from PySide6.QtCore import Qt, QEasingCurve
+from PySide6.QtGui import QMouseEvent, QPixmap, QGuiApplication
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
 from loguru import logger
 
 from src.const.fs_constants import FsConstants

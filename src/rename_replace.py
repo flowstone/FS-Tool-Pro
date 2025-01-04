@@ -1,9 +1,9 @@
 import os
 import sys
 
-from PyQt6.QtCore import Qt, pyqtSignal, QThread
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QGroupBox, QRadioButton, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, \
+from PySide6.QtCore import Qt, Signal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication, QGroupBox, QRadioButton, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, \
     QPushButton, QFileDialog
 from loguru import logger
 
@@ -17,7 +17,7 @@ from src.widget.custom_progress_widget import CustomProgressBar
 
 class RenameReplaceApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal =  pyqtSignal()
+    closed_signal =  Signal()
     def __init__(self):
         super().__init__()
         self.check_type_text = None
@@ -201,8 +201,8 @@ class RenameReplaceApp(QWidget):
         super().closeEvent(event)
 
 class FileRenameThread(QThread):
-    finished_signal = pyqtSignal()
-    error_signal = pyqtSignal(str)
+    finished_signal = Signal()
+    error_signal = Signal(str)
 
     def __init__(self, folder_path, prefix, suffix, char_to_find, replace_char, check_type_text):
         super().__init__()

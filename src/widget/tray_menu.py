@@ -1,17 +1,17 @@
 import sys
 
-from PyQt6.QtCore import pyqtSignal, QObject
-from PyQt6.QtWidgets import QSystemTrayIcon, QMenu, QApplication
-from PyQt6.QtGui import QIcon, QAction
+from PySide6.QtCore import Signal, QObject
+from PySide6.QtWidgets import QSystemTrayIcon, QMenu, QApplication
+from PySide6.QtGui import QIcon, QAction
 from loguru import logger
 from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
 
 
 class TrayMenu(QObject):
-    show_main_signal = pyqtSignal()
-    activated_signal = pyqtSignal(QSystemTrayIcon.ActivationReason)
-    quit_signal = pyqtSignal()
+    show_main_signal = Signal()
+    activated_signal = Signal(QSystemTrayIcon.ActivationReason)
+    quit_signal = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)

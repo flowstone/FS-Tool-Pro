@@ -3,9 +3,9 @@ import sys
 
 import psutil
 import requests
-from PyQt6.QtCore import QThread, pyqtSignal, Qt
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import QThread, Signal, Qt
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLabel
 )
 from loguru import logger
@@ -147,9 +147,9 @@ def get_dns_servers():
 
 class NetworkInfoWorker(QThread):
     # 定义信号，用于传递网络信息和进度
-    progress_signal = pyqtSignal(int)
-    result_signal = pyqtSignal(str)
-    error_signal = pyqtSignal(str)    # 错误信号
+    progress_signal = Signal(int)
+    result_signal = Signal(str)
+    error_signal = Signal(str)    # 错误信号
 
     def run(self):
         try:
@@ -177,7 +177,7 @@ class NetworkInfoWorker(QThread):
 
 class IpInfoApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()

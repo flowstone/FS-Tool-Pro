@@ -198,7 +198,6 @@ class RSAKeyGeneratorApp(QWidget):
             self.private_key_text.setPlainText(f"密钥已保存到: {save_path}")
 
     def closeEvent(self, event):
-        logger.info("点击了关闭事件")
         self.closed_signal.emit()
         super().closeEvent(event)
 

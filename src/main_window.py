@@ -19,7 +19,6 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.closeEvent = None
-        self.tray_icon = None
         self.menubar = None
         self.floating_ball = FloatingBall(self)
         self.is_floating_ball_visible = False
@@ -91,6 +90,7 @@ class MainWindow(QMainWindow):
         logger.info(f"开始关闭主窗口，悬浮球标志位 = ,{self.is_floating_ball_visible}")
         event.ignore()
         self.hide()
+        self.tray_menu.tray_icon.show()
 
         if not self.is_floating_ball_visible:
             self.create_floating_ball()
@@ -103,13 +103,15 @@ class MainWindow(QMainWindow):
 
 
     # 双击托盘，打开窗口
-    def tray_icon_activated(self, reason):
-        logger.info("---- 双击任务栏托盘，打开窗口 ----")
+    def tray_icon_activated(self, reason=None):
+        logger.info(f"托盘图标激活事件，原因: {reason}")
+
         # 悬浮球退出
         self.floating_ball.close()
         self.is_floating_ball_visible = False
         if reason == QSystemTrayIcon.DoubleClick:
-           self.show()
+            logger.info("---- 双击任务栏托盘，打开窗口 ----")
+            self.show()
 
 
     def open_feature_window(self, key):

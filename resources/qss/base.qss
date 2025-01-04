@@ -115,6 +115,8 @@ QCheckBox:checked {
 
 QSpinBox {
     font-size: 14px;
+    min-height: 20px;
+    max-height: 20px;
     padding: 6px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -124,16 +126,12 @@ QSpinBox {
 QSpinBox::up-button {
     border: none;
     background-color: #8BC34A;
-    height: 15px;
-    width: 15px;
     border-radius: 5px;
 }
 
 QSpinBox::down-button {
     border: none;
     background-color: #F44336;
-    height: 15px;
-    width: 15px;
     border-radius: 5px;
 }
 

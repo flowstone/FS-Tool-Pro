@@ -95,6 +95,6 @@ class PublicKeyExtractorApp(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    ex = PublicKeyExtractor()
+    ex = PublicKeyExtractorApp()
     ex.show()
     sys.exit(app.exec())

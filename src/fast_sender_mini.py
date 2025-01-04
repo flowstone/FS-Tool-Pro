@@ -126,7 +126,6 @@ class FastSenderMiniApp(QWidget):
 
     def closeEvent(self, event):
         """关闭窗口时确保 Flask 服务停止"""
-        logger.info("---------------")
         self.stop_flask()
         # 触发关闭信号（如果需要）
         self.closed_signal.emit()

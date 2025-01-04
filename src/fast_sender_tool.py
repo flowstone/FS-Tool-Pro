@@ -40,7 +40,8 @@ class FastSenderToolApp(QWidget):
 
     def add_tabs(self):
         self.tab_widget.addTab(FastSenderApp(), "文件传输")
-        self.tab_widget.addTab(FastSenderMiniApp(), "Mini服务")
+        # 打包后，Flask服务没办法正常启动
+        #self.tab_widget.addTab(FastSenderMiniApp(), "Mini服务")
 
     def closeEvent(self, event):
         # 在关闭事件中发出信号

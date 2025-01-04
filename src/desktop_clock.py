@@ -84,7 +84,7 @@ class DesktopClockApp(QWidget):
 
     def move_to_position(self, position):
         screen_geo = QApplication.desktop().screenGeometry()
-
+        x, y = 10, 10
         if position == "左上角":
             x, y = 10, 10
         elif position == "右上角":
@@ -96,7 +96,7 @@ class DesktopClockApp(QWidget):
 
         self.move(x, y)
 
-class ColorSettingDialog(QDialog):
+class DesktopClockSetting(QDialog):
     # 定义一个信号，在窗口关闭时触发
     closed_signal = pyqtSignal()
     def __init__(self):
@@ -180,7 +180,7 @@ class ColorSettingDialog(QDialog):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    setting_dialog = ColorSettingDialog()
+    setting_dialog = DesktopClockSetting()
     setting_dialog.show()
     # if setting_dialog.exec_():
     #     time_color = setting_dialog.get_selected_time_color()

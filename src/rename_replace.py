@@ -1,9 +1,9 @@
 import os
 import sys
 
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QGroupBox, QRadioButton, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, \
+from PyQt6.QtCore import Qt, pyqtSignal, QThread
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QApplication, QGroupBox, QRadioButton, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, \
     QPushButton, QFileDialog
 from loguru import logger
 
@@ -27,13 +27,13 @@ class RenameReplaceApp(QWidget):
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_RENAME_REPLACE} ----")
         self.setWindowTitle(FsConstants.WINDOW_TITLE_RENAME_REPLACE)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
 
 
         layout = QVBoxLayout()
         title_label = QLabel("批量修改文件/文件夹名")
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         layout.addWidget(title_label)
@@ -261,6 +261,6 @@ class FileRenameThread(QThread):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = RenameCustomApp()
+    window = RenameReplaceApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

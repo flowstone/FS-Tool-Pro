@@ -4,9 +4,9 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 
 import psutil
-from PyQt5.QtCore import QThread, pyqtSignal, Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PyQt6.QtCore import QThread, pyqtSignal, Qt
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout,
     QPushButton, QListWidget, QLabel, QLineEdit, QHBoxLayout
 )
@@ -97,7 +97,7 @@ class PortKillerApp(QWidget):
         self.layout = QVBoxLayout(self)
 
         title_label = QLabel(FsConstants.WINDOW_TITLE_IP_INFO_PORT_KILLER)
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         self.layout.addWidget(title_label)
@@ -239,4 +239,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     killer_app = PortKillerApp()
     killer_app.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

@@ -1,5 +1,5 @@
-from PyQt5.QtCore import pyqtSignal, QObject, Qt, QTimer
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QProgressBar, QLabel
+from PyQt6.QtCore import pyqtSignal, QObject, Qt, QTimer
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QProgressBar, QLabel
 from loguru import logger
 
 
@@ -14,15 +14,15 @@ class ProgressWidget(QWidget):
         # 创建用于承载进度条的窗口部件
         self.widget = QWidget()
         self.get_parent_size()
-        self.widget.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Tool)
-        self.widget.setAttribute(Qt.WA_TranslucentBackground, True)  # 设置窗口背景透明
+        self.widget.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
+        self.widget.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)  # 设置窗口背景透明
 
         # 创建布局
         layout = QVBoxLayout(self.widget)
 
         # 添加进度条描述标签
         self.label = QLabel("正在进行中...", self.widget)
-        self.label.setAlignment(Qt.AlignCenter)
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setStyleSheet("color: red; font-size: 16px;")
         layout.addWidget(self.label)
 

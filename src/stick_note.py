@@ -1,8 +1,8 @@
 import sys
 
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit, QPushButton, QMessageBox, QHBoxLayout
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit, QPushButton, QMessageBox, QHBoxLayout
+from PyQt6.QtGui import QIcon
+from PyQt6.QtCore import Qt, pyqtSignal
 from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
 from src.util.message_util import MessageUtil
@@ -93,10 +93,10 @@ class StickyNoteApp(QWidget):
         self.is_operable = not self.is_operable
         if self.is_operable:
             self.clear_button.setEnabled(True)
-            self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
+            self.setWindowFlags(self.windowFlags() & ~Qt.WindowType.WindowStaysOnTopHint)
         else:
             self.clear_button.setEnabled(False)
-            self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+            self.setWindowFlags(self.windowFlags() | Qt.WindowType.WindowStaysOnTopHint)
         self.show()
 
     def closeEvent(self, event):

@@ -1,9 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QSystemTrayIcon, QMenu, QAction, QMainWindow
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QSystemTrayIcon, QMenu, QMainWindow
 
 from src.app_instance_config import app_instance_config
 
-from PyQt5.QtGui import QIcon
+from PyQt6.QtGui import QIcon
 
 from src.util.message_util import MessageUtil
 from src.widget.app_mini import FloatingBall
@@ -108,7 +108,7 @@ class MainWindow(QMainWindow):
         # 悬浮球退出
         self.floating_ball.close()
         self.is_floating_ball_visible = False
-        if reason == QSystemTrayIcon.DoubleClick:
+        if reason == QSystemTrayIcon.ActivationReason.DoubleClick:
             logger.info("---- 双击任务栏托盘，打开窗口 ----")
             self.show()
 

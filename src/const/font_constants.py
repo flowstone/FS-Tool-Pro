@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QColor, QFont
+from PyQt6.QtGui import QColor, QFont
 
 
 def create_font(size: int, bold: bool = False, weight: int = 50, italic: bool = False) -> QFont:

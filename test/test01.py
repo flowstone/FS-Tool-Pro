@@ -1,7 +1,7 @@
 import sys
 import psutil
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLabel
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLabel
+from PyQt6.QtCore import QThread, pyqtSignal
 
 
 def get_open_ports():
@@ -74,4 +74,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = PortViewerApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

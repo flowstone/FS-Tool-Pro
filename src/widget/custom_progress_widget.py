@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QProgressBar
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QProgressBar
+from PyQt6.QtCore import Qt
 
 
 class CustomProgressBar(QProgressBar):
@@ -8,7 +8,7 @@ class CustomProgressBar(QProgressBar):
         self.setValue(0)
         self.setMinimum(0)
         self.setMaximum(100)
-        self.setAlignment(Qt.AlignCenter)
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setStyleSheet("""
             QProgressBar {
                 border-radius: 5px;

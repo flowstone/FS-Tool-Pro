@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QMenuBar, QMenu, QAction
+from PyQt6.QtGui import QAction
+from PyQt6.QtWidgets import QMenuBar, QMenu
 from src.const.fs_constants import FsConstants
 import os
 from src.util.common_util import CommonUtil

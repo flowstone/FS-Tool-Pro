@@ -4,9 +4,9 @@ import sys
 import subprocess
 from threading import Thread
 
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLabel
-from PyQt5.QtCore import Qt, pyqtSignal, QTimer, QThread
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLabel
+from PyQt6.QtCore import Qt, pyqtSignal, QTimer, QThread
 from loguru import logger
 
 from src.const.color_constants import BLACK, BLUE
@@ -34,7 +34,7 @@ class FastSenderMiniApp(QWidget):
         self.layout = QVBoxLayout()
 
         title_label = QLabel(FsConstants.WINDOW_TITLE_FAST_SENDER_MINI)
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         self.layout.addWidget(title_label)
@@ -114,4 +114,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = FastSenderMiniApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

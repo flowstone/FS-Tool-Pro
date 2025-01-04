@@ -1,8 +1,8 @@
 import sys
 
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 from loguru import logger
 
 from src.const.fs_constants import FsConstants
@@ -23,7 +23,7 @@ class FastSenderToolApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_FAST_SENDER_TOOL)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
-        self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
 
         # 创建主布局
@@ -61,4 +61,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = FastSenderToolApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

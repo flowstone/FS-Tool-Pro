@@ -4,9 +4,9 @@ import sys
 import pillow_heif
 import whatimage
 from PIL import Image, ImageOps
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
+from PyQt6.QtCore import Qt, pyqtSignal, QThread
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
 from loguru import logger
 from pillow_heif import register_heif_opener
 
@@ -32,7 +32,7 @@ class HeicToJpgApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_IMAGE_HEIC_JPG)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
-        self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
         self.setFixedHeight(200)
         self.setFixedWidth(600)
@@ -42,7 +42,7 @@ class HeicToJpgApp(QWidget):
 
         layout = QVBoxLayout()
         title_label = QLabel("批量HEIC转JPG")
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         layout.addWidget(title_label)
@@ -210,4 +210,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = HeicToJpgApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

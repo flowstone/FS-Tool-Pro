@@ -1,7 +1,7 @@
 import os
 import sys
 
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtWidgets import QMessageBox
 
 from src.util.common_util import CommonUtil
 
@@ -32,7 +32,7 @@ def run_as_admin():
         )
         sys.exit(0)
     elif CommonUtil.check_mac_os():
-        from PyQt5.QtCore import QProcess
+        from PyQt6.QtCore import QProcess
         process = QProcess()
         script = f'do shell script "{sys.executable} {" ".join(sys.argv)}" with administrator privileges'
         process.start("osascript", ["-e", script])
@@ -45,13 +45,13 @@ def check_admin():
     # 检查管理员权限
     if not is_admin():
         msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Warning)
+        msg_box.setIcon(QMessageBox.Icon.Warning)
         msg_box.setWindowTitle("权限不足")
         msg_box.setText("此程序需要以管理员权限运行。是否重新以管理员权限启动？")
-        msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        result = msg_box.exec_()
+        msg_box.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        result = msg_box.exec()
 
-        if result == QMessageBox.Yes:
+        if result == QMessageBox.StandardButton.Yes:
             run_as_admin()
         #else:
             #sys.exit(0)

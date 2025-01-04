@@ -6,9 +6,9 @@ import string
 import sys
 
 from PIL import Image
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QVBoxLayout, QLineEdit, QPushButton, QFileDialog, QLabel, \
+from PyQt6.QtCore import Qt, pyqtSignal, QThread
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QApplication, QVBoxLayout, QLineEdit, QPushButton, QFileDialog, QLabel, \
     QWidget, QComboBox, QHBoxLayout
 from loguru import logger
 
@@ -114,7 +114,7 @@ class FileGeneratorApp(QWidget):
 
         layout = QVBoxLayout()
         title_label = QLabel("批量生成文件")
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         layout.addWidget(title_label)
@@ -235,4 +235,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = FileGeneratorApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

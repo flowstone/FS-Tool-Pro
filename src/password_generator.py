@@ -3,19 +3,19 @@ import random
 import string
 import pyperclip
 
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QApplication, QWidget, QLabel, QLineEdit, QCheckBox, QPushButton, QVBoxLayout, QHBoxLayout, QSpinBox
 )
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon
 
 from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from loguru import logger
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 
 class PasswordGeneratorThread(QThread):
     password_generated = pyqtSignal(str)
@@ -67,7 +67,7 @@ class PasswordGeneratorApp(QWidget):
 
         # 初始化界面元素
         title_label = QLabel("密码生成器")
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         
@@ -162,4 +162,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = PasswordGeneratorApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

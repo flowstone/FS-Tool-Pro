@@ -3,9 +3,9 @@ import os
 import sys
 import zlib
 
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PyQt6.QtCore import Qt, pyqtSignal, QThread
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QLabel, QFileDialog, QLineEdit, QTextEdit, QCheckBox
 )
@@ -101,7 +101,7 @@ class HashCalculatorApp(QWidget):
 
         # 文件选择布局
         title_label = QLabel("HASH校验")
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         layout.addWidget(title_label)
@@ -229,4 +229,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = HashCalculatorApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

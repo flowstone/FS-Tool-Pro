@@ -2,9 +2,9 @@ import os
 import sys
 
 from PIL import Image
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QPixmap, QIcon
-from PyQt5.QtWidgets import QApplication, QScrollArea, QWidget, QVBoxLayout, QPushButton, QLabel, QCheckBox, \
+from PyQt6.QtCore import Qt, pyqtSignal, QThread
+from PyQt6.QtGui import QPixmap, QIcon
+from PyQt6.QtWidgets import QApplication, QScrollArea, QWidget, QVBoxLayout, QPushButton, QLabel, QCheckBox, \
     QFileDialog, QHBoxLayout
 from loguru import logger
 
@@ -35,7 +35,7 @@ class ImageConvertApp(QWidget):
         # 主布局
         layout = QVBoxLayout()
         title_label = QLabel("图片格式转换")
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         layout.addWidget(title_label)
@@ -45,11 +45,11 @@ class ImageConvertApp(QWidget):
         self.upload_button = QPushButton("上传图片")
         self.upload_button.setObjectName("browse_button")
         self.upload_button.clicked.connect(self.upload_image)
-        layout.addWidget(self.upload_button, alignment=Qt.AlignCenter)
+        layout.addWidget(self.upload_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
         # 图片预览区域
         self.image_label = QLabel(self)
-        self.image_label.setAlignment(Qt.AlignCenter)
+        self.image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.image_label.setPixmap(QPixmap())  # 空图像预览
         self.image_label.setStyleSheet("border: 2px dashed #999999; padding: 10px; margin-top: 20px;")
         layout.addWidget(self.image_label)
@@ -107,7 +107,7 @@ class ImageConvertApp(QWidget):
             try:
                 self.preview_image = Image.open(self.image_path)
                 pixmap = QPixmap(self.image_path)
-                self.image_label.setPixmap(pixmap.scaled(FsConstants.PIC_CONVERSION_WINDOW_WIDTH, FsConstants.PIC_CONVERSION_WINDOW_WIDTH, Qt.KeepAspectRatio))
+                self.image_label.setPixmap(pixmap.scaled(FsConstants.PIC_CONVERSION_WINDOW_WIDTH, FsConstants.PIC_CONVERSION_WINDOW_WIDTH, Qt.AspectRatioMode.KeepAspectRatio))
             except Exception as e:
                 logger.error(f"显示图片时出错: {e}")
 
@@ -193,4 +193,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = ImageConvertApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

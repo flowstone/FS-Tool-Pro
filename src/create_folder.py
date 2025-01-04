@@ -2,9 +2,9 @@ import os
 import shutil
 import sys
 
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
+from PyQt6.QtCore import Qt, pyqtSignal, QThread
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
 from loguru import logger
 
 from src.const.color_constants import BLUE, BLACK
@@ -26,7 +26,7 @@ class CreateFolderApp(QWidget):
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_CREATE_FOLDER} ----")
         self.setWindowTitle(FsConstants.WINDOW_TITLE_CREATE_FOLDER)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
 
         # 设置窗口背景色为淡灰色
         self.setAutoFillBackground(True)
@@ -36,7 +36,7 @@ class CreateFolderApp(QWidget):
 
         layout = QVBoxLayout()
         title_label = QLabel("批量生成文件夹")
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         layout.addWidget(title_label)
@@ -200,4 +200,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = CreateFolderApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

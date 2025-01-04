@@ -1,8 +1,8 @@
 import sys
 
-from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction, QApplication
-from PyQt5.QtGui import QIcon
+from PyQt6.QtCore import pyqtSignal, QObject
+from PyQt6.QtWidgets import QSystemTrayIcon, QMenu, QApplication
+from PyQt6.QtGui import QIcon, QAction
 from loguru import logger
 from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants

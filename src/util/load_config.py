@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QSettings
+from PyQt6.QtCore import QSettings
 from loguru import logger
 
 from src.const.fs_constants import FsConstants
@@ -11,7 +11,7 @@ def get_sqlite_path():
     from src.util.common_util import CommonUtil
 
     # 创建 QSettings 对象
-    settings = QSettings(CommonUtil.get_resource_path(FsConstants.APP_INI_FILE), QSettings.IniFormat)
+    settings = QSettings(CommonUtil.get_resource_path(FsConstants.APP_INI_FILE), QSettings.Format.IniFormat)
 
     # 读取设置
     sqlite_path = settings.value("SQLite/path", "")

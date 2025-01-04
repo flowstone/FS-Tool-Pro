@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt6.QtCore import QObject, pyqtSignal
 from loguru import logger
 from src.util.sqlite_connection_pool import SQLiteConnectionPool
 

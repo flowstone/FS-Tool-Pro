@@ -3,11 +3,11 @@ import os
 import socket
 import threading
 
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import (
     QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QFileDialog, QListWidget, QSplitter
 )
-from PyQt5.QtCore import Qt, QThread, pyqtSignal
+from PyQt6.QtCore import Qt, QThread, pyqtSignal
 
 from src.const.color_constants import BLACK, BLUE
 from src.const.font_constants import FontConstants
@@ -167,7 +167,7 @@ class FastSenderApp(QWidget):
         self.setGeometry(100, 100, 800, 600)
 
         title_label = QLabel(FsConstants.WINDOW_TITLE_FAST_SENDER)
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
 
@@ -190,7 +190,7 @@ class FastSenderApp(QWidget):
         log_layout.addWidget(self.log_area)
 
         # 使用 QSplitter 分割设备列表和日志
-        splitter = QSplitter(Qt.Horizontal, self)
+        splitter = QSplitter(Qt.Orientation.Horizontal, self)
         splitter.addWidget(self.wrap_in_widget(device_layout))
         splitter.addWidget(self.wrap_in_widget(log_layout))
         splitter.setSizes([200, 600])  # 初始分割比例
@@ -365,4 +365,4 @@ if __name__ == "__main__":
     window = FastSenderApp()
     window.show()
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QFontDatabase
+from PyQt6.QtGui import QFontDatabase
 from loguru import logger
 # 加载外部字体
 def load_external_font(font_path):

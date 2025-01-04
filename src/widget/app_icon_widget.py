@@ -1,7 +1,7 @@
 # app_icon_widget.py
-from PyQt5.QtCore import pyqtSignal, Qt, QPropertyAnimation, QEasingCurve
-from PyQt5.QtGui import QPixmap, QColor
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsColorizeEffect
+from PyQt6.QtCore import pyqtSignal, Qt, QPropertyAnimation, QEasingCurve
+from PyQt6.QtGui import QPixmap, QColor
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsColorizeEffect
 
 
 class AppIconWidget(QWidget):
@@ -26,12 +26,12 @@ class AppIconWidget(QWidget):
         # 设置固定大小，确保图片自适应显示
         self.icon_label.setFixedSize(80, 80)  # 设置固定的图标显示大小
         self.icon_label.setPixmap(pixmap)
-        self.icon_label.setAlignment(Qt.AlignCenter)  # 图标居中显示
+        self.icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # 图标居中显示
         self.icon_label.setScaledContents(True)  # 让图片按QLabel大小缩放
 
         # 创建第二个 QLabel 用于显示名称
         self.name_label = QLabel(name, self)
-        self.name_label.setAlignment(Qt.AlignCenter)  # 名称居中显示
+        self.name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # 名称居中显示
         self.name_label.setStyleSheet("font-size: 14px; color: #333;")  # 设置字体大小和颜色
         self.name_label.setMargin(0)  # 去除内边距，确保文字紧贴图标
 
@@ -46,7 +46,7 @@ class AppIconWidget(QWidget):
         self.setLayout(layout)
 
         # 设置鼠标样式
-        self.setCursor(Qt.PointingHandCursor)  # 设置鼠标样式为手指图标
+        self.setCursor(Qt.CursorShape.PointingHandCursor)  # 设置鼠标样式为手指图标
 
         # 设置固定大小
         self.setFixedSize(100, 120)  # 设置整个小部件的固定大小（宽度与图标相同，高度适合图标和名称）
@@ -59,7 +59,7 @@ class AppIconWidget(QWidget):
         # 创建颜色动画
         self.color_animation = QPropertyAnimation(self.color_effect, b"color")
         self.color_animation.setDuration(200)  # 动画时长 200 毫秒
-        self.color_animation.setEasingCurve(QEasingCurve.InOutQuad)
+        self.color_animation.setEasingCurve(QEasingCurve.Type.InOutQuad)
 
     def mousePressEvent(self, event):
         """鼠标按下时改变颜色"""

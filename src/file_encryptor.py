@@ -5,9 +5,9 @@ from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto.Protocol.KDF import PBKDF2
 from Crypto.Util.Padding import pad, unpad
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PyQt6.QtCore import Qt, pyqtSignal, QThread
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import (
     QApplication, QLabel, QVBoxLayout, QLineEdit, QPushButton, QFileDialog, QWidget, QComboBox, QHBoxLayout
 )
 from loguru import logger
@@ -129,7 +129,7 @@ class FileEncryptorApp(QWidget):
 
         # 应用标题
         title_label = QLabel("批量文件加密")
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         layout.addWidget(title_label)
@@ -171,7 +171,7 @@ class FileEncryptorApp(QWidget):
         # 密码输入和显示密码按钮布局
         password_input_layout = QHBoxLayout()
         self.password_input = QLineEdit()
-        self.password_input.setEchoMode(QLineEdit.Password)
+        self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
         self.password_input.setPlaceholderText("请输入密码 (至少8位)")
         password_input_layout.addWidget(self.password_input)
 
@@ -308,15 +308,15 @@ class FileEncryptorApp(QWidget):
         super().closeEvent(event)
 
     def toggle_password_visibility(self):
-        if self.password_input.echoMode() == QLineEdit.Password:
-            self.password_input.setEchoMode(QLineEdit.Normal)
+        if self.password_input.echoMode() == QLineEdit.EchoMode.Password:
+            self.password_input.setEchoMode(QLineEdit.EchoMode.Normal)
             self.show_password_button.setText("隐藏密码")
         else:
-            self.password_input.setEchoMode(QLineEdit.Password)
+            self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
             self.show_password_button.setText("显示密码")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = FileEncryptorApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

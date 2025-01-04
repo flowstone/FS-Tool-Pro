@@ -3,9 +3,9 @@ import sys
 
 import psutil
 import requests
-from PyQt5.QtCore import QThread, pyqtSignal, Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PyQt6.QtCore import QThread, pyqtSignal, Qt
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLabel
 )
 from loguru import logger
@@ -191,7 +191,7 @@ class IpInfoApp(QWidget):
         self.setGeometry(100, 100, 500, 400)
 
         title_label = QLabel(FsConstants.WINDOW_TITLE_IP_INFO)
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet(f"color: {BLACK.name()};")
         title_label.setFont(FontConstants.H1)
         self.text_area = QTextEdit()
@@ -249,4 +249,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = IpInfoApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

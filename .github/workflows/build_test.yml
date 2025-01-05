@@ -6,6 +6,9 @@ on:
   push:
     branches: [ "main" ]
 
+env:
+  DISABLE_BUILD_JOB: true  # 可以将其设置为 true 来禁用这个job
+
 permissions:
   contents: read
 
@@ -37,7 +40,8 @@ jobs:
           name: FSToolPro-macOS-x86_64
 
   build-macos-arm64:
-    runs-on: macos-13-xlarge
+    runs-on: macos-13
+    if: ${{ env.DISABLE_BUILD_JOB == false }}  # 检查环境变量是否为 false
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.9

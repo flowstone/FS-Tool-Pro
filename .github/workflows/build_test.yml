@@ -6,14 +6,11 @@ on:
   push:
     branches: [ "main" ]
 
-env:
-  DISABLE_BUILD_JOB: true  # 可以将其设置为 true 来禁用这个job
 
 permissions:
   contents: read
 
 jobs:
-
   build-macos-x86:
     runs-on: macos-13
     steps:
@@ -38,32 +35,6 @@ jobs:
         with:
           path: ~/FSToolPro.tar
           name: FSToolPro-macOS-x86_64
-
-  build-macos-arm64:
-    runs-on: macos-13
-    if: ${{ env.DISABLE_BUILD_JOB == false }}  # 检查环境变量是否为 false
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.9"
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Build Package
-        run: nuitka ./FSToolPro.py
-      - name: Prepare Package for Upload
-        run: |
-          mv FSToolPro.app ~/FSToolPro.app
-          cd ~
-          tar cvf FSToolPro.tar FSToolPro.app
-      - name: Upload Package
-        uses: actions/upload-artifact@v4
-        with:
-          path: ~/FSToolPro.tar
-          name: FSToolPro-macOS-arm64
 
   build-windows:
     runs-on: windows-latest

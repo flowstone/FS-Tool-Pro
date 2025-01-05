@@ -1,7 +1,6 @@
 # Compilation mode, support OS-specific options
 # nuitka-project-if: {OS} in ("Windows", "Linux", "FreeBSD"):
-#    nuitka-project: --onefile
-#    nuitka-project: --mode=app
+#    nuitka-project: --standalone
 # nuitka-project-else:
 #    nuitka-project: --standalone
 
@@ -54,6 +53,7 @@ def main():
             stylesheet = file.read()
             # 为应用程序设置样式表
             app.setStyleSheet(stylesheet)
+    #app.setStyle("WindowsVista")
 
     # 加载外部字体
     font_path = CommonUtil.get_resource_path(FsConstants.FONT_FILE_PATH)

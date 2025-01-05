@@ -27,7 +27,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Build Package
-        run: ARCH_FLAGS=--macos-target-arch=x86_64 make all
+        run: nuitka ./FSToolPro.py
       - name: Prepare Package for Upload
         run: |
           mv FSToolPro.app ~/FSToolPro.app
@@ -53,7 +53,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Build Package
-        run: ARCH_FLAGS=--macos-target-arch=arm64 make all
+        run: nuitka ./FSToolPro.py
       - name: Prepare Package for Upload
         run: |
           mv FSToolPro.app ~/FSToolPro.app
@@ -80,7 +80,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Build Package
-      run: .\Build.ps1
+      run: nuitka FSToolPro.py
     - name: Upload Package
       uses: actions/upload-artifact@v4
       with:

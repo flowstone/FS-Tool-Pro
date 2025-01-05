@@ -2,11 +2,23 @@
 # nuitka-project-if: {OS} in ("Windows", "Linux", "Darwin", "FreeBSD"):
 #    nuitka-project: --onefile
 # nuitka-project-else:
-#    nuitka-project: --mode=standalonealone
+#    nuitka-project: --mode=standalone
 
 # The PySide6 plugin covers qt-plugins
-# nuitka-project: --enable-plugin=PySide6
-# nuitka-project: --include-qt-plugins=qml
+# nuitka-project: --enable-plugin=pyside6
+
+# nuitka-project: --include-data-dir={MAIN_DIRECTORY}/resources=resources
+# nuitka-project: --include-data-files={MAIN_DIRECTORY}/app.ini=app.ini
+
+# nuitka-project-if: {OS} == "Windows":
+#   nuitka-project: --windows-icon-from-ico={MAIN_DIRECTORY}/resources/images/app.ico
+#   nuitka-project: --output-filename=FS-Tool-Pro-windows-x86_64.exe
+# nuitka-project-if: {OS} == "Linux":
+#   nuitka-project: --output-filename=FS-Tool-Pro-linux-x86_64.bin
+# nuitka-project-if: {OS} == "Darwin":
+#   nuitka-project: --macos-create-app-bundle
+#   nuitka-project: --macos-app-icon={MAIN_DIRECTORY}/resources/images/app.icns
+
 
 import sys
 

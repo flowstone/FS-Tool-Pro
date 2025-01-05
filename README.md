@@ -1,9 +1,9 @@
 # FS Tool Pro
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue)
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue)
-![PyQt5](https://img.shields.io/badge/PyQt5-5.15%2B-orange)
+![PySide6](https://img.shields.io/badge/PySide-6.8.1%2B-orange)
 
-一个轻量级的个人工具，基于 **PyQt5** 构建
+一个轻量级的个人工具，基于 **PySide6** 构建
 
 ---
 
@@ -53,7 +53,7 @@
 
 感谢以下开源库的支持：
 
-- [PyQt5](https://www.riverbankcomputing.com/software/pyqt/intro)
+- [PySide6](https://doc.qt.io/qtforpython-6/)
 - [loguru](https://github.com/Delgan/loguru)
 - [pyperclip](https://github.com/asweigart/pyperclip)
 

@@ -101,7 +101,6 @@ class PortScannerApp(QWidget):
         self.layout.addWidget(title_label)
         # 标题
         self.description_label = QLabel("输入目标 IP 和端口范围，点击按钮开始扫描")
-        self.description_label.setFont(FontConstants.ITALIC_SMALL)
 
         # 输入目标 IP
         self.ip_input_label = QLabel("目标 IP 地址:")

@@ -121,7 +121,7 @@ class PortKillerApp(QWidget):
         self.progress_bar = CustomProgressBar()
         self.progress_bar.hide()
         button_layout = QHBoxLayout()
-        self.admin_button = QPushButton("授权(Mac)")
+        self.admin_button = QPushButton("授权")
         self.admin_button.clicked.connect(self.get_admin)
         # 搜索按钮
         self.search_button = QPushButton("搜索")
@@ -129,7 +129,9 @@ class PortKillerApp(QWidget):
         # 停止按钮
         self.kill_button = QPushButton("停止")
         self.kill_button.clicked.connect(self.kill_port)
-        button_layout.addWidget(self.admin_button)
+        # 针对Mac添加一个按钮
+        if CommonUtil.check_mac_os():
+            button_layout.addWidget(self.admin_button)
         button_layout.addWidget(self.search_button)
         button_layout.addWidget(self.kill_button)
         # 显示端口列表

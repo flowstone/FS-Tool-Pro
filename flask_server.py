@@ -1,12 +1,14 @@
-from flask import Flask, render_template, request, send_from_directory, jsonify
+from flask import Flask, render_template, request, send_from_directory
 import os
-from werkzeug.utils import secure_filename
+from multiprocessing import Event, Queue
+
 from loguru import logger
 from src.util.common_util import CommonUtil
 
 app = Flask(__name__)
 SAVE_DIR = CommonUtil.get_flask_mini_dir()
 os.makedirs(SAVE_DIR, exist_ok=True)
+shutdown_event = Event()
 
 # 存储上传的文本消息
 uploaded_texts = []
@@ -67,6 +69,19 @@ def send_text():
 def uploaded_file(filename):
     return send_from_directory(SAVE_DIR, filename)
 
+def run_flask(queue: Queue):
+    """启动 Flask 服务并通过队列传递状态信息"""
+    from werkzeug.serving import make_server
+    server = make_server("0.0.0.0", 5678, app)
+    server.timeout = 1  # 设置超时时间，避免 handle_request 无限阻塞
 
-if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5678)
+    queue.put("Flask service started")  # 通知主进程服务已启动
+    while not shutdown_event.is_set():
+        try:
+            server.handle_request()
+        except Exception as e:
+            logger.error(f"Error in Flask service: {e}")
+            queue.put(f"Error: {e}")  # 将错误发送到主进程
+
+    server.shutdown()
+    queue.put("Flask service stopped")  # 通知主进程服务已停止

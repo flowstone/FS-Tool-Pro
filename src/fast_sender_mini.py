@@ -2,12 +2,15 @@ import logging
 import os
 import sys
 import subprocess
+from threading import Thread
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLabel
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal, QTimer
 from loguru import logger
 
+from multiprocessing import Process, Queue, Event
+from flask_server import run_flask, shutdown_event
 from src.const.color_constants import BLACK, BLUE
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
@@ -23,8 +26,9 @@ class FastSenderMiniApp(QWidget):
         super().__init__()
         self.init_ui()
 
-        # Flask 服务进程
+        # Flask 服务进程和队列
         self.flask_process = None
+        self.queue = Queue()
 
 
     def init_ui(self):
@@ -67,32 +71,53 @@ class FastSenderMiniApp(QWidget):
         self.setLayout(self.layout)
 
     def start_flask(self):
-        """启动 Flask 服务"""
-        if self.flask_process is None:
+        """启动 Flask 服务进程"""
+        if self.flask_process is None or not self.flask_process.is_alive():
             self.log("正在启动 Flask 服务...")
-            self.flask_process = subprocess.Popen(
-                #[sys.executable, 'flask_server.py'],  # 使用 sys.executable 启动 Flask
-                [sys.executable, '-m', 'flask', 'run', '--host', '0.0.0.0', '--port', '5678', '--debug'],  # 使用 flask run 命令
-            )
+            self.flask_process = Process(target=run_flask, args=(self.queue,))
+            self.flask_process.start()
             self.log("Flask 服务已启动。")
             self.log(f"服务器根目录: {CommonUtil.get_flask_mini_dir()}")
             self.log("127.0.0.1:5678")
             self.log(f"{CommonUtil.get_local_ip()}:5678")
+            self.start_button.setEnabled(False)
+            self.stop_button.setEnabled(True)
+            self.monitor_flask_status()
         else:
             self.log("Flask 服务已经在运行中。")
-        self.start_button.setEnabled(False)  # 禁用按钮，防止重复点击
-        self.stop_button.setEnabled(True)  # 启用关闭按钮
+
 
     def stop_flask(self):
-        """停止 Flask 服务"""
-        if self.flask_process:
-            self.flask_process.terminate()
-            self.flask_process = None
-            self.log("Flask 服务已停止。")
-        else:
-            self.log("Flask 服务没有在运行。")
-        self.start_button.setEnabled(True)  # 启用启动按钮
-        self.stop_button.setEnabled(False)  # 禁用关闭按钮
+         try:
+            if self.flask_process and self.flask_process.is_alive():
+                self.log("正在停止 Flask 服务...")
+                shutdown_event.set()
+                # 等待进程结束
+                #self.flask_process.join(timeout=1)
+
+                if self.flask_process.is_alive():
+                    self.log("强制终止 Flask 服务...")
+                    self.flask_process.terminate()
+                self.flask_process = None
+                shutdown_event.clear()
+                self.log("Flask 服务已停止。")
+            else:
+                self.log("Flask 服务没有运行。")
+         except Exception as e:
+            self.log(f"停止 Flask 服务时发生错误: {e}")
+         finally:
+            self.start_button.setEnabled(True)
+            self.stop_button.setEnabled(False)
+
+    def monitor_flask_status(self):
+        """监控 Flask 服务状态"""
+        if not self.queue.empty():
+            message = self.queue.get()
+            self.log(message)
+
+        # 如果 Flask 服务仍在运行，继续监控
+        if self.flask_process and self.flask_process.is_alive():
+            QTimer.singleShot(100, self.monitor_flask_status)
 
     def log(self, message):
         """记录日志信息到文本框"""
@@ -100,11 +125,10 @@ class FastSenderMiniApp(QWidget):
         self.log_text.append(message)
 
     def closeEvent(self, event):
-        """在关闭 PyQt 窗口时，关闭 Flask 服务"""
+        """关闭窗口时确保 Flask 服务停止"""
+        self.stop_flask()
         # 触发关闭信号（如果需要）
         self.closed_signal.emit()
-        if hasattr(self, 'flask_process'):
-            self.flask_process.terminate()  # 关闭 Flask 服务
         event.accept()
 
 if __name__ == "__main__":

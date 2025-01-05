@@ -11,17 +11,17 @@ class CustomProgressBar(QProgressBar):
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setStyleSheet("""
             QProgressBar {
-                border-radius: 5px;
                 text-align: center;
                 font-size: 14px;
                 color: black;
+                font-weight: bold;
+                height: 30px;
             }
             QProgressBar::chunk {
                 border-radius: 5px;
+                border: 2px solid transparent;  /* 边框设置为透明 */
                 background-color: #00cc66;
-                font-size: 14px;
                 width: 10px;
-                margin: 1px;
             }
         """)
 
@@ -42,26 +42,46 @@ class CustomProgressBar(QProgressBar):
         self.setValue(value)
         if value < 50:
             self.setStyleSheet("""
-            
+                QProgressBar {
+                    text-align: center;
+                    font-size: 14px;
+                    color: black;
+                    font-weight: bold;
+                    height: 30px;
+                }
                 QProgressBar::chunk {
                     border-radius: 5px;
-                    font-size: 14px;
+                    border: 2px solid transparent;  /* 边框设置为透明 */
                     background-color: #ff6666;  /* 红色 */
                 }
             """)
         elif value < 80:
             self.setStyleSheet("""
+                QProgressBar {
+                    text-align: center;
+                    font-size: 14px;
+                    color: black;
+                    font-weight: bold;
+                    height: 30px;
+                }
                 QProgressBar::chunk {
                     border-radius: 5px;
-                    font-size: 14px;
+                    border: 2px solid transparent;  /* 边框设置为透明 */
                     background-color: #ffcc00;  /* 黄色 */
                 }
             """)
         else:
             self.setStyleSheet("""
+                QProgressBar {
+                    text-align: center;
+                    font-size: 14px;
+                    color: black;
+                    font-weight: bold;
+                    height: 30px;
+                }
                 QProgressBar::chunk {
                     border-radius: 5px;
-                    font-size: 14px;
+                    border: 2px solid transparent;  /* 边框设置为透明 */
                     background-color: #00cc66;  /* 绿色 */
                 }
             """)

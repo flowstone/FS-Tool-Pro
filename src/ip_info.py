@@ -192,8 +192,7 @@ class IpInfoApp(QWidget):
 
         title_label = QLabel(FsConstants.WINDOW_TITLE_IP_INFO)
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         self.text_area = QTextEdit()
         self.text_area.setReadOnly(True)
         self.progress_bar = CustomProgressBar()

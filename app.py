@@ -29,7 +29,7 @@
 
 import sys
 
-from PySide6.QtGui import QFont
+from PySide6.QtGui import QFont, QPalette
 from PySide6.QtWidgets import QApplication
 from src.main_window import MainWindow
 from src.util.load_db import LoadDB
@@ -53,8 +53,9 @@ def main():
             stylesheet = file.read()
             # 为应用程序设置样式表
             app.setStyleSheet(stylesheet)
-    #app.setStyle("WindowsVista")
-
+    # 获取系统的默认调色板
+    #palette = QPalette()
+    #app.setPalette(palette)
     # 加载外部字体
     font_path = CommonUtil.get_resource_path(FsConstants.FONT_FILE_PATH)
     font_family = load_external_font(font_path)

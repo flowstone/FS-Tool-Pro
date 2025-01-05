@@ -32,8 +32,6 @@ class AppIconWidget(QWidget):
         # 创建第二个 QLabel 用于显示名称
         self.name_label = QLabel(name, self)
         self.name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # 名称居中显示
-        self.name_label.setStyleSheet("font-size: 14px; color: #333;")  # 设置字体大小和颜色
-        self.name_label.setMargin(0)  # 去除内边距，确保文字紧贴图标
 
         # 设置名称标签最大宽度为图片宽度
         self.name_label.setMaximumWidth(100)  # 设置最大宽度与图片一致

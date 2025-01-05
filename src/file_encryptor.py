@@ -130,16 +130,15 @@ class FileEncryptorApp(QWidget):
         # 应用标题
         title_label = QLabel("批量文件加密")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
 
         # 应用说明
-        desc_label = QLabel("通过 AES 加密算法加密或解密指定文件夹内的所有文件。\n"
+        description_label = QLabel("通过 AES 加密算法加密或解密指定文件夹内的所有文件。\n"
                             "支持密钥长度 128/192/256 位，请输入密码进行加密操作。")
-        desc_label.setStyleSheet(f"color: {BLUE.name()};")
-        desc_label.setWordWrap(True)
-        layout.addWidget(desc_label)
+        description_label.setFont(FontConstants.ITALIC_SMALL)
+        description_label.setWordWrap(True)
+        layout.addWidget(description_label)
 
         folder_label = QLabel("选择目录")
         layout.addWidget(folder_label)

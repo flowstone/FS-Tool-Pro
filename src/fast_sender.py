@@ -168,12 +168,12 @@ class FastSenderApp(QWidget):
 
         title_label = QLabel(FsConstants.WINDOW_TITLE_FAST_SENDER)
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
 
         # 说明文本
         description_label = QLabel("多设备之间传输文本/文件(暂不支持Win->MacOS)")
-        description_label.setStyleSheet(f"color: {BLUE.name()};")
+        description_label.setFont(FontConstants.ITALIC_SMALL)
+
         # 左侧设备列表
         self.device_list = QListWidget(self)
         self.device_list_label = QLabel("发现的设备:")

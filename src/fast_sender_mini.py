@@ -35,13 +35,12 @@ class FastSenderMiniApp(QWidget):
 
         title_label = QLabel(FsConstants.WINDOW_TITLE_FAST_SENDER_MINI)
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         self.layout.addWidget(title_label)
 
         # 说明文本
         description_label = QLabel("一个轻量级服务，通过浏览器上传文本/文件，分享给其它设备")
-        description_label.setStyleSheet(f"color: {BLUE.name()};")
+        description_label.setFont(FontConstants.ITALIC_SMALL)
         self.layout.addWidget(description_label)
 
         # 创建日志框

@@ -34,8 +34,7 @@ class RenameReplaceApp(QWidget):
         layout = QVBoxLayout()
         title_label = QLabel("批量修改文件/文件夹名")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
 
         folder_path_label = QLabel("选择文件夹：")

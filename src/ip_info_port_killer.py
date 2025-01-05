@@ -98,12 +98,11 @@ class PortKillerApp(QWidget):
 
         title_label = QLabel(FsConstants.WINDOW_TITLE_IP_INFO_PORT_KILLER)
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         self.layout.addWidget(title_label)
         # 标题
         self.description_label = QLabel("输入目标 IP 和端口范围，点击搜索按钮查看被占用的端口")
-        self.description_label.setStyleSheet(f"color: {BLUE.name()};")
+
 
         # 输入目标 IP
         self.ip_input_label = QLabel("目标 IP 地址:")

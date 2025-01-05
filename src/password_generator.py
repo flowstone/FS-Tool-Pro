@@ -68,8 +68,7 @@ class PasswordGeneratorApp(QWidget):
         # 初始化界面元素
         title_label = QLabel("密码生成器")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         
         self.label = QLabel("生成的密码:")
         self.generated_password = QLineEdit(self)

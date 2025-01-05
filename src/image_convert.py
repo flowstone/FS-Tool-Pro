@@ -36,8 +36,7 @@ class ImageConvertApp(QWidget):
         layout = QVBoxLayout()
         title_label = QLabel("图片格式转换")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
 
 

@@ -37,12 +37,10 @@ class CreateFolderApp(QWidget):
         layout = QVBoxLayout()
         title_label = QLabel("批量生成文件夹")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
         # 说明文本
-        description_label = QLabel("说明：根据输入的分割字符，取前部分创建文件夹，符合相关的文件都移动到对应文件夹中")
-        description_label.setStyleSheet(f"color: {BLUE.name()};")
+        description_label = QLabel("根据输入的分割字符，取前部分创建文件夹，符合相关的文件都移动到对应文件夹中")
         # 选择文件夹相关部件
         folder_path_label = QLabel("选择文件夹：")
         folder_path_layout = QHBoxLayout()

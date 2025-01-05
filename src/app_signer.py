@@ -32,8 +32,7 @@ class AppSignerApp(QWidget):
         title_label = QLabel("应用程序签名工具")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         #title_label.setStyleSheet("font-size: 24px; font-weight: bold; color: #333;")
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
 
 

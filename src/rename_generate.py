@@ -41,8 +41,7 @@ class RenameGenerateApp(QWidget):
         # 标题
         title_label = QLabel("批量随机文件/文件夹名")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
         # 文件夹选择
         folder_label = QLabel("选择文件夹：")

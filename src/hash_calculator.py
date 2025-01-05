@@ -102,8 +102,7 @@ class HashCalculatorApp(QWidget):
         # 文件选择布局
         title_label = QLabel("HASH校验")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
 
         file_label = QLabel("选择的文件:")

@@ -26,7 +26,7 @@ def scan_port(ip, port):
             if s.connect_ex((ip, port)) == 0:
                 return port
     except Exception as e:
-        print(f"Error scanning port {port}: {e}")  # 打印错误信息
+        logger.error(f"Error scanning port {port}: {e}")  # 打印错误信息
         return None
 
 def get_open_ports(target_ip, start_port, end_port, progress_callback, error_callback):
@@ -97,12 +97,11 @@ class PortScannerApp(QWidget):
         self.layout = QVBoxLayout(self)
         title_label = QLabel(FsConstants.WINDOW_TITLE_IP_INFO_PORT_SCANNER)
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         self.layout.addWidget(title_label)
         # 标题
         self.description_label = QLabel("输入目标 IP 和端口范围，点击按钮开始扫描")
-        self.description_label.setStyleSheet(f"color: {BLUE.name()};")
+        self.description_label.setFont(FontConstants.ITALIC_SMALL)
 
         # 输入目标 IP
         self.ip_input_label = QLabel("目标 IP 地址:")
@@ -159,6 +158,7 @@ class PortScannerApp(QWidget):
         except ValueError:
             self.result_box.append("错误: 端口范围格式不正确，请输入有效范围 (例如: 1-1000)！")
             return
+        self.description_label.setText("正在扫描端口，请稍候...")
 
         self.result_box.append(f"正在扫描目标 IP: {target_ip}, 端口范围: {start_port}-{end_port}...")
         self.result_box.append("这可能需要一些时间，请耐心等待。")
@@ -176,6 +176,8 @@ class PortScannerApp(QWidget):
         """显示扫描结果"""
         self.scan_button.setEnabled(True)
         self.progress_bar.hide()
+        self.description_label.setText("扫描端口结束...")
+
         if open_ports:
             self.result_box.append(f"发现以下打开的端口: {', '.join(map(str, open_ports))}")
         else:
@@ -185,6 +187,7 @@ class PortScannerApp(QWidget):
         """显示错误信息"""
         self.scan_button.setEnabled(True)
         self.progress_bar.hide()
+        self.description_label.setText("好像遇到问题了...")
         self.result_box.append(f"错误: {error_message}")
 
     def closeEvent(self, event):

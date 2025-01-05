@@ -43,12 +43,11 @@ class HeicToJpgApp(QWidget):
         layout = QVBoxLayout()
         title_label = QLabel("批量HEIC转JPG")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
         # 说明文本
         description_label = QLabel("说明：请选择HEIC文件所在的文件夹，系统将自动将其中的HEIC文件转换为JPG格式。")
-        description_label.setStyleSheet(f"color: {BLUE.name()};")
+        description_label.setFont(FontConstants.ITALIC_SMALL)
         description_label.setWordWrap(True)
         folder_path_label = QLabel("选择文件夹：")
         # 选择文件夹相关部件

@@ -108,8 +108,7 @@ class RSAKeyGeneratorApp(QWidget):
         layout = QVBoxLayout()
         title_label = QLabel("RSA密钥生成器")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
 
         layout.addLayout(key_settings_layout)

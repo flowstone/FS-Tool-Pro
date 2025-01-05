@@ -29,19 +29,15 @@ class StickyNoteApp(QWidget):
         self.text_edit.setPlaceholderText("请输入便签内容...")
         self.text_edit.setStyleSheet("""
             QTextEdit {
-                border: 2px solid lightgray;
                 border-radius: 5px;
                 padding: 10px;
-                background-color: white;
                 color: #333333;
             }
             QTextEdit::verticalScrollBar {
                 width: 10px;
-                background-color: #F0F0F0;
                 border-radius: 5px;
             }
             QTextEdit::verticalScrollBar::handle {
-                background-color: #888888;
                 border-radius: 5px;
                 min-height: 20px;
             }

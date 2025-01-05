@@ -42,6 +42,7 @@ class CustomProgressBar(QProgressBar):
         self.setValue(value)
         if value < 50:
             self.setStyleSheet("""
+            
                 QProgressBar::chunk {
                     border-radius: 5px;
                     font-size: 14px;

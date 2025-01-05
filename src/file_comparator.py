@@ -142,13 +142,12 @@ class FileComparatorApp(QWidget):
         layout = QVBoxLayout()
         title_label = QLabel("批量文件比较")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
 
-        self.label = QLabel("请选择源目录和目标目录进行文件比较")
-        self.label.setStyleSheet(f"color: {BLUE.name()};")
-        layout.addWidget(self.label)
+        description_label = QLabel("请选择源目录和目标目录进行文件比较")
+        description_label.setFont(FontConstants.ITALIC_SMALL)
+        layout.addWidget(description_label)
 
         self.source_label = QLabel("源目录: 未选择")
         layout.addWidget(self.source_label)
@@ -183,18 +182,7 @@ class FileComparatorApp(QWidget):
         layout.addWidget(self.compare_button)
 
         self.result_text = QTextEdit()
-        self.result_text.setStyleSheet("""
-            QTextEdit {
-                background-color: white;
-                border: 1px solid #388E3C;
-                border-radius: 5px;
-                padding: 10px;
-                font-size: 14px;
-            }
-            QTextEdit:read-only {
-                background-color: #f9f9f9;
-            }
-        """)
+
         self.result_text.setReadOnly(True)
         layout.addWidget(self.result_text)
         self.setLayout(layout)

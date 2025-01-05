@@ -1,8 +1,15 @@
 # Compilation mode, support OS-specific options
-# nuitka-project-if: {OS} in ("Windows", "Linux", "Darwin", "FreeBSD"):
+# nuitka-project-if: {OS} in ("Windows", "Linux", "FreeBSD"):
 #    nuitka-project: --onefile
+#    nuitka-project: --mode=app
 # nuitka-project-else:
-#    nuitka-project: --mode=standalone
+#    nuitka-project: --standalone
+
+# Debugging options, controlled via environment variable at compile time.
+# nuitka-project-if: {OS} == "Windows" and os.getenv("DEBUG_COMPILATION", "no") == "yes":
+#    nuitka-project: --windows-console-mode=hide
+# nuitka-project-else:
+#    nuitka-project: --windows-console-mode=disable
 
 # The PySide6 plugin covers qt-plugins
 # nuitka-project: --enable-plugin=pyside6
@@ -11,13 +18,14 @@
 # nuitka-project: --include-data-files={MAIN_DIRECTORY}/app.ini=app.ini
 
 # nuitka-project-if: {OS} == "Windows":
-#   nuitka-project: --windows-icon-from-ico={MAIN_DIRECTORY}/resources/images/app.ico
-#   nuitka-project: --output-filename=FS-Tool-Pro-windows-x86_64.exe
+#    nuitka-project: --windows-icon-from-ico={MAIN_DIRECTORY}/resources/images/app.ico
+#    nuitka-project: --output-filename=FS-Tool-Pro-windows-x86_64.exe
 # nuitka-project-if: {OS} == "Linux":
-#   nuitka-project: --output-filename=FS-Tool-Pro-linux-x86_64.bin
+#    nuitka-project: ---linux-icon={MAIN_DIRECTORY}/resources/images/app.ico
+#    nuitka-project: --output-filename=FS-Tool-Pro-linux-x86_64.bin
 # nuitka-project-if: {OS} == "Darwin":
-#   nuitka-project: --macos-create-app-bundle
-#   nuitka-project: --macos-app-icon={MAIN_DIRECTORY}/resources/images/app.icns
+#    nuitka-project: --macos-create-app-bundle
+#    nuitka-project: --macos-app-icon={MAIN_DIRECTORY}/resources/images/app.icns
 
 
 import sys

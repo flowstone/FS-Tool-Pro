@@ -1,19 +1,27 @@
-# Nuitka options. These determine compilation settings based on the current OS.
+# macOS 打包
 # nuitka-project-if: {OS} == "Darwin":
+# 打包成.app程序时，是文件夹类型，只能使用 standalone
 #    nuitka-project: --standalone
+# macOS 必须参数
 #    nuitka-project: --macos-create-app-bundle
 #    nuitka-project: --macos-app-icon={MAIN_DIRECTORY}/resources/images/app.icns
+
+# Windows 打包成单文件exe
 # nuitka-project-if: {OS} == "Windows":
 #    nuitka-project: --onefile
 #    nuitka-project: --windows-icon-from-ico={MAIN_DIRECTORY}/resources/images/app.ico
+# 特有配置  禁用命令窗口
 #    nuitka-project: --windows-console-mode=disable
+
+# 打包单文件的系统
 # nuitka-project-if: {OS} in ("Linux", "FreeBSD", "OpenBSD"):
 #    nuitka-project: --onefile
 
-# These are standard options that are needed on all platforms.
+# 引入插件PySide6
 # nuitka-project: --plugin-enable=pyside6
-
+# 添加数据目录
 # nuitka-project: --include-data-dir={MAIN_DIRECTORY}/resources=resources
+# 添加数据文件
 # nuitka-project: --include-data-files={MAIN_DIRECTORY}/app.ini=app.ini
 
 

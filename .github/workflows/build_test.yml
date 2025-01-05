@@ -1,126 +1,89 @@
-name: Win/MacOS Package
+# This workflow will install Python dependencies and then build NUSGet for all platforms
+
+name: Python application
 
 on:
   push:
-    tags:
-      - 'v*.*.*'  # 这个通配符表示匹配任何推送的tag，你也可以指定具体格式的tag，比如 'v*.*.*' 表示以v开头的语义化版本号格式的tag
+    branches: [ "main" ]
+
+permissions:
+  contents: read
 
 jobs:
-  win_release:
+
+  build-macos-x86:
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Build Package
+        run: ARCH_FLAGS=--macos-target-arch=x86_64 make all
+      - name: Prepare Package for Upload
+        run: |
+          mv FSToolPro.app ~/FSToolPro.app
+          cd ~
+          tar cvf FSToolPro.tar FSToolPro.app
+      - name: Upload Package
+        uses: actions/upload-artifact@v4
+        with:
+          path: ~/FSToolPro.tar
+          name: FSToolPro-macOS-x86_64
+
+  build-macos-arm64:
+    runs-on: macos-13-xlarge
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Build Package
+        run: ARCH_FLAGS=--macos-target-arch=arm64 make all
+      - name: Prepare Package for Upload
+        run: |
+          mv FSToolPro.app ~/FSToolPro.app
+          cd ~
+          tar cvf FSToolPro.tar FSToolPro.app
+      - name: Upload Package
+        uses: actions/upload-artifact@v4
+        with:
+          path: ~/FSToolPro.tar
+          name: FSToolPro-macOS-arm64
+
+  build-windows:
     runs-on: windows-latest
-    outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}  # 输出 GitHub Release 的上传 URL
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3  # 检出当前仓库代码
-    
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-           python-version: '3.9'  # 根据项目实际依赖的Python版本进行调整
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt  # 安装项目依赖的Python库
-
-      - name: Install PyInstaller
-        run: pip install pyinstaller  # 安装PyInstaller打包工具
-
-      - name: Build application with PyInstaller
-        run: pyinstaller --name "FS-Tool-Pro" --onefile --window  --add-data "${{ env.Python_ROOT_DIR }}\lib\site-packages\PySide6\plugins;./PySide6/plugins" --add-data "resources;resources" --add-data "app.ini;."  --collect-all PySide6 --icon=resources/images/app.ico app.py
-        #working-directory: ${{ github.repository }}  # 设置工作目录为仓库根目录
-
-      - name: Build application portable with PyInstaller
-        run: pyinstaller --name "FS-Tool-Pro" --onedir --window --distpath dist_portable --add-data "${{ env.Python_ROOT_DIR }}\lib\site-packages\PySide6\plugins;./PySide6/plugins" --add-data "resources;resources" --add-data "app.ini;."  --collect-all PySide6 --icon=resources/images/app.ico app.py
-        #working-directory: ${{ github.repository }}  # 设置工作目录为仓库根目录
-      - name: Zip the generated files (Windows)
-        run: Compress-Archive -Path dist_portable/* -DestinationPath FS-Tool-Pro.zip  # 将生成文件压缩为zip包
-
-
-      - name: Create release
-        uses: actions/create-release@v1
-        id: create_release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用GitHub自动生成的token用于创建发布
-        with:
-          # 使用条件判断来确保根据触发事件动态选择 tag_name 和 name
-          tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
-          draft: false  # 是否为草稿，设为false表示直接发布
-          prerelease: false  # 是否为预发布版本，设为false表示正式发布
-
-      - name: Upload release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}  # 使用之前设置的环境变量
-          asset_path: dist/FS-Tool-Pro.exe  # 要上传的打包后的可执行文件路径，根据实际打包情况调整
-          asset_name: FS-Tool-Pro.exe  # 上传文件的名称，可按需调整
-          asset_content_type: application/octet-stream  # 文件类型，.exe文件一般用此类型
-
-      - name: Upload release portable asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}  # 使用之前设置的环境变量
-          asset_path: FS-Tool-Pro.zip
-          asset_name: FS-Tool-Pro-Portable.zip
-          asset_content_type: application/zip
-
-
-  mac_release:
-    needs: win_release
-    runs-on: macos-13 # macos13支持Intel平台，14之后默认是ARM平台，Intel平台要收费
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3  # 检出当前仓库代码
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-           python-version: '3.9'  # 根据项目实际依赖的Python版本进行调整
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt  # 安装项目依赖的Python库
-
-      - name: Install PyInstaller
-        run: pip install pyinstaller  # 安装PyInstaller打包工具
-
-      - name: Install create-dmg tool
-        run: |
-          brew install create-dmg
-        # 安装 create-dmg 工具
-
-      - name: Build application with PyInstaller
-        #run: pyinstaller --name "FS-Tool" --onefile --windowed --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/lib:./PyQt5/Qt/lib" --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/plugins:./PyQt5/Qt/plugins"   --add-data "resources:resources" --add-data "app.ini:." --collect-all PyQt5 --icon=resources/app.ico app.py
-        run: |
-          pyinstaller --name "FS-Tool-Pro" --onefile  --window   --add-data "resources:resources" --add-data "app.ini:." --icon=resources/images/app.ico ./app.py
-
-      - name: Create DMG file from .app (macOS)
-        run: |
-          create-dmg  "dist/FS-Tool-Pro.dmg"  "dist/FS-Tool-Pro.app"
-        # 使用 create-dmg 工具将 .app 打包成 .dmg 文件
-      - name: Zip the generated files (macOS)
-        run: zip -r FS-Tool-Pro.app.zip dist/FS-Tool-Pro.app  # 使用zip命令将dist目录下所有文件及子目录递归压缩成FS-Tool.zip包
-
-      - name: Upload DMG release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.win_release.outputs.upload_url }}  # 引用 create-release 步骤的输出
-          asset_path: dist/FS-Tool-Pro.dmg
-          asset_name: FS-Tool-Pro.dmg
-          asset_content_type: application/octet-stream  # 文件类型
-
-      - name: Upload App release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.win_release.outputs.upload_url }}  # 引用 create-release 步骤的输出
-          asset_path: FS-Tool-Pro.app.zip
-          asset_name: FS-Tool-Pro.MacOS.zip
-          asset_content_type: application/zip
+    - uses: actions/checkout@v4
+    - name: Enable Developer Command Prompt
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.9"
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Build Package
+      run: .\Build.ps1
+    - name: Upload Package
+      uses: actions/upload-artifact@v4
+      with:
+        path: D:\a\FSToolPro\FSToolPro\FSToolPro.dist
+        name: FSToolPro-Windows-bin
+    - name: Upload Onefile Package
+      uses: actions/upload-artifact@v4
+      with:
+        path: D:\a\FSToolPro\FSToolPro\FSToolPro.exe
+        name: FSToolPro-Windows

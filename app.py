@@ -54,8 +54,9 @@ def main():
             # 为应用程序设置样式表
             app.setStyleSheet(stylesheet)
     # 获取系统的默认调色板
-    #palette = QPalette()
-    #app.setPalette(palette)
+    palette = QPalette()
+    app.setPalette(palette)
+
     # 加载外部字体
     font_path = CommonUtil.get_resource_path(FsConstants.FONT_FILE_PATH)
     font_family = load_external_font(font_path)

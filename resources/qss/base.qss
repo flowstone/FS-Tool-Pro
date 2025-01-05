@@ -248,7 +248,7 @@ QPushButton#feature:hover {
  */
 
 QTabWidget::pane {
-    border: 1px solid #C2C7CB;   /*Tab页内容区域边框 */
+    /*border: 1px solid #C2C7CB;   Tab页内容区域边框 */
     border-radius: 8px;
 }
 QTabBar::tab {

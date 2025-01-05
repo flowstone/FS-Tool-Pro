@@ -1,8 +1,8 @@
 import sys
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QColorDialog
-from PyQt5.QtGui import QColor, QPalette
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QColorDialog
+from PySide6.QtGui import QColor, QPalette
 
 class ColorPaletteApp(QWidget):
     def __init__(self):
@@ -18,7 +18,7 @@ class ColorPaletteApp(QWidget):
 
         # 颜色显示区域
         self.color_display = QLabel("当前颜色")
-        self.color_display.setAlignment(Qt.AlignCenter)
+        self.color_display.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.color_display.setFixedSize(200, 100)
         self.color_display.setStyleSheet("border: 1px solid black; background-color: white;")
 
@@ -50,4 +50,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = ColorPaletteApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

@@ -1,7 +1,36 @@
+# Compilation mode, support OS-specific options
+# nuitka-project-if: {OS} in ("Windows", "Linux", "FreeBSD"):
+#    nuitka-project: --standalone
+# nuitka-project-else:
+#    nuitka-project: --standalone
+
+# Debugging options, controlled via environment variable at compile time.
+# nuitka-project-if: {OS} == "Windows" and os.getenv("DEBUG_COMPILATION", "no") == "yes":
+#    nuitka-project: --windows-console-mode=hide
+# nuitka-project-else:
+#    nuitka-project: --windows-console-mode=disable
+
+# The PySide6 plugin covers qt-plugins
+# nuitka-project: --enable-plugin=pyside6
+
+# nuitka-project: --include-data-dir={MAIN_DIRECTORY}/resources=resources
+# nuitka-project: --include-data-files={MAIN_DIRECTORY}/app.ini=app.ini
+
+# nuitka-project-if: {OS} == "Windows":
+#    nuitka-project: --windows-icon-from-ico={MAIN_DIRECTORY}/resources/images/app.ico
+#    nuitka-project: --output-filename=FS-Tool-Pro-windows-x86_64.exe
+# nuitka-project-if: {OS} == "Linux":
+#    nuitka-project: ---linux-icon={MAIN_DIRECTORY}/resources/images/app.ico
+#    nuitka-project: --output-filename=FS-Tool-Pro-linux-x86_64.bin
+# nuitka-project-if: {OS} == "Darwin":
+#    nuitka-project: --macos-create-app-bundle
+#    nuitka-project: --macos-app-icon={MAIN_DIRECTORY}/resources/images/app.icns
+
+
 import sys
 
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QApplication
+from PySide6.QtGui import QFont, QPalette
+from PySide6.QtWidgets import QApplication
 from src.main_window import MainWindow
 from src.util.load_db import LoadDB
 from src.util.common_util import CommonUtil
@@ -24,6 +53,9 @@ def main():
             stylesheet = file.read()
             # 为应用程序设置样式表
             app.setStyleSheet(stylesheet)
+    # 获取系统的默认调色板
+    palette = QPalette()
+    app.setPalette(palette)
 
     # 加载外部字体
     font_path = CommonUtil.get_resource_path(FsConstants.FONT_FILE_PATH)
@@ -33,7 +65,7 @@ def main():
 
     window = MainWindow()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 
 if __name__ == '__main__':

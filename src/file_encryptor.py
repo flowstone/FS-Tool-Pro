@@ -5,9 +5,9 @@ from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto.Protocol.KDF import PBKDF2
 from Crypto.Util.Padding import pad, unpad
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import Qt, Signal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QLabel, QVBoxLayout, QLineEdit, QPushButton, QFileDialog, QWidget, QComboBox, QHBoxLayout
 )
 from loguru import logger
@@ -21,9 +21,9 @@ from src.widget.custom_progress_widget import CustomProgressBar
 
 
 class EncryptThread(QThread):
-    progress = pyqtSignal(int)  # 信号用于传递进度
-    finished = pyqtSignal()     # 信号用于标记加密完成
-    error = pyqtSignal(str)    # 信号用于报告错误
+    progress = Signal(int)  # 信号用于传递进度
+    finished = Signal()     # 信号用于标记加密完成
+    error = Signal(str)    # 信号用于报告错误
 
     def __init__(self, folder_path, key, parent=None):
         super().__init__(parent)
@@ -63,9 +63,9 @@ class EncryptThread(QThread):
             self.finished.emit()
 
 class DecryptThread(QThread):
-    progress = pyqtSignal(int)  # 信号用于传递进度
-    finished = pyqtSignal()     # 信号用于标记解密完成
-    error = pyqtSignal(str)    # 信号用于报告错误
+    progress = Signal(int)  # 信号用于传递进度
+    finished = Signal()     # 信号用于标记解密完成
+    error = Signal(str)    # 信号用于报告错误
 
     def __init__(self, folder_path, key, parent=None):
         super().__init__(parent)
@@ -110,7 +110,7 @@ class DecryptThread(QThread):
 
 class FileEncryptorApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -129,17 +129,16 @@ class FileEncryptorApp(QWidget):
 
         # 应用标题
         title_label = QLabel("批量文件加密")
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
 
         # 应用说明
-        desc_label = QLabel("通过 AES 加密算法加密或解密指定文件夹内的所有文件。\n"
+        description_label = QLabel("通过 AES 加密算法加密或解密指定文件夹内的所有文件。\n"
                             "支持密钥长度 128/192/256 位，请输入密码进行加密操作。")
-        desc_label.setStyleSheet(f"color: {BLUE.name()};")
-        desc_label.setWordWrap(True)
-        layout.addWidget(desc_label)
+        description_label.setFont(FontConstants.ITALIC_SMALL)
+        description_label.setWordWrap(True)
+        layout.addWidget(description_label)
 
         folder_label = QLabel("选择目录")
         layout.addWidget(folder_label)
@@ -171,7 +170,7 @@ class FileEncryptorApp(QWidget):
         # 密码输入和显示密码按钮布局
         password_input_layout = QHBoxLayout()
         self.password_input = QLineEdit()
-        self.password_input.setEchoMode(QLineEdit.Password)
+        self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
         self.password_input.setPlaceholderText("请输入密码 (至少8位)")
         password_input_layout.addWidget(self.password_input)
 
@@ -308,15 +307,15 @@ class FileEncryptorApp(QWidget):
         super().closeEvent(event)
 
     def toggle_password_visibility(self):
-        if self.password_input.echoMode() == QLineEdit.Password:
-            self.password_input.setEchoMode(QLineEdit.Normal)
+        if self.password_input.echoMode() == QLineEdit.EchoMode.Password:
+            self.password_input.setEchoMode(QLineEdit.EchoMode.Normal)
             self.show_password_button.setText("隐藏密码")
         else:
-            self.password_input.setEchoMode(QLineEdit.Password)
+            self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
             self.show_password_button.setText("显示密码")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = FileEncryptorApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

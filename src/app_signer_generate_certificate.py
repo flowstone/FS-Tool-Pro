@@ -1,8 +1,8 @@
 import sys
 from datetime import datetime, timedelta
 
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
     QLineEdit, QTextEdit, QFileDialog, QMessageBox
 )
@@ -162,4 +162,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = GenerateCertificateApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

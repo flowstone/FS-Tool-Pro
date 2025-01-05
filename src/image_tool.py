@@ -1,8 +1,8 @@
 import sys
 
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 from loguru import logger
 
 from src.const.fs_constants import FsConstants
@@ -13,7 +13,7 @@ from src.util.common_util import CommonUtil
 
 class ImageToolApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -22,7 +22,7 @@ class ImageToolApp(QWidget):
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_IMAGE_TOOL} ----")
         self.setWindowTitle(FsConstants.WINDOW_TITLE_IMAGE_TOOL)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
 
         # 创建主布局
@@ -50,4 +50,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = ImageToolApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

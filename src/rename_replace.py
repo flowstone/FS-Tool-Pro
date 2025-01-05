@@ -1,9 +1,9 @@
 import os
 import sys
 
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QGroupBox, QRadioButton, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, \
+from PySide6.QtCore import Qt, Signal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication, QGroupBox, QRadioButton, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, \
     QPushButton, QFileDialog
 from loguru import logger
 
@@ -17,7 +17,7 @@ from src.widget.custom_progress_widget import CustomProgressBar
 
 class RenameReplaceApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal =  pyqtSignal()
+    closed_signal =  Signal()
     def __init__(self):
         super().__init__()
         self.check_type_text = None
@@ -27,15 +27,14 @@ class RenameReplaceApp(QWidget):
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_RENAME_REPLACE} ----")
         self.setWindowTitle(FsConstants.WINDOW_TITLE_RENAME_REPLACE)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
 
 
         layout = QVBoxLayout()
         title_label = QLabel("批量修改文件/文件夹名")
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
 
         folder_path_label = QLabel("选择文件夹：")
@@ -201,8 +200,8 @@ class RenameReplaceApp(QWidget):
         super().closeEvent(event)
 
 class FileRenameThread(QThread):
-    finished_signal = pyqtSignal()
-    error_signal = pyqtSignal(str)
+    finished_signal = Signal()
+    error_signal = Signal(str)
 
     def __init__(self, folder_path, prefix, suffix, char_to_find, replace_char, check_type_text):
         super().__init__()
@@ -261,6 +260,6 @@ class FileRenameThread(QThread):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = RenameCustomApp()
+    window = RenameReplaceApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

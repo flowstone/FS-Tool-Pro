@@ -2,9 +2,9 @@ import hashlib
 import os
 import sys
 
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import Qt, Signal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QVBoxLayout, QHBoxLayout, QPushButton, QFileDialog, QLabel, QWidget, QComboBox,
     QTextEdit
 )
@@ -19,9 +19,9 @@ from src.widget.custom_progress_widget import CustomProgressBar
 
 
 class CompareThread(QThread):
-    update_signal = pyqtSignal(str)
-    break_signal = pyqtSignal(str)
-    done_signal = pyqtSignal(int, int)  # 返回比较结果，(相同文件数量, 不同文件数量)
+    update_signal = Signal(str)
+    break_signal = Signal(str)
+    done_signal = Signal(int, int)  # 返回比较结果，(相同文件数量, 不同文件数量)
 
     def __init__(self, source_directory, target_directory, method):
         super().__init__()
@@ -126,7 +126,7 @@ class CompareThread(QThread):
 
 class FileComparatorApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -141,14 +141,13 @@ class FileComparatorApp(QWidget):
 
         layout = QVBoxLayout()
         title_label = QLabel("批量文件比较")
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
 
-        self.label = QLabel("请选择源目录和目标目录进行文件比较")
-        self.label.setStyleSheet(f"color: {BLUE.name()};")
-        layout.addWidget(self.label)
+        description_label = QLabel("请选择源目录和目标目录进行文件比较")
+        description_label.setFont(FontConstants.ITALIC_SMALL)
+        layout.addWidget(description_label)
 
         self.source_label = QLabel("源目录: 未选择")
         layout.addWidget(self.source_label)
@@ -183,18 +182,7 @@ class FileComparatorApp(QWidget):
         layout.addWidget(self.compare_button)
 
         self.result_text = QTextEdit()
-        self.result_text.setStyleSheet("""
-            QTextEdit {
-                background-color: white;
-                border: 1px solid #388E3C;
-                border-radius: 5px;
-                padding: 10px;
-                font-size: 14px;
-            }
-            QTextEdit:read-only {
-                background-color: #f9f9f9;
-            }
-        """)
+
         self.result_text.setReadOnly(True)
         layout.addWidget(self.result_text)
         self.setLayout(layout)
@@ -257,4 +245,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = FileComparatorApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

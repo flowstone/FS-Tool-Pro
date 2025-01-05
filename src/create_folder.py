@@ -2,9 +2,9 @@ import os
 import shutil
 import sys
 
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
+from PySide6.QtCore import Qt, Signal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
 from loguru import logger
 
 from src.const.color_constants import BLUE, BLACK
@@ -17,7 +17,7 @@ from src.widget.custom_progress_widget import CustomProgressBar
 
 class CreateFolderApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal =  pyqtSignal()
+    closed_signal =  Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -26,7 +26,7 @@ class CreateFolderApp(QWidget):
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_CREATE_FOLDER} ----")
         self.setWindowTitle(FsConstants.WINDOW_TITLE_CREATE_FOLDER)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
 
         # 设置窗口背景色为淡灰色
         self.setAutoFillBackground(True)
@@ -36,13 +36,11 @@ class CreateFolderApp(QWidget):
 
         layout = QVBoxLayout()
         title_label = QLabel("批量生成文件夹")
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
         # 说明文本
-        description_label = QLabel("说明：根据输入的分割字符，取前部分创建文件夹，符合相关的文件都移动到对应文件夹中")
-        description_label.setStyleSheet(f"color: {BLUE.name()};")
+        description_label = QLabel("根据输入的分割字符，取前部分创建文件夹，符合相关的文件都移动到对应文件夹中")
         # 选择文件夹相关部件
         folder_path_label = QLabel("选择文件夹：")
         folder_path_layout = QHBoxLayout()
@@ -142,9 +140,9 @@ class CreateFolderApp(QWidget):
         super().closeEvent(event)
 
 class FileOperationThread(QThread):
-    progress_signal = pyqtSignal(int)
-    finished_signal = pyqtSignal()
-    error_signal = pyqtSignal(str)
+    progress_signal = Signal(int)
+    finished_signal = Signal()
+    error_signal = Signal(str)
 
     def __init__(self, folder_path, slice_char):
         super().__init__()
@@ -200,4 +198,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = CreateFolderApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

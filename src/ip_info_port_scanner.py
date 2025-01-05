@@ -2,9 +2,9 @@ import socket
 import sys
 from concurrent.futures import ThreadPoolExecutor
 
-from PyQt5.QtCore import Qt, QThread, pyqtSignal
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import Qt, QThread, Signal
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout,
     QPushButton, QTextEdit, QLabel, QLineEdit
 )
@@ -26,7 +26,7 @@ def scan_port(ip, port):
             if s.connect_ex((ip, port)) == 0:
                 return port
     except Exception as e:
-        print(f"Error scanning port {port}: {e}")  # 打印错误信息
+        logger.error(f"Error scanning port {port}: {e}")  # 打印错误信息
         return None
 
 def get_open_ports(target_ip, start_port, end_port, progress_callback, error_callback):
@@ -60,9 +60,9 @@ def get_open_ports(target_ip, start_port, end_port, progress_callback, error_cal
 
 
 class WorkerThread(QThread):
-    progress_signal = pyqtSignal(int)
-    result_signal = pyqtSignal(list)
-    error_signal = pyqtSignal(str)
+    progress_signal = Signal(int)
+    result_signal = Signal(list)
+    error_signal = Signal(str)
 
     def __init__(self, target_ip, start_port, end_port):
         super().__init__()
@@ -80,7 +80,7 @@ class WorkerThread(QThread):
 
 class PortScannerApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -96,13 +96,11 @@ class PortScannerApp(QWidget):
         # 主界面布局
         self.layout = QVBoxLayout(self)
         title_label = QLabel(FsConstants.WINDOW_TITLE_IP_INFO_PORT_SCANNER)
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_label.setObjectName("app_title")
         self.layout.addWidget(title_label)
         # 标题
         self.description_label = QLabel("输入目标 IP 和端口范围，点击按钮开始扫描")
-        self.description_label.setStyleSheet(f"color: {BLUE.name()};")
 
         # 输入目标 IP
         self.ip_input_label = QLabel("目标 IP 地址:")
@@ -159,6 +157,7 @@ class PortScannerApp(QWidget):
         except ValueError:
             self.result_box.append("错误: 端口范围格式不正确，请输入有效范围 (例如: 1-1000)！")
             return
+        self.description_label.setText("正在扫描端口，请稍候...")
 
         self.result_box.append(f"正在扫描目标 IP: {target_ip}, 端口范围: {start_port}-{end_port}...")
         self.result_box.append("这可能需要一些时间，请耐心等待。")
@@ -176,6 +175,8 @@ class PortScannerApp(QWidget):
         """显示扫描结果"""
         self.scan_button.setEnabled(True)
         self.progress_bar.hide()
+        self.description_label.setText("扫描端口结束...")
+
         if open_ports:
             self.result_box.append(f"发现以下打开的端口: {', '.join(map(str, open_ports))}")
         else:
@@ -185,6 +186,7 @@ class PortScannerApp(QWidget):
         """显示错误信息"""
         self.scan_button.setEnabled(True)
         self.progress_bar.hide()
+        self.description_label.setText("好像遇到问题了...")
         self.result_box.append(f"错误: {error_message}")
 
     def closeEvent(self, event):
@@ -196,4 +198,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     scanner_app = PortScannerApp()
     scanner_app.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

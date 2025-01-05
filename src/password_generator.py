@@ -3,22 +3,22 @@ import random
 import string
 import pyperclip
 
-from PyQt5.QtWidgets import (
+from PySide6.QtWidgets import (
     QApplication, QWidget, QLabel, QLineEdit, QCheckBox, QPushButton, QVBoxLayout, QHBoxLayout, QSpinBox
 )
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon
 
 from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from loguru import logger
-from PyQt5.QtCore import QThread, pyqtSignal
+from PySide6.QtCore import QThread, Signal
 
 class PasswordGeneratorThread(QThread):
-    password_generated = pyqtSignal(str)
+    password_generated = Signal(str)
 
     def __init__(self, main_char_pool, special_char_pool, password_length, exclude_chars):
         super().__init__()
@@ -52,7 +52,7 @@ class PasswordGeneratorThread(QThread):
         self.password_generated.emit(password)
 
 class PasswordGeneratorApp(QWidget):
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
 
     def __init__(self):
         super().__init__()
@@ -67,9 +67,8 @@ class PasswordGeneratorApp(QWidget):
 
         # 初始化界面元素
         title_label = QLabel("密码生成器")
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_label.setObjectName("app_title")
         
         self.label = QLabel("生成的密码:")
         self.generated_password = QLineEdit(self)
@@ -162,4 +161,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = PasswordGeneratorApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

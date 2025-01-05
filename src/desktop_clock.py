@@ -1,9 +1,9 @@
 import sys
 import time
 
-from PyQt5.QtCore import Qt, QTimer, pyqtSignal
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QDialog, QComboBox, QHBoxLayout
+from PySide6.QtCore import Qt, QTimer, Signal
+from PySide6.QtGui import QIcon, QGuiApplication
+from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QDialog, QComboBox, QHBoxLayout
 from loguru import logger
 
 from src.const.fs_constants import FsConstants
@@ -26,8 +26,8 @@ class DesktopClockApp(QWidget):
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
         # 设置窗口无边框、无标题栏
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Tool)
-        self.setAttribute(Qt.WA_TranslucentBackground, True)  # 设置窗口背景透明
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)  # 设置窗口背景透明
         # 设置窗口透明度
         self.setWindowOpacity(0.8)
 
@@ -37,12 +37,12 @@ class DesktopClockApp(QWidget):
 
         self.current_time = QLabel(self)
         self.current_time.setObjectName("current_time")
-        self.current_time.setAlignment(Qt.AlignCenter)
+        self.current_time.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.current_time)
 
         self.count_time = QLabel(self)
         self.count_time.setObjectName("count_time")
-        self.count_time.setAlignment(Qt.AlignRight | Qt.AlignBottom)
+        self.count_time.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignBottom)
         layout.addWidget(self.count_time)
 
         self.timer = QTimer(self)
@@ -83,8 +83,8 @@ class DesktopClockApp(QWidget):
         self.count_time.setText(time_str)
 
     def move_to_position(self, position):
-        screen_geo = QApplication.desktop().screenGeometry()
-
+        screen_geo = QGuiApplication.primaryScreen().geometry()
+        x, y = 10, 10
         if position == "左上角":
             x, y = 10, 10
         elif position == "右上角":
@@ -96,9 +96,9 @@ class DesktopClockApp(QWidget):
 
         self.move(x, y)
 
-class ColorSettingDialog(QDialog):
+class DesktopClockSetting(QDialog):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -180,13 +180,13 @@ class ColorSettingDialog(QDialog):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    setting_dialog = ColorSettingDialog()
+    setting_dialog = DesktopClockSetting()
     setting_dialog.show()
-    # if setting_dialog.exec_():
+    # if setting_dialog.exec():
     #     time_color = setting_dialog.get_selected_time_color()
     #     timer_color = setting_dialog.get_selected_timer_color()
     #
     #     window = DesktopClockApp()
     #     window.show_with_colors(time_color, timer_color)
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

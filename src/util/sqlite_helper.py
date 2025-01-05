@@ -1,13 +1,13 @@
-from PyQt5.QtCore import QObject, pyqtSignal
+from PySide6.QtCore import QObject, Signal
 from loguru import logger
 from src.util.sqlite_connection_pool import SQLiteConnectionPool
 
 
 class SQLiteHelper(QObject):
     # 数据查询信号
-    data_fetched = pyqtSignal(list)
-    single_row_fetched = pyqtSignal(tuple)
-    paginated_data_fetched = pyqtSignal(list, int)  # 信号：数据列表和总页数
+    data_fetched = Signal(list)
+    single_row_fetched = Signal(tuple)
+    paginated_data_fetched = Signal(list, int)  # 信号：数据列表和总页数
 
     def __init__(self, db_name):
         super().__init__()

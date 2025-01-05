@@ -1,10 +1,10 @@
 import sys
 import zipfile
-from PyQt5.QtWidgets import (
+from PySide6.QtWidgets import (
     QApplication, QWidget, QLabel, QComboBox, QPushButton, QVBoxLayout, QHBoxLayout, QTextEdit, QFileDialog
 )
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtCore import Qt, Signal, QThread
 from Crypto.PublicKey import RSA
 
 from src.const.color_constants import BLACK
@@ -15,8 +15,8 @@ from loguru import logger
 
 
 class RSAKeyGeneratorThread(QThread):
-    result_signal = pyqtSignal(str, str)  # 用于将公钥和私钥传递回主线程
-    error_signal = pyqtSignal(str)  # 用于传递错误消息
+    result_signal = Signal(str, str)  # 用于将公钥和私钥传递回主线程
+    error_signal = Signal(str)  # 用于传递错误消息
 
     def __init__(self, key_length, encryption_method):
         super().__init__()
@@ -49,7 +49,7 @@ class RSAKeyGeneratorThread(QThread):
 
 class RSAKeyGeneratorApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
 
     def __init__(self):
         super().__init__()
@@ -107,9 +107,8 @@ class RSAKeyGeneratorApp(QWidget):
         # 布局
         layout = QVBoxLayout()
         title_label = QLabel("RSA密钥生成器")
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
 
         layout.addLayout(key_settings_layout)
@@ -198,7 +197,6 @@ class RSAKeyGeneratorApp(QWidget):
             self.private_key_text.setPlainText(f"密钥已保存到: {save_path}")
 
     def closeEvent(self, event):
-        logger.info("点击了关闭事件")
         self.closed_signal.emit()
         super().closeEvent(event)
 
@@ -207,4 +205,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = RSAKeyGeneratorApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

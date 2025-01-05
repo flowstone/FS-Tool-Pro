@@ -4,9 +4,9 @@ import sys
 import pillow_heif
 import whatimage
 from PIL import Image, ImageOps
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
+from PySide6.QtCore import Qt, Signal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog
 from loguru import logger
 from pillow_heif import register_heif_opener
 
@@ -22,7 +22,7 @@ register_heif_opener()
 
 class HeicToJpgApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal =  pyqtSignal()
+    closed_signal =  Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -32,7 +32,7 @@ class HeicToJpgApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_IMAGE_HEIC_JPG)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
-        self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
         self.setFixedHeight(200)
         self.setFixedWidth(600)
@@ -42,13 +42,12 @@ class HeicToJpgApp(QWidget):
 
         layout = QVBoxLayout()
         title_label = QLabel("批量HEIC转JPG")
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
         # 说明文本
         description_label = QLabel("说明：请选择HEIC文件所在的文件夹，系统将自动将其中的HEIC文件转换为JPG格式。")
-        description_label.setStyleSheet(f"color: {BLUE.name()};")
+        description_label.setFont(FontConstants.ITALIC_SMALL)
         description_label.setWordWrap(True)
         folder_path_label = QLabel("选择文件夹：")
         # 选择文件夹相关部件
@@ -147,8 +146,8 @@ class HeicToJpgApp(QWidget):
 
 
 class HeicToJpgAppThread(QThread):
-    finished_signal = pyqtSignal()
-    error_signal = pyqtSignal(str)  # 新增信号，用于发送错误信息
+    finished_signal = Signal()
+    error_signal = Signal(str)  # 新增信号，用于发送错误信息
 
     def __init__(self, folder_path):
         super().__init__()
@@ -210,4 +209,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = HeicToJpgApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

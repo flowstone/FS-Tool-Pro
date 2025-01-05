@@ -5,11 +5,9 @@ QWidget {
     font-size: 14px;
 }
 QDialog {
-    background-color: #f0f0f0;
 }
 QTableWidget {
     border: none;
-    background-color: #ffffff;
     gridline-color: #dddddd;
     font-size: 14px;
 }
@@ -18,52 +16,43 @@ QTableWidget::item {
 }
 QTableWidget::item:selected {
     background-color: #007bff;
-    color: white;
 }
 QLabel {
-    color: #333333;
     font-size: 14px;
 }
 
 QComboBox {
-    background-color: #ffffff;
     border: 1px solid #cccccc;
     border-radius: 5px;
     padding: 6px;
     font-size: 14px;
-    color: #333333;
 }
 QComboBox::drop-down {
     border: none;
 }
 
 QLineEdit {
-    background-color: #ffffff;
     border: 1px solid #cccccc;
     border-radius: 5px;
     padding: 6px;
     font-size: 14px;
-    color: #333333;
 }
 QLineEdit:focus {
     border: 1px solid #66afe9;
-    border-radius: 1px;
+    border-radius: 5px;
 }
 
 QTextEdit {
-    background-color: white;
-    border: 1px solid #388E3C;
+    border: 1px solid #66afe9;
     border-radius: 5px;
     padding: 6px;
     font-size: 14px;
 }
 QTextEdit:read-only {
-    background-color: #f9f9f9;
 }
 
 QListWidget{
-    background-color: white;
-    border: 1px solid #388E3C;
+    border: 1px solid #66afe9;
     border-radius: 5px;
     padding: 6px;
     font-size: 14px;
@@ -71,11 +60,11 @@ QListWidget{
 
 QPushButton {
     background-color: #1E90FF;
-    color: white;
     border-radius: 5px;
     padding: 8px;
     font-size: 14px;
     min-width: 100px;
+    color: white;
 }
 QPushButton:hover {
     background-color: #63B8FF;
@@ -85,14 +74,10 @@ QPushButton:pressed {
 }
 QPushButton:disabled {
     background-color: gray;
-    color: white;
 }
 QMenuBar {
-    background: #f0f0f0;
-    color: #333333;
 }
 QMenuBar::item {
-    background: #f0f0f0;
     padding: 5px;
 }
 QMenuBar::item:selected {
@@ -115,25 +100,22 @@ QCheckBox:checked {
 
 QSpinBox {
     font-size: 14px;
+    min-height: 20px;
+    max-height: 20px;
     padding: 6px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #fff;
 }
 
 QSpinBox::up-button {
     border: none;
     background-color: #8BC34A;
-    height: 15px;
-    width: 15px;
     border-radius: 5px;
 }
 
 QSpinBox::down-button {
     border: none;
     background-color: #F44336;
-    height: 15px;
-    width: 15px;
     border-radius: 5px;
 }
 
@@ -155,9 +137,12 @@ QLineEdit#folder_path_input {
     padding: 6px;
     font-size: 14px;
 }
+QLineEdit#folder_path_input:focus {
+    border: 1px solid #66afe9;
+    border-radius: 5px;
+}
 QPushButton#browse_button {
     background-color: #008CBA;
-    color: white;
     border-radius: 5px;
     padding: 8px;
     font-size: 14px;
@@ -171,7 +156,6 @@ QPushButton#browse_button:hover {
 
 QPushButton#start_button {
     background-color: #4CAF50;
-    color: white;
     border-radius: 5px;
     padding: 8px;
     font-size: 14px;
@@ -186,13 +170,13 @@ QPushButton#start_button:pressed {
 }
 QPushButton#start_button:disabled {
     background-color: gray;
-    color: white;
+    colo
+    r: white;
 }
 
 
 QPushButton#exit_button {
     background-color: #f44336;
-    color: white;
     border-radius: 5px;
     padding: 8px;
     font-size: 14px;
@@ -206,11 +190,9 @@ QPushButton#exit_button:pressed {
 }
 QPushButton#exit_button:disabled {
     background-color: gray;
-    color: white;
 }
 QPushButton#normal {
     font-size: 14px;
-    color: #fff;
     background-color: #0078d7;
     border: none;
     border-radius: 5px;
@@ -224,7 +206,6 @@ QPushButton#normal:pressed {
 }
 QPushButton#normal:disabled {
     background-color: gray;
-    color: white;
 }
 /*
  透明时间 ------------
@@ -238,6 +219,12 @@ QLabel#count_time {
     font-size: 14px;
     font-weight: bold;
 }
+
+QLabel#app_title {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 6px;
+}
 /*
  ------END ------------
  */
@@ -247,7 +234,6 @@ QLabel#count_time {
  */
  QPushButton#feature {
     background-color: #008CBA;
-    color: white;
     border-radius: 8px;
     padding: 8px;
     font-size: 14px;
@@ -263,18 +249,14 @@ QPushButton#feature:hover {
 
 QTabWidget::pane {
     /*border: 1px solid #C2C7CB;   Tab页内容区域边框 */
-    background-color: white;  /* Tab页内容区域背景色 */
     border-radius: 8px;
 }
 QTabBar::tab {
     border-radius: 5px;
-    background-color: #f0f0f0;  /* 未选中Tab标签的背景色 */
-    color: #333333;  /* 未选中Tab标签的字体颜色 */
     margin-right: 5px;
     padding: 8px 12px;  /* 内边距 */
 }
 QTabBar::tab:selected {
     background-color: #84c1ff;  /* 选中Tab标签的背景色 */
-    color: white;  /* 选中Tab标签的字体颜色 */
 }
 QTabBar::tab:hover { background-color: #c1e3ff; }

@@ -137,3 +137,8 @@ class FsConstants:
     APP_INI_FILE = "app.ini"
     HELP_PDF_FILE_PATH = "resources/pdf/help.pdf"
     FONT_FILE_PATH = "resources/fonts/AlimamaFangYuanTiVF-Thin.ttf"
+
+    #首选项
+    PREFERENCES_WINDOW_TITLE = "首选项"
+    PREFERENCES_WINDOW_TITLE_ABOUT = "关于"
+    PREFERENCES_WINDOW_TITLE_GENERAL = "常规"

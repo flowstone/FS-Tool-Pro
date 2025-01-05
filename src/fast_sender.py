@@ -3,11 +3,11 @@ import os
 import socket
 import threading
 
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QFileDialog, QListWidget, QSplitter
 )
-from PyQt5.QtCore import Qt, QThread, pyqtSignal
+from PySide6.QtCore import Qt, QThread, Signal
 
 from src.const.color_constants import BLACK, BLUE
 from src.const.font_constants import FontConstants
@@ -21,7 +21,7 @@ BUFFER_SIZE = 4096
 
 
 class BroadcastListenerThread(QThread):
-    device_discovered = pyqtSignal(str)
+    device_discovered = Signal(str)
 
     def __init__(self):
         super().__init__()
@@ -54,7 +54,7 @@ class BroadcastListenerThread(QThread):
 
 
 class ServerThread(QThread):
-    new_message = pyqtSignal(str)
+    new_message = Signal(str)
 
     def __init__(self, save_dir="received_files"):
         super().__init__()
@@ -143,7 +143,7 @@ class ServerThread(QThread):
 
 
 class FastSenderApp(QWidget):
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
 
     def __init__(self):
         super().__init__()
@@ -167,13 +167,13 @@ class FastSenderApp(QWidget):
         self.setGeometry(100, 100, 800, 600)
 
         title_label = QLabel(FsConstants.WINDOW_TITLE_FAST_SENDER)
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_label.setObjectName("app_title")
 
         # 说明文本
         description_label = QLabel("多设备之间传输文本/文件(暂不支持Win->MacOS)")
-        description_label.setStyleSheet(f"color: {BLUE.name()};")
+        description_label.setFont(FontConstants.ITALIC_SMALL)
+
         # 左侧设备列表
         self.device_list = QListWidget(self)
         self.device_list_label = QLabel("发现的设备:")
@@ -190,7 +190,7 @@ class FastSenderApp(QWidget):
         log_layout.addWidget(self.log_area)
 
         # 使用 QSplitter 分割设备列表和日志
-        splitter = QSplitter(Qt.Horizontal, self)
+        splitter = QSplitter(Qt.Orientation.Horizontal, self)
         splitter.addWidget(self.wrap_in_widget(device_layout))
         splitter.addWidget(self.wrap_in_widget(log_layout))
         splitter.setSizes([200, 600])  # 初始分割比例
@@ -365,4 +365,4 @@ if __name__ == "__main__":
     window = FastSenderApp()
     window.show()
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

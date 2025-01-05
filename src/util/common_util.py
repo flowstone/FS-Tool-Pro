@@ -15,14 +15,16 @@ class CommonUtil:
         """
         获取资源（如图片等）的实际路径，处理打包后资源路径的问题
         """
-        if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-            return os.path.join(sys._MEIPASS, relative_path)
-
-        if CommonUtil.check_win_os():
-            #return os.path.join(os.path.dirname(os.path.abspath(__file__)), relative_path)
-            return os.path.join(os.path.dirname(sys.argv[0]), relative_path)
+        if getattr(sys, 'frozen', False):
+            # 如果是冻结状态（例如使用 PyInstaller、Nuitka 等打包后的状态）
+            # sys._MEIPASS 是一个存储了程序资源的临时目录
+            # 当程序被打包时，资源会被解压到该目录中
+            application_path = sys._MEIPASS
         else:
-            return os.path.join(os.path.dirname(sys.argv[0]), relative_path)
+            # 如果不是冻结状态，使用当前脚本所在的目录
+            #application_path = os.path.dirname(os.path.abspath(__file__))
+            application_path = os.path.dirname(sys.argv[0])
+        return os.path.join(application_path, relative_path)
 
     # 当前系统是Win 返回True
     @staticmethod

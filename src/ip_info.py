@@ -3,9 +3,9 @@ import sys
 
 import psutil
 import requests
-from PyQt5.QtCore import QThread, pyqtSignal, Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import QThread, Signal, Qt
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLabel
 )
 from loguru import logger
@@ -147,9 +147,9 @@ def get_dns_servers():
 
 class NetworkInfoWorker(QThread):
     # 定义信号，用于传递网络信息和进度
-    progress_signal = pyqtSignal(int)
-    result_signal = pyqtSignal(str)
-    error_signal = pyqtSignal(str)    # 错误信号
+    progress_signal = Signal(int)
+    result_signal = Signal(str)
+    error_signal = Signal(str)    # 错误信号
 
     def run(self):
         try:
@@ -177,7 +177,7 @@ class NetworkInfoWorker(QThread):
 
 class IpInfoApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -191,9 +191,8 @@ class IpInfoApp(QWidget):
         self.setGeometry(100, 100, 500, 400)
 
         title_label = QLabel(FsConstants.WINDOW_TITLE_IP_INFO)
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_label.setObjectName("app_title")
         self.text_area = QTextEdit()
         self.text_area.setReadOnly(True)
         self.progress_bar = CustomProgressBar()
@@ -249,4 +248,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = IpInfoApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

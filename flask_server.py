@@ -1,12 +1,14 @@
-from flask import Flask, render_template, request, send_from_directory, jsonify
+from flask import Flask, render_template, request, send_from_directory
 import os
-from werkzeug.utils import secure_filename
+from multiprocessing import Event, Queue
+
 from loguru import logger
 from src.util.common_util import CommonUtil
 
 app = Flask(__name__)
 SAVE_DIR = CommonUtil.get_flask_mini_dir()
 os.makedirs(SAVE_DIR, exist_ok=True)
+shutdown_event = Event()
 
 # 存储上传的文本消息
 uploaded_texts = []
@@ -66,7 +68,6 @@ def send_text():
 @app.route('/files/<filename>')
 def uploaded_file(filename):
     return send_from_directory(SAVE_DIR, filename)
-
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5678)

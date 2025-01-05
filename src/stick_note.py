@@ -1,8 +1,8 @@
 import sys
 
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit, QPushButton, QMessageBox, QHBoxLayout
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt, pyqtSignal
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit, QPushButton, QMessageBox, QHBoxLayout
+from PySide6.QtGui import QIcon
+from PySide6.QtCore import Qt, Signal
 from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
 from src.util.message_util import MessageUtil
@@ -11,7 +11,7 @@ from loguru import logger
 
 class StickyNoteApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal =  pyqtSignal()
+    closed_signal =  Signal()
     def __init__(self):
         super().__init__()
         # 标记窗口当前是否可操作（初始设为可操作）
@@ -29,19 +29,15 @@ class StickyNoteApp(QWidget):
         self.text_edit.setPlaceholderText("请输入便签内容...")
         self.text_edit.setStyleSheet("""
             QTextEdit {
-                border: 2px solid lightgray;
                 border-radius: 5px;
                 padding: 10px;
-                background-color: white;
                 color: #333333;
             }
             QTextEdit::verticalScrollBar {
                 width: 10px;
-                background-color: #F0F0F0;
                 border-radius: 5px;
             }
             QTextEdit::verticalScrollBar::handle {
-                background-color: #888888;
                 border-radius: 5px;
                 min-height: 20px;
             }
@@ -93,10 +89,10 @@ class StickyNoteApp(QWidget):
         self.is_operable = not self.is_operable
         if self.is_operable:
             self.clear_button.setEnabled(True)
-            self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
+            self.setWindowFlags(self.windowFlags() & ~Qt.WindowType.WindowStaysOnTopHint)
         else:
             self.clear_button.setEnabled(False)
-            self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+            self.setWindowFlags(self.windowFlags() | Qt.WindowType.WindowStaysOnTopHint)
         self.show()
 
     def closeEvent(self, event):

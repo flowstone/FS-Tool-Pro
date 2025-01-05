@@ -3,9 +3,9 @@ import os
 import sys
 import zlib
 
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import Qt, Signal, QThread
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QLabel, QFileDialog, QLineEdit, QTextEdit, QCheckBox
 )
@@ -20,8 +20,8 @@ from src.widget.custom_progress_widget import CustomProgressBar
 
 
 class HashCalculatorThread(QThread):
-    progress_signal = pyqtSignal(int)  # 用于更新进度条
-    result_signal = pyqtSignal(dict, dict)  # 传递文件信息和哈希结果
+    progress_signal = Signal(int)  # 用于更新进度条
+    result_signal = Signal(dict, dict)  # 传递文件信息和哈希结果
 
     def __init__(self, file_path, hash_types):
         super().__init__()
@@ -83,7 +83,7 @@ class HashCalculatorThread(QThread):
 
 
 class HashCalculatorApp(QWidget):
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
 
     def __init__(self):
         super().__init__()
@@ -101,9 +101,8 @@ class HashCalculatorApp(QWidget):
 
         # 文件选择布局
         title_label = QLabel("HASH校验")
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
 
         file_label = QLabel("选择的文件:")
@@ -229,4 +228,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = HashCalculatorApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

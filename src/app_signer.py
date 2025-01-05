@@ -1,8 +1,8 @@
 import subprocess
 
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QFileDialog, QGroupBox, QHBoxLayout, QLineEdit
 )
 from loguru import logger
@@ -15,7 +15,7 @@ from src.util.message_util import MessageUtil
 
 
 class AppSignerApp(QWidget):
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
 
     def __init__(self):
         super().__init__()
@@ -30,10 +30,9 @@ class AppSignerApp(QWidget):
 
         # 标题
         title_label = QLabel("应用程序签名工具")
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         #title_label.setStyleSheet("font-size: 24px; font-weight: bold; color: #333;")
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setObjectName("app_title")
         layout.addWidget(title_label)
 
 
@@ -210,4 +209,4 @@ if __name__ == "__main__":
     app = QApplication([])
     window = AppSignerApp()
     window.show()
-    app.exec_()
+    app.exec()

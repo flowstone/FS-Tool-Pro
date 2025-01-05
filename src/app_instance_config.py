@@ -1,5 +1,5 @@
 from src.app_signer_tool import AppSignerTool
-from src.desktop_clock import ColorSettingDialog
+from src.desktop_clock import  DesktopClockSetting
 from src.fast_sender_tool import FastSenderToolApp
 from src.file_tool import FileToolApp
 from src.image_tool import ImageToolApp
@@ -18,7 +18,7 @@ app_instance_config = [
             "key": "desktop_clock",
             "icon": FsConstants.APP_ICON_DESKTOP_CLOCK,
             "title": FsConstants.APP_TITLE_DESKTOP_CLOCK,
-            "class": ColorSettingDialog
+            "class": DesktopClockSetting
         },
         {
             "key": "stick_note",

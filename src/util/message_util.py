@@ -1,7 +1,7 @@
 #显示通用消息框
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMessageBox, QDialog, QVBoxLayout, QLabel, QPushButton, QTextEdit
-from PyQt5.QtCore import Qt
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QMessageBox, QDialog, QVBoxLayout, QLabel, QPushButton, QTextEdit
+from PySide6.QtCore import Qt
 from loguru import logger
 
 from src.util.common_util import CommonUtil
@@ -35,13 +35,13 @@ class MessageUtil:
 
         # 设置图标和标题
         if message_type == "info":
-            msg_box.setIcon(QMessageBox.Information)
+            msg_box.setIcon(QMessageBox.Icon.Information)
         elif message_type == "warning":
-            msg_box.setIcon(QMessageBox.Warning)
+            msg_box.setIcon(QMessageBox.Icon.Warning)
         elif message_type == "error":
-            msg_box.setIcon(QMessageBox.Critical)
+            msg_box.setIcon(QMessageBox.Icon.Critical)
         else:
-            msg_box.setIcon(QMessageBox.NoIcon)
+            msg_box.setIcon(QMessageBox.Icon.NoIcon)
 
         msg_box.setWindowTitle(title)
         msg_box.setText(message)
@@ -51,8 +51,8 @@ class MessageUtil:
             msg_box.setDetailedText(details)
 
         # 设置按钮
-        msg_box.setStandardButtons(QMessageBox.Ok)
-        msg_box.exec_()
+        msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+        msg_box.exec()
 
     #显示错误对话框，支持详细信息展开。
     @staticmethod
@@ -67,7 +67,7 @@ class MessageUtil:
         """
         dialog = QDialog(parent)
         dialog.setWindowTitle(title)
-        dialog.setWindowModality(Qt.ApplicationModal)
+        dialog.setWindowModality(Qt.WindowModality.ApplicationModal)
         dialog.resize(400, 300)
 
         layout = QVBoxLayout(dialog)
@@ -100,7 +100,7 @@ class MessageUtil:
         close_button.clicked.connect(dialog.accept)
         layout.addWidget(close_button)
 
-        dialog.exec_()
+        dialog.exec()
 
     #显示错误消息框并自动记录日志
     @staticmethod

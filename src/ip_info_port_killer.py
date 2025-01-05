@@ -4,9 +4,9 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 
 import psutil
-from PyQt5.QtCore import QThread, pyqtSignal, Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import QThread, Signal, Qt
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout,
     QPushButton, QListWidget, QLabel, QLineEdit, QHBoxLayout
 )
@@ -64,9 +64,9 @@ def get_open_ports(target_ip, start_port, end_port, progress_callback, error_cal
 
     return open_ports
 class PortScannerThread(QThread):
-    progress_signal = pyqtSignal(int)
-    result_signal = pyqtSignal(list)
-    error_signal = pyqtSignal(str)
+    progress_signal = Signal(int)
+    result_signal = Signal(list)
+    error_signal = Signal(str)
 
     def __init__(self, target_ip, start_port, end_port):
         super().__init__()
@@ -82,7 +82,7 @@ class PortScannerThread(QThread):
 
 class PortKillerApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -97,13 +97,12 @@ class PortKillerApp(QWidget):
         self.layout = QVBoxLayout(self)
 
         title_label = QLabel(FsConstants.WINDOW_TITLE_IP_INFO_PORT_KILLER)
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet(f"color: {BLACK.name()};")
-        title_label.setFont(FontConstants.H1)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_label.setObjectName("app_title")
         self.layout.addWidget(title_label)
         # 标题
         self.description_label = QLabel("输入目标 IP 和端口范围，点击搜索按钮查看被占用的端口")
-        self.description_label.setStyleSheet(f"color: {BLUE.name()};")
+
 
         # 输入目标 IP
         self.ip_input_label = QLabel("目标 IP 地址:")
@@ -121,7 +120,7 @@ class PortKillerApp(QWidget):
         self.progress_bar = CustomProgressBar()
         self.progress_bar.hide()
         button_layout = QHBoxLayout()
-        self.admin_button = QPushButton("授权(Mac)")
+        self.admin_button = QPushButton("授权")
         self.admin_button.clicked.connect(self.get_admin)
         # 搜索按钮
         self.search_button = QPushButton("搜索")
@@ -129,7 +128,9 @@ class PortKillerApp(QWidget):
         # 停止按钮
         self.kill_button = QPushButton("停止")
         self.kill_button.clicked.connect(self.kill_port)
-        button_layout.addWidget(self.admin_button)
+        # 针对Mac添加一个按钮
+        if CommonUtil.check_mac_os():
+            button_layout.addWidget(self.admin_button)
         button_layout.addWidget(self.search_button)
         button_layout.addWidget(self.kill_button)
         # 显示端口列表
@@ -237,4 +238,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     killer_app = PortKillerApp()
     killer_app.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

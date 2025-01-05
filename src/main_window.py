@@ -1,9 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QSystemTrayIcon, QMenu, QAction, QMainWindow
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QSystemTrayIcon, QMenu, QMainWindow
 
 from src.app_instance_config import app_instance_config
 
-from PyQt5.QtGui import QIcon
+from PySide6.QtGui import QIcon
 
 from src.util.message_util import MessageUtil
 from src.widget.app_mini import FloatingBall
@@ -12,16 +12,18 @@ from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
 from src.widget.app_icon_widget import AppIconWidget
 from src.util.menu_bar import MenuBar
+from src.widget.tray_menu import TrayMenu
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.closeEvent = None
-        self.tray_icon = None
         self.menubar = None
         self.floating_ball = FloatingBall(self)
         self.is_floating_ball_visible = False
         self.icon_config = app_instance_config
+        self.tray_menu = TrayMenu(self)
+
         # 使用字典动态管理所有应用实例
         self.app_instances = {config["key"]: None for config in self.icon_config}
         self.init_ui()
@@ -46,12 +48,12 @@ class MainWindow(QMainWindow):
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
 
-
         # 初始化应用托盘图标
-        self.init_tray_menu()
+        self.tray_menu.init_tray_menu(self)
+        self.tray_menu.activated_signal.connect(self.tray_icon_activated)
+        self.tray_menu.show_main_signal.connect(self.tray_menu_show_main)
 
-        # 处理窗口关闭事件，使其最小化到托盘
-        self.closeEvent = self.handle_close_event
+
 
     def create_icon_grid(self):
         """动态创建图标的网格布局"""
@@ -70,29 +72,9 @@ class MainWindow(QMainWindow):
         app_icon.iconClicked.connect(lambda _, name=key: self.open_feature_window(name))
         return app_icon
 
-    # 初始化应用托盘图标
-    def init_tray_menu(self):
-        logger.info("---- 初始化任务栏图标 ----")
-
-        # 创建系统托盘图标
-        self.tray_icon = QSystemTrayIcon(self)
-        self.tray_icon.setIcon(
-            QIcon(CommonUtil.get_resource_path(FsConstants.APP_BAR_ICON_FULL_PATH)))  # 这里需要一个名为icon.png的图标文件，可以替换为真实路径
-        self.tray_icon.activated.connect(self.tray_icon_activated)
-
-        # 创建托盘菜单
-        tray_menu = QMenu()
-        show_action = QAction("主界面", self)
-        show_action.triggered.connect(self.tray_menu_show_main)
-        quit_action = QAction("退出", self)
-        quit_action.triggered.connect(sys.exit)
-        tray_menu.addAction(show_action)
-        tray_menu.addAction(quit_action)
-        self.tray_icon.setContextMenu(tray_menu)
 
 
-
-    # 从托盘菜单点击显示窗口
+    # 从托盘菜单点击显示主界面
     def tray_menu_show_main(self):
         logger.info("---- 托盘菜单点击显示窗口 ----")
         # 悬浮球退出
@@ -101,13 +83,12 @@ class MainWindow(QMainWindow):
         self.show()
 
 
-
     # 处理窗口关闭事件
     def handle_close_event(self, event):
         logger.info(f"开始关闭主窗口，悬浮球标志位 = ,{self.is_floating_ball_visible}")
         event.ignore()
         self.hide()
-        self.tray_icon.show()
+        self.tray_menu.tray_icon.show()
 
         if not self.is_floating_ball_visible:
             self.create_floating_ball()
@@ -120,14 +101,18 @@ class MainWindow(QMainWindow):
 
 
     # 双击托盘，打开窗口
-    def tray_icon_activated(self, reason):
-        logger.info("---- 双击任务栏托盘，打开窗口 ----")
+    def tray_icon_activated(self, reason=None):
+        logger.info(f"托盘图标激活事件，原因: {reason}")
+
         # 悬浮球退出
         self.floating_ball.close()
         self.is_floating_ball_visible = False
-        if reason == QSystemTrayIcon.DoubleClick:
-           self.show()
+        if reason == QSystemTrayIcon.ActivationReason.DoubleClick:
+            logger.info("---- 双击任务栏托盘，打开窗口 ----")
+            self.show()
 
+    def closeEvent(self, event):
+        self.handle_close_event(event)
 
     def open_feature_window(self, key):
         """打开对应的功能窗口"""
@@ -139,6 +124,9 @@ class MainWindow(QMainWindow):
         # 如果实例不存在，则动态创建
         if self.app_instances[key] is None:
             app_class = next((item["class"] for item in self.icon_config if item["key"] == key), None)
+            if not app_class:
+                logger.error(f"未找到有效的类配置，key: {key}")
+                return
             if app_class:
                 try:
                     self.app_instances[key] = app_class()

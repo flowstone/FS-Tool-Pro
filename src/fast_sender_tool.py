@@ -1,8 +1,8 @@
 import sys
 
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 from loguru import logger
 
 from src.const.fs_constants import FsConstants
@@ -13,7 +13,7 @@ from src.util.common_util import CommonUtil
 
 class FastSenderToolApp(QWidget):
     # 定义一个信号，在窗口关闭时触发
-    closed_signal = pyqtSignal()
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -23,7 +23,7 @@ class FastSenderToolApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_FAST_SENDER_TOOL)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
-        self.setWindowFlags(self.windowFlags() | Qt.MSWindowsFixedSizeDialogHint)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
 
         # 创建主布局
@@ -40,15 +40,25 @@ class FastSenderToolApp(QWidget):
 
     def add_tabs(self):
         self.tab_widget.addTab(FastSenderApp(), "文件传输")
-        self.tab_widget.addTab(FastSenderMiniApp(), "Mini服务")
+        # 打包后，Flask服务没办法正常启动
+        #self.tab_widget.addTab(FastSenderMiniApp(), "Mini服务")
 
     def closeEvent(self, event):
-        # 在关闭事件中发出信号
-        self.closed_signal.emit()
+        """在主窗口关闭时，通知所有子 Tab 的关闭事件"""
+        self.closed_signal.emit()  # 发出关闭信号（如果有其他用途）
+
+        # 遍历所有 Tab 页并调用它们的 closeEvent 方法
+        for i in range(self.tab_widget.count()):
+            widget = self.tab_widget.widget(i)
+            if hasattr(widget, "closeEvent"):
+                # 手动触发子窗口的 closeEvent
+                child_event = type(event)()  # 创建一个新的 QCloseEvent 对象
+                widget.closeEvent(child_event)
+
         super().closeEvent(event)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = FastSenderToolApp()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

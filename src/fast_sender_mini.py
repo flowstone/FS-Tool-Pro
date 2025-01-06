@@ -14,8 +14,6 @@ from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 
-# 设置 FLASK_APP 环境变量
-os.environ['FLASK_APP'] = 'flask_server.py'
 
 class FastSenderMiniApp(QWidget):
     closed_signal = Signal()

@@ -5,7 +5,6 @@
 # macOS 必须参数
 #    nuitka-project: --macos-create-app-bundle
 #    nuitka-project: --macos-app-icon={MAIN_DIRECTORY}/resources/images/app.icns
-
 # Windows 打包成单文件exe
 # nuitka-project-if: {OS} == "Windows":
 #    nuitka-project: --onefile
@@ -31,6 +30,8 @@
 
 
 import sys
+from multiprocessing import freeze_support
+import multiprocessing
 
 from PySide6.QtGui import QFont, QPalette
 from PySide6.QtWidgets import QApplication
@@ -72,4 +73,11 @@ def main():
 
 
 if __name__ == '__main__':
+    # 检查进程上下文是否已经设置，如果没有设置，则进行设置
+    if not multiprocessing.get_start_method():
+        #设置多进程启动方式为 spawn
+        multiprocessing.set_start_method('spawn')
+    #避免子进程重新加载主脚本
+    freeze_support()
+
     main()

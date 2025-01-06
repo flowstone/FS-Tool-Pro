@@ -20,9 +20,9 @@ class CommonUtil:
         # Nuitka
         if "NUITKA_ONEFILE_PARENT" in os.environ or getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
             # 如果是冻结状态（例如使用 PyInstaller、Nuitka 等打包后的状态）
+            # sys.executable 当前程序运行的目录，仅支持Win
             # sys._MEIPASS 是一个存储了程序资源的临时目录
             # 当程序被打包时，资源会被解压到该目录中
-            # sys.executable 当前程序运行的目录
 
             if CommonUtil.check_win_os():
                 application_path = os.path.dirname(sys.executable)

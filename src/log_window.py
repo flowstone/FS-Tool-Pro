@@ -81,9 +81,6 @@ class LogWindow(QWidget):
             # 恢复标准输出流
             sys.stdout = self.original_stdout
             sys.stderr = self.original_stderr
-
-            # 关闭日志记录器
-            logger.remove()
-
         except Exception as e:
-            print(f"关闭日志窗口时发生错误: {e}")
+            logger.warning(f"关闭日志窗口时发生错误: {e}")
+        super().closeEvent(event)

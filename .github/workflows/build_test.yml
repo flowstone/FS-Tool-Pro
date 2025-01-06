@@ -24,17 +24,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Build Package
-        run: nuitka  --show-progress --assume-yes-for-downloads  ./FSToolPro.py
+        run: nuitka  --show-progress --assume-yes-for-downloads  ./app.py
       - name: Prepare Package for Upload
         run: |
-          mv FSToolPro.app ~/FSToolPro.app
+          mv app.app ~/FS-Tool-Pro.app
           cd ~
-          tar cvf FSToolPro.tar FSToolPro.app
+          tar cvf FS-Tool-Pro.tar.gz FS-Tool-Pro.app
       - name: Upload Package
         uses: actions/upload-artifact@v4
         with:
-          path: ~/FSToolPro.tar
-          name: FSToolPro-macOS-x86_64
+          path: ~/FS-Tool-Pro.tar.gz
+          name: FS-Tool-Pro-macOS-x86_64-bin
 
   build-windows:
     runs-on: windows-latest
@@ -52,16 +52,17 @@ jobs:
         pip install -r requirements.txt
     - name: Build Package
       run: |
-        nuitka  --show-progress --assume-yes-for-downloads FSToolPro.py
+        nuitka  --show-progress --assume-yes-for-downloads app.py
+        mv app.exe FS-Tool-Pro.exe
+        mv app.dist FS-Tool-Pro.dist
         pwd
-        ls
     - name: Upload Package
       uses: actions/upload-artifact@v4
       with:
-        path: D:\a\FSToolPro\FSToolPro\FSToolPro.dist
-        name: FSToolPro-Windows-bin
+        path: D:\a\FS-Tool-Pro\FS-Tool-Pro\FS-Tool-Pro.dist
+        name: FS-Tool-Pro-Windows-bin
     - name: Upload Onefile Package
       uses: actions/upload-artifact@v4
       with:
-        path: D:\a\FSToolPro\FSToolPro\FSToolPro.exe
-        name: FSToolPro-Windows
+        path: D:\a\FS-Tool-Pro\FS-Tool-Pro\FS-Tool-Pro.exe
+        name: FSToolPro-Windows-onefile-bin

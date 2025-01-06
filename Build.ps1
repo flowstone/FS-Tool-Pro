@@ -1,4 +1,4 @@
-# Build.ps1 for cleanFSToolPro
+# Build.ps1 for cleanFS-Tool-Pro
 
 # Default option is to run build, like a Makefile
 param(
@@ -6,13 +6,13 @@ param(
 )
 
 $buildFSToolPro = {
-    Write-Host "Building FSToolPro..."
-    python -m nuitka --show-progress --assume-yes-for-downloads FSToolPro.py
+    Write-Host "Building FS-Tool-Pro..."
+    python -m nuitka --show-progress --assume-yes-for-downloads app.py
 }
 
 $cleanFSToolPro = {
     Write-Host "Cleaning..."
-    Remove-Item -Recurse -Force FSToolPro.exe, ./FSToolPro.build/, ./FSToolPro.dist/, ./FSToolPro.onefile-build/
+    Remove-Item -Recurse -Force app.exe, ./app.build/, ./app.dist/, ./app.onefile-build/
 }
 
 switch ($Task.ToLower()) {

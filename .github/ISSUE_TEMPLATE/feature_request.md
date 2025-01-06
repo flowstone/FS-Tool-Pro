@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for NUSGet!
+about: Suggest an idea for FS-Tool-Pro!
 title: ''
 labels: enhancement
 assignees: ''

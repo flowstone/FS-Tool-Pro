@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve NUSGet.
+about: Create a report to help us improve FS-Tool-Pro.
 title: ''
 labels: bug
 assignees: ''
@@ -18,8 +18,8 @@ assignees: ''
 
 ### System information:
  - **OS and version:**
- - **FSToolPro version:**
+ - **FS-Tool-Pro version:**
 
 If you're running the app from source, provide the below information:
- - **Are you compiling FSToolPro, or running the Python script directly?**
+ - **Are you compiling FS-Tool-Pro, or running the Python script directly?**
  - **Python version:**

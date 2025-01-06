@@ -2,12 +2,11 @@ CC=python -m nuitka
 ARCH_FLAGS?=
 
 all:
-	$(CC) --show-progress --assume-yes-for-downloads FSToolPro.py $(ARCH_FLAGS) -o FSToolPro
+	$(CC) --show-progress --assume-yes-for-downloads app.py $(ARCH_FLAGS) -o app
 
 
 
 clean:
-	rm FSToolPro
-	rm -rd FSToolPro.build/
-	rm -rd FSToolPro.dist/
-	rm -rd FSToolPro.onefile-build/
+	rm -rd app.build/
+	rm -rd app.dist/
+	rm -rd app.onefile-build/

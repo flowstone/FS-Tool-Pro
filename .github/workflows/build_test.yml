@@ -75,19 +75,17 @@ jobs:
         # 使用 create-dmg 工具将 .app 打包成 .dmg 文件
       - name: Zip the generated files (macOS)
         run: |
-           zip -r FS-Tool-Pro.app.zip dist/FS-Tool-Pro.app  # 使用zip命令将dist目录下所有文件及子目录递归压缩成FS-Tool.zip包
-           cd dist/
-           ls
-           mv FS-Tool-Pro.app.zip FS-Tool-Pro.dmg ~/
+           zip -r FS-Tool-Pro.app.zip dist/FS-Tool-Pro.app
+           mv FS-Tool-Pro.app.zip dist/
 
       - name: Upload DMG Package
         uses: actions/upload-artifact@v4
         with:
-          path: ~/FS-Tool-Pro.dmg
+          path: dist/FS-Tool-Pro.dmg
           name: FS-Tool-Pro-macOS-x86_64-bin
 
       - name: Upload APP Package
         uses: actions/upload-artifact@v4
         with:
-          path: ~/FS-Tool-Pro.app.zip
+          path: dist/FS-Tool-Pro.app.zip
           name: FS-Tool-Pro-macOS-x86_64-app

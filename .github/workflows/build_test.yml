@@ -29,11 +29,11 @@ jobs:
         run: |
           mv app.app ~/FS-Tool-Pro.app
           cd ~
-          tar cvf FS-Tool-Pro.tar.gz FS-Tool-Pro.app
+          zip  FS-Tool-Pro.zip FS-Tool-Pro.app  # 使用zip命令将dist目录下所有文件及子目录递归压缩成FS-Tool.zip包
       - name: Upload Package
         uses: actions/upload-artifact@v4
         with:
-          path: ~/FS-Tool-Pro.tar.gz
+          path: ~/FS-Tool-Pro.zip
           name: FS-Tool-Pro-macOS-x86_64-bin
 
   build-windows:

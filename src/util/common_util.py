@@ -2,7 +2,7 @@ import sys
 import os
 import datetime
 import socket
-
+from loguru import logger
 from src.const.fs_constants import FsConstants
 from src.util.load_config import get_sqlite_path
 
@@ -18,16 +18,22 @@ class CommonUtil:
         # PyInstaller
         #if getattr(sys, 'frozen', False):
         # Nuitka
-        if "NUITKA_ONEFILE_PARENT" in os.environ or getattr(sys, 'frozen', False):
+        if "NUITKA_ONEFILE_PARENT" in os.environ or getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
             # 如果是冻结状态（例如使用 PyInstaller、Nuitka 等打包后的状态）
             # sys._MEIPASS 是一个存储了程序资源的临时目录
             # 当程序被打包时，资源会被解压到该目录中
             # sys.executable 当前程序运行的目录
-            application_path = os.path.dirname(sys.executable)
+
+            if CommonUtil.check_win_os():
+                application_path = os.path.dirname(sys.executable)
+            else:
+                application_path = sys._MEIPASS
+            logger.info("[冻结状态]打包后的资源路径:{}".format(application_path))
         else:
             # 如果不是冻结状态，使用当前脚本所在的目录
             #application_path = os.path.dirname(os.path.abspath(__file__))
             application_path = os.path.dirname(sys.argv[0])
+            logger.info("[非冻结状态]打包后的资源路径:{}".format(application_path))
         return os.path.join(application_path, relative_path)
 
     # 当前系统是Win 返回True

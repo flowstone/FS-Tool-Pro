@@ -50,7 +50,7 @@ class FastSenderMiniApp(QWidget):
         # 按钮布局
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.start_button)
-        button_layout.addWidget(self.stop_button)
+        #button_layout.addWidget(self.stop_button)
 
         self.layout.addLayout(button_layout)
         self.setLayout(self.layout)
@@ -63,6 +63,7 @@ class FastSenderMiniApp(QWidget):
             self.log("Flask 服务已启动。")
             self.log(f"服务器根目录: {CommonUtil.get_flask_mini_dir()}")
             self.log("127.0.0.1:5678")
+            self.log(f"{CommonUtil.get_local_ip()}:5678")
             self.start_button.setEnabled(False)
             self.stop_button.setEnabled(True)
         else:

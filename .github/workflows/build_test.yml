@@ -1,6 +1,6 @@
-# This workflow will install Python dependencies and then build NUSGet for all platforms
+# This workflow will install Python dependencies and then build FS-Tool-Pro for all platforms
 
-name: Python application
+name: Win/macOS Package
 
 on:
   push:
@@ -40,7 +40,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         path: D:\a\FS-Tool-Pro\FS-Tool-Pro\FS-Tool-Pro.exe
-        name: FSToolPro-Windows-onefile-bin
+        name: FS-Tool-Pro-Windows-onefile-bin
   build-macos-x86:
     runs-on: macos-13 # macos13支持Intel平台，14之后默认是ARM平台，Intel平台要收费
     steps:

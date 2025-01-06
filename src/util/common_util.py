@@ -28,12 +28,12 @@ class CommonUtil:
                 application_path = os.path.dirname(sys.executable)
             else:
                 application_path = sys._MEIPASS
-            logger.info("[冻结状态]打包后的资源路径:{}".format(application_path))
+            # logger.info("[冻结状态]打包后的资源路径:{}".format(application_path))
         else:
             # 如果不是冻结状态，使用当前脚本所在的目录
             #application_path = os.path.dirname(os.path.abspath(__file__))
             application_path = os.path.dirname(sys.argv[0])
-            logger.info("[非冻结状态]打包后的资源路径:{}".format(application_path))
+            # logger.info("[非冻结状态]打包后的资源路径:{}".format(application_path))
         return os.path.join(application_path, relative_path)
 
     # 当前系统是Win 返回True

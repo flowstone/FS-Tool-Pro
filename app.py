@@ -24,6 +24,10 @@
 # 添加数据文件
 # nuitka-project: --include-data-files={MAIN_DIRECTORY}/app.ini=app.ini
 
+# 配置flask
+# nuitka-project: --follow-imports
+# nuitka-project: --include-data-dir={MAIN_DIRECTORY}/templates=templates
+# nuitka-project: --include-data-dir={MAIN_DIRECTORY}/static=static
 
 
 import sys

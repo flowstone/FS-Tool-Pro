@@ -25,15 +25,19 @@ jobs:
           pip install -r requirements.txt
       - name: Build Package
         run: nuitka  --show-progress --assume-yes-for-downloads  ./app.py
-      - name: Prepare Package for Upload
+      - name: Install create-dmg tool
+        run: |
+          brew install create-dmg  
+      - name: Create DMG file from .app (macOS)
         run: |
           mv app.app ~/FS-Tool-Pro.app
           cd ~
-          zip  FS-Tool-Pro.zip FS-Tool-Pro.app  # 使用zip命令将dist目录下所有文件及子目录递归压缩成FS-Tool.zip包
+          create-dmg  "FS-Tool-Pro.dmg"  "FS-Tool-Pro.app"  
+
       - name: Upload Package
         uses: actions/upload-artifact@v4
         with:
-          path: ~/FS-Tool-Pro.zip
+          path: ~/FS-Tool-Pro.dmg
           name: FS-Tool-Pro-macOS-x86_64-bin
 
   build-windows:

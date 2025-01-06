@@ -41,9 +41,9 @@ class FastSenderMiniApp(QWidget):
         self.layout.addWidget(self.log_text)
 
         # 创建按钮
-        self.start_button = QPushButton("启动服务", self)
+        self.start_button = QPushButton("启动服务")
         self.start_button.clicked.connect(self.start_flask)
-        self.stop_button = QPushButton("停止服务", self)
+        self.stop_button = QPushButton("停止服务")
         self.stop_button.setEnabled(False)  # 禁用关闭按钮
         self.stop_button.clicked.connect(self.stop_flask)
 

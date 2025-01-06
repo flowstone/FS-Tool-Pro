@@ -66,7 +66,7 @@ jobs:
       - name: Build application with PyInstaller
         #run: pyinstaller --name "FS-Tool" --onefile --windowed --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/lib:./PyQt5/Qt/lib" --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/plugins:./PyQt5/Qt/plugins"   --add-data "resources:resources" --add-data "app.ini:." --collect-all PyQt5 --icon=resources/app.ico app.py
         run: |
-          pyinstaller --name "FS-Tool-Pro" --onefile  --window   --add-data "resources:resources" --add-data "app.ini:." --icon=resources/images/app.ico ./app.py
+            pyinstaller --name "FS-Tool-Pro" --onefile  --window   --add-data "resources:resources" --add-data "static:static" --add-data "templates:templates" --add-data "app.ini:." --icon=resources/images/app.ico ./app.py
 
       - name: Create DMG file from .app (macOS)
         run: |
@@ -102,7 +102,7 @@ jobs:
         - name: Build application with PyInstaller
           #run: pyinstaller --name "FS-Tool" --onefile --windowed --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/lib:./PyQt5/Qt/lib" --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/plugins:./PyQt5/Qt/plugins"   --add-data "resources:resources" --add-data "app.ini:." --collect-all PyQt5 --icon=resources/app.ico app.py
           run: |
-            pyinstaller --name "FS-Tool-Pro" --onefile  --window   --add-data "resources:resources" --add-data "app.ini:." --icon=resources/images/app.ico ./app.py
+            pyinstaller --name "FS-Tool-Pro" --onefile  --window   --add-data "resources:resources" --add-data "static:static" --add-data "templates:templates" --add-data "app.ini:." --icon=resources/images/app.ico ./app.py
   
         - name: Create DMG file from .app (macOS)
           run: |

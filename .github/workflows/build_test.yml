@@ -72,20 +72,47 @@ jobs:
         run: |
            create-dmg  "dist/FS-Tool-Pro.dmg"  "dist/FS-Tool-Pro.app"
 
-        # 使用 create-dmg 工具将 .app 打包成 .dmg 文件
-      - name: Zip the generated files (macOS)
-        run: |
-           zip -r FS-Tool-Pro.app.zip dist/FS-Tool-Pro.app
-           mv FS-Tool-Pro.app.zip dist/
-
       - name: Upload DMG Package
         uses: actions/upload-artifact@v4
         with:
           path: dist/FS-Tool-Pro.dmg
           name: FS-Tool-Pro-macOS-x86_64-bin
-
-      - name: Upload APP Package
-        uses: actions/upload-artifact@v4
-        with:
-          path: dist/FS-Tool-Pro.app.zip
-          name: FS-Tool-Pro-macOS-x86_64-app
+  build-macos-arm:
+      runs-on: macos-latest # macos13支持Intel平台，14之后默认是ARM平台，Intel平台要收费
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3  # 检出当前仓库代码
+  
+        - name: Set up Python
+          uses: actions/setup-python@v4
+          with:
+            python-version: '3.11'  # 根据项目实际依赖的Python版本进行调整
+  
+        - name: Install dependencies
+          run: pip install -r requirements.txt  # 安装项目依赖的Python库
+  
+        - name: Install PyInstaller
+          run: pip install pyinstaller  # 安装PyInstaller打包工具
+  
+        - name: Install create-dmg tool
+          run: |
+            brew install create-dmg
+          # 安装 create-dmg 工具
+  
+        - name: Build application with PyInstaller
+          #run: pyinstaller --name "FS-Tool" --onefile --windowed --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/lib:./PyQt5/Qt/lib" --add-data "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/PyQt5/Qt5/plugins:./PyQt5/Qt/plugins"   --add-data "resources:resources" --add-data "app.ini:." --collect-all PyQt5 --icon=resources/app.ico app.py
+          run: |
+            pyinstaller --name "FS-Tool-Pro" --onefile  --window   --add-data "resources:resources" --add-data "app.ini:." --icon=resources/images/app.ico ./app.py
+  
+        - name: Create DMG file from .app (macOS)
+          run: |
+             create-dmg  "dist/FS-Tool-Pro.dmg"  "dist/FS-Tool-Pro.app"
+  
+        - name: Upload DMG Package
+          uses: actions/upload-artifact@v4
+          with:
+            path: dist/FS-Tool-Pro.dmg
+            name: FS-Tool-Pro-macOS-arm-bin
+  
+      
+      

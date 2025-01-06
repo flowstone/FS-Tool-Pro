@@ -7,7 +7,6 @@ from loguru import logger
 
 from src.const.fs_constants import FsConstants
 from src.fast_sender import FastSenderApp
-from src.fast_sender_mini import FastSenderMiniApp
 from src.util.common_util import CommonUtil
 
 
@@ -42,7 +41,7 @@ class FastSenderToolApp(QWidget):
         self.tab_widget.addTab(FastSenderApp(), "文件传输")
         # Win端，特有Flask服务
         #if CommonUtil.check_win_os():
-        self.tab_widget.addTab(FastSenderMiniApp(), "Mini服务")
+        #self.tab_widget.addTab(FastSenderMiniApp(), "Mini服务")
 
     def closeEvent(self, event):
         """在主窗口关闭时，通知所有子 Tab 的关闭事件"""

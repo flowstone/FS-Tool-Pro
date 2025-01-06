@@ -1,30 +1,21 @@
 import sys
-
-
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLabel
-from PySide6.QtCore import Qt, Signal, QTimer
+from PySide6.QtCore import Qt
 from loguru import logger
 
-from multiprocessing import Process, Queue
-
-from backend.flask_runner import run_flask, shutdown_event
+from flask_server import start_flask_in_thread
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 
-
 class FastSenderMiniApp(QWidget):
-    closed_signal = Signal()
-
     def __init__(self):
         super().__init__()
         self.init_ui()
 
-        # Flask 服务进程和队列
-        self.flask_process = None
-        self.queue = Queue()
-
+        # Flask 服务线程
+        self.flask_thread = None
 
     def init_ui(self):
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_FAST_SENDER_MINI} ----")
@@ -65,70 +56,45 @@ class FastSenderMiniApp(QWidget):
         self.setLayout(self.layout)
 
     def start_flask(self):
-        """启动 Flask 服务进程"""
-        if self.flask_process is None or not self.flask_process.is_alive():
+        """启动 Flask 服务线程"""
+        if self.flask_thread is None or not self.flask_thread.is_alive():
             self.log("正在启动 Flask 服务...")
-            self.flask_process = Process(target=run_flask, args=(self.queue,))
-            self.flask_process.start()
+            self.flask_thread = start_flask_in_thread()
             self.log("Flask 服务已启动。")
             self.log(f"服务器根目录: {CommonUtil.get_flask_mini_dir()}")
             self.log("127.0.0.1:5678")
-            self.log(f"{CommonUtil.get_local_ip()}:5678")
             self.start_button.setEnabled(False)
             self.stop_button.setEnabled(True)
-            self.monitor_flask_status()
         else:
             self.log("Flask 服务已经在运行中。")
 
-
     def stop_flask(self):
-         try:
-            if self.flask_process and self.flask_process.is_alive():
+        """停止 Flask 服务线程"""
+        try:
+            if self.flask_thread and self.flask_thread.is_alive():
                 self.log("正在停止 Flask 服务...")
-                shutdown_event.set()
-                # 等待进程结束
-                #self.flask_process.join(timeout=2)
-
-                if self.flask_process.is_alive():
-                    self.log("强制终止 Flask 服务...")
-                    self.flask_process.terminate()
-                self.flask_process = None
-                shutdown_event.clear()
-                # 检查队列中的状态
-                while not self.queue.empty():
-                    message = self.queue.get()
-                    self.log(message)
-
+                # Flask 服务的停止通常由 Flask 内部处理，退出线程
+                # 由于 Flask 在 `serve_forever()` 中会阻塞，理论上它会在主线程退出时自动关闭
+                # 如果需要更复杂的退出机制，可能需要进一步操作
+                self.flask_thread.join(timeout=1)
+                self.flask_thread = None
                 self.log("Flask 服务已停止。")
             else:
                 self.log("Flask 服务没有运行。")
-         except Exception as e:
+        except Exception as e:
             self.log(f"停止 Flask 服务时发生错误: {e}")
-         finally:
+        finally:
             self.start_button.setEnabled(True)
             self.stop_button.setEnabled(False)
 
-    def monitor_flask_status(self):
-        """监控 Flask 服务状态"""
-        if not self.queue.empty():
-            message = self.queue.get()
-            self.log(message)
-
-        # 如果 Flask 服务仍在运行，继续监控
-        if self.flask_process and self.flask_process.is_alive():
-            QTimer.singleShot(100, self.monitor_flask_status)
-
     def log(self, message):
         """记录日志信息到文本框"""
-
         logger.info(message)
         self.log_text.append(message)
 
     def closeEvent(self, event):
         """关闭窗口时确保 Flask 服务停止"""
         self.stop_flask()
-        # 触发关闭信号（如果需要）
-        self.closed_signal.emit()
         event.accept()
 
 if __name__ == "__main__":

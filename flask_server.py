@@ -1,7 +1,9 @@
-from multiprocessing import Event
-
+from werkzeug.serving import make_server
+import threading
+import logging
 from flask import Flask, render_template, request, send_from_directory
 import os
+
 from loguru import logger
 from src.util.common_util import CommonUtil
 
@@ -9,8 +11,7 @@ from src.util.common_util import CommonUtil
 SAVE_DIR = CommonUtil.get_flask_mini_dir()
 os.makedirs(SAVE_DIR, exist_ok=True)
 
-# 定义 shutdown_event
-shutdown_event = Event()
+
 
 # 存储上传的文本消息
 uploaded_texts = []
@@ -34,6 +35,8 @@ def create_app():
     工厂函数，用于动态创建 Flask 应用实例。
     """
     app = Flask(__name__)
+    app.config['DEBUG'] = True  # 启用调试模式
+    app.config['PROPAGATE_EXCEPTIONS'] = True  # 让异常在控制台中显示
 
     @app.route('/')
     def index():
@@ -70,3 +73,22 @@ def create_app():
         return send_from_directory(SAVE_DIR, filename)
 
     return app
+
+def run_flask():
+    """启动 Flask 服务"""
+    app = create_app()  # 动态创建 Flask 应用实例
+    server = make_server("127.0.0.1", 5678, app)
+    server.timeout = 1  # 设置超时时间，避免 handle_request 无限阻塞
+    try:
+        logging.basicConfig(level=logging.DEBUG)  # 配置日志输出等级为 DEBUG
+        logging.info("Flask server starting on http://127.0.0.1:5678")
+        server.serve_forever()  # 永久运行 Flask 服务
+    except Exception as e:
+        logging.error(f"Error in Flask service: {e}")
+
+def start_flask_in_thread():
+    """将 Flask 服务启动在单独的线程中"""
+    flask_thread = threading.Thread(target=run_flask)
+    flask_thread.daemon = True  # 设置为守护线程，主程序退出时线程也会退出
+    flask_thread.start()
+    return flask_thread

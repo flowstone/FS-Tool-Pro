@@ -1,4 +1,6 @@
 import sys
+import platform
+import tempfile
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import QMenuBar, QMenu, QMainWindow, QTextEdit, QVBoxLayout, QWidget, QSystemTrayIcon, QMenu
 from src.const.fs_constants import FsConstants
@@ -15,7 +17,16 @@ class LogStream:
 
     def write(self, message):
         """将信息写入 QTextEdit 控件"""
-        self.text_edit.append(message)
+        if self.text_edit:
+            # 根据日志级别设置颜色
+            if "ERROR" in message:
+                self.text_edit.setTextColor("red")  # 错误信息为红色
+            elif "WARNING" in message:
+                self.text_edit.setTextColor("orange")  # 警告信息为橙色
+            else:
+                self.text_edit.setTextColor("black")  # 普通信息为黑色
+
+            self.text_edit.append(message.strip())  # 去掉多余换行符
 
     def flush(self):
         """flush 方法用于兼容 sys.stdout"""
@@ -28,7 +39,7 @@ class LogWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("日志窗口")
-        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_FAST_SENDER_MINI} ----")
+        logger.info(f"---- 初始化日志窗口 ----")
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
         self.setGeometry(0, 0, 800, 400)
@@ -41,8 +52,38 @@ class LogWindow(QWidget):
         self.layout.addWidget(self.log_text_edit)
         self.setLayout(self.layout)
 
+        # 备份原始输出流
+        self.original_stdout = sys.stdout
+        self.original_stderr = sys.stderr
+
         # 将日志输出到 QTextEdit
         sys.stdout = LogStream(self.log_text_edit)
         sys.stderr = LogStream(self.log_text_edit)
         logger.add(sys.stdout, level="INFO")
+        logger.add(sys.stdout, level="WARNING")
         logger.add(sys.stderr, level="ERROR")
+        # 添加基础信息
+        self.add_basic_info()
+
+    @staticmethod
+    def add_basic_info():
+        """添加系统和环境基础信息"""
+        logger.info("=== 系统与环境信息 ===")
+        logger.info(f"操作系统: {platform.system()} {platform.release()}")
+        #logger.info(f"Python版本: {platform.python_version()}")
+        logger.info(f"资源目录: {CommonUtil.get_resource_path('')}")
+        logger.info(f"SQLite数据路径: {CommonUtil.get_db_full_path()}")
+        logger.info("===================")
+
+    def closeEvent(self, event):
+        """在窗口关闭时恢复标准输出和错误输出"""
+        try:
+            # 恢复标准输出流
+            sys.stdout = self.original_stdout
+            sys.stderr = self.original_stderr
+
+            # 关闭日志记录器
+            logger.remove()
+
+        except Exception as e:
+            print(f"关闭日志窗口时发生错误: {e}")

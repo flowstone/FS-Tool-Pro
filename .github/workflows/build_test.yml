@@ -42,7 +42,7 @@ jobs:
         path: D:\a\FS-Tool-Pro\FS-Tool-Pro\FS-Tool-Pro.exe
         name: FSToolPro-Windows-onefile-bin
   build-macos-x86:
-    runs-on: macos-latest
+    runs-on: macos-13 # macos13支持Intel平台，14之后默认是ARM平台，Intel平台要收费
     steps:
       - name: Checkout code
         uses: actions/checkout@v3  # 检出当前仓库代码

@@ -15,15 +15,13 @@ class CommonUtil:
         """
         获取资源（如图片等）的实际路径，处理打包后资源路径的问题
         """
-        # PyInstaller
-        #if getattr(sys, 'frozen', False):
-        # Nuitka
+        # PyInstaller、Nuitka打包单文件 写入的参数
         if "NUITKA_ONEFILE_PARENT" in os.environ or getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
             # 如果是冻结状态（例如使用 PyInstaller、Nuitka 等打包后的状态）
-            # sys.executable 当前程序运行的目录，仅支持Win
+            # sys.executable 当前程序运行的目录，仅支持Win系统
             # sys._MEIPASS 是一个存储了程序资源的临时目录
             # 当程序被打包时，资源会被解压到该目录中
-
+            # 此路径和打包的应用有关系，目前pyinstaller打macOS端，Nuitka打Win端
             if CommonUtil.check_win_os():
                 application_path = os.path.dirname(sys.executable)
             else:

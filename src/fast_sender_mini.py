@@ -1,4 +1,3 @@
-import os
 import sys
 
 
@@ -7,9 +6,9 @@ from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, Q
 from PySide6.QtCore import Qt, Signal, QTimer
 from loguru import logger
 
-from multiprocessing import Process, Queue, Event
-from flask_server import run_flask, shutdown_event
-from src.const.color_constants import BLACK, BLUE
+from multiprocessing import Process, Queue
+
+from backend.flask_runner import run_flask, shutdown_event
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
@@ -88,13 +87,18 @@ class FastSenderMiniApp(QWidget):
                 self.log("正在停止 Flask 服务...")
                 shutdown_event.set()
                 # 等待进程结束
-                #self.flask_process.join(timeout=1)
+                #self.flask_process.join(timeout=2)
 
                 if self.flask_process.is_alive():
                     self.log("强制终止 Flask 服务...")
                     self.flask_process.terminate()
                 self.flask_process = None
                 shutdown_event.clear()
+                # 检查队列中的状态
+                while not self.queue.empty():
+                    message = self.queue.get()
+                    self.log(message)
+
                 self.log("Flask 服务已停止。")
             else:
                 self.log("Flask 服务没有运行。")
@@ -116,6 +120,7 @@ class FastSenderMiniApp(QWidget):
 
     def log(self, message):
         """记录日志信息到文本框"""
+
         logger.info(message)
         self.log_text.append(message)
 

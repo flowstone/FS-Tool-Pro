@@ -76,7 +76,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: dist/FS-Tool-Pro.dmg
-          name: FS-Tool-Pro-macOS-x86_64-bin
+          name: FS-Tool-Pro-macOS-x86-bin
   build-macos-arm:
       runs-on: macos-latest # macos13支持Intel平台，14之后默认是ARM平台，Intel平台要收费
       steps:

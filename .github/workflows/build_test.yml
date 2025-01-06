@@ -51,7 +51,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Build Package
-      run: nuitka  --show-progress --assume-yes-for-downloads FSToolPro.py
+      run: |
+        nuitka  --show-progress --assume-yes-for-downloads FSToolPro.py
+        pwd
+        ls
     - name: Upload Package
       uses: actions/upload-artifact@v4
       with:

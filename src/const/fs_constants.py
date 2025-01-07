@@ -130,9 +130,9 @@ class FsConstants:
     # 保存文件路径
     SAVE_FILE_PATH_WIN = "C:\\"
     SAVE_FILE_PATH_MAC = "~"
-    DATABASE_FILE = "fs-tool-pro.db"
-    FAST_SENDER_DIR = "fs_received_files"
-    FLASK_MINI_DIR = "fs_flask_web"
+    DATABASE_FILE = "FS-Tool-Pro/fs-tool-pro.db"
+    FAST_SENDER_DIR = "FS-Tool-Pro/fs_received_files"
+    FLASK_MINI_DIR = "FS-Tool-Pro/fs_flask_web"
 
     APP_INI_FILE = "app.ini"
     HELP_PDF_FILE_PATH = "resources/pdf/help.pdf"

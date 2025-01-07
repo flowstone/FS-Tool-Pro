@@ -1,3 +1,4 @@
+from jinja2 import FileSystemLoader, ChoiceLoader
 from werkzeug.serving import make_server
 import threading
 from flask import Flask, render_template, request, send_from_directory
@@ -7,8 +8,12 @@ from loguru import logger
 from src.util.common_util import CommonUtil
 
 # 全局变量定义
-SAVE_DIR = CommonUtil.get_flask_mini_dir()
-os.makedirs(SAVE_DIR, exist_ok=True)
+# Flask 服务的基础目录
+FLASK_DIR = CommonUtil.get_flask_mini_dir()
+UPDATE_DIR = os.path.join(FLASK_DIR, "uploads")
+EXTERNAL_TEMPLATES_DIR = os.path.join(FLASK_DIR, "pages")  # 假设外部文件夹位置
+os.makedirs(UPDATE_DIR, exist_ok=True)
+os.makedirs(EXTERNAL_TEMPLATES_DIR, exist_ok=True)
 
 
 
@@ -26,7 +31,8 @@ def allowed_file(filename):
 
 def render_index_page(error=None):
     """渲染主页，避免重复代码，传递错误信息"""
-    return render_template('index.html', files=os.listdir(SAVE_DIR), texts=uploaded_texts, error=error)
+    return render_template('index.html', files=os.listdir(UPDATE_DIR), texts=uploaded_texts, error=error)
+
 
 
 def create_app():
@@ -34,6 +40,13 @@ def create_app():
     工厂函数，用于动态创建 Flask 应用实例。
     """
     app = Flask(__name__)
+    # 配置多个模板加载路径
+    app.jinja_options = dict(
+        loader=ChoiceLoader([
+            FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),  # 默认模板目录
+            FileSystemLoader(EXTERNAL_TEMPLATES_DIR)  # 外部模板目录
+        ])
+    )
 
     @app.route('/')
     def index():
@@ -51,7 +64,7 @@ def create_app():
 
         secure_name = file.filename
         logger.info(f"安全处理后的文件名: {secure_name}")
-        file_path = os.path.join(SAVE_DIR, secure_name)
+        file_path = os.path.join(UPDATE_DIR, secure_name)
         file.save(file_path)
 
         return render_index_page()
@@ -67,8 +80,22 @@ def create_app():
 
     @app.route('/files/<filename>')
     def uploaded_file(filename):
-        return send_from_directory(SAVE_DIR, filename)
+        return send_from_directory(UPDATE_DIR, filename)
 
+    # 动态创建路由
+    def create_dynamic_routes():
+        # 获取 templates 和 external/pages 目录下的所有 HTML 文件
+        for directory in [EXTERNAL_TEMPLATES_DIR]:
+            for filename in os.listdir(directory):
+                if filename.endswith('.html'):
+                    route_name = filename.replace('.html', '')
+
+                    # 为每个 HTML 文件创建一个动态路由
+                    @app.route(f'/{route_name}')
+                    def dynamic_route(route_name=route_name):
+                        return render_template(f'{route_name}.html')
+
+    create_dynamic_routes()
     return app
 
 def run_flask():

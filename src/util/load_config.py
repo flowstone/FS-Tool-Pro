@@ -6,7 +6,7 @@ from loguru import logger
 from src.const.fs_constants import FsConstants
 
 # 从 INI 文件加载用设置
-def get_sqlite_path():
+def get_ini_sqlite_path():
     """
     从 INI 文件加载用户设置（程序启动时自动调用）
     """
@@ -18,7 +18,7 @@ def get_sqlite_path():
     return sqlite_path
 
 # 从 INI 文件读取各个应用是否显示的配置
-def get_app_visibility():
+def get_ini_app_visibility():
     """
     从 INI 文件读取各个应用是否显示的配置
     """

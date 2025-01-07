@@ -5,7 +5,7 @@ from src.app_instance_config import app_instance_config
 
 from PySide6.QtGui import QIcon
 
-from src.util.load_config import get_app_visibility
+from src.util.load_config import get_ini_app_visibility
 from src.util.message_util import MessageUtil
 from src.widget.app_mini import FloatingBall
 from loguru import logger
@@ -25,7 +25,7 @@ class MainWindow(QMainWindow):
         self.icon_config = app_instance_config
         self.tray_menu = TrayMenu(self)
         # 获取从配置文件读取的应用可见性
-        self.visibility_config = get_app_visibility()
+        self.visibility_config = get_ini_app_visibility()
         # 使用字典动态管理所有应用实例
         self.app_instances = {config["key"]: None for config in self.icon_config}
         self.init_ui()

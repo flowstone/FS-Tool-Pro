@@ -38,6 +38,7 @@ from PySide6.QtWidgets import QApplication
 
 from flask_server import start_flask_in_thread
 from src.main_window import MainWindow
+from src.util.init_file import  write_init_file
 from src.util.load_db import LoadDB
 from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
@@ -51,6 +52,9 @@ def main():
     load_db = LoadDB(CommonUtil.get_db_full_path())
     load_db.create_table()
     load_db.close_connection()
+
+    # 初始化配置文件
+    write_init_file()
 
     # 加载样式表文件
     stylesheet_path = CommonUtil.get_resource_path(FsConstants.BASE_QSS_PATH)

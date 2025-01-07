@@ -10,9 +10,9 @@ from src.util.common_util import CommonUtil
 # 全局变量定义
 # Flask 服务的基础目录
 FLASK_DIR = CommonUtil.get_flask_mini_dir()
-UPDATE_DIR = os.path.join(FLASK_DIR, "uploads")
+EXTERNAL_UPDATE_DIR = os.path.join(FLASK_DIR, "uploads")
 EXTERNAL_TEMPLATES_DIR = os.path.join(FLASK_DIR, "pages")  # 假设外部文件夹位置
-os.makedirs(UPDATE_DIR, exist_ok=True)
+os.makedirs(EXTERNAL_UPDATE_DIR, exist_ok=True)
 os.makedirs(EXTERNAL_TEMPLATES_DIR, exist_ok=True)
 
 
@@ -31,7 +31,7 @@ def allowed_file(filename):
 
 def render_index_page(error=None):
     """渲染主页，避免重复代码，传递错误信息"""
-    return render_template('index.html', files=os.listdir(UPDATE_DIR), texts=uploaded_texts, error=error)
+    return render_template('index.html', files=os.listdir(EXTERNAL_UPDATE_DIR), texts=uploaded_texts, error=error)
 
 
 
@@ -64,7 +64,7 @@ def create_app():
 
         secure_name = file.filename
         logger.info(f"安全处理后的文件名: {secure_name}")
-        file_path = os.path.join(UPDATE_DIR, secure_name)
+        file_path = os.path.join(EXTERNAL_UPDATE_DIR, secure_name)
         file.save(file_path)
 
         return render_index_page()
@@ -80,7 +80,7 @@ def create_app():
 
     @app.route('/files/<filename>')
     def uploaded_file(filename):
-        return send_from_directory(UPDATE_DIR, filename)
+        return send_from_directory(EXTERNAL_UPDATE_DIR, filename)
 
     # 动态创建路由
     def create_dynamic_routes():

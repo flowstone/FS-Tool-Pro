@@ -62,7 +62,7 @@ class CommonUtil:
     # 获得数据库文件全路径
     @staticmethod
     def get_db_full_path():
-        # 读取配置文件
+        # 优先使用INI文件中的配置
         db_location = get_sqlite_path()
         if db_location:
             return db_location
@@ -70,21 +70,28 @@ class CommonUtil:
         # 使用内置配置路径
         data_path = FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
         # 构建数据库文件的相对路径,假设数据库文件名为database.db
-        return os.path.join(data_path, FsConstants.DATABASE_FILE)
+        return os.path.join(data_path, FsConstants.EXTERNAL_DATABASE_FILE)
 
     # 获得Fast Sender全路径
     @staticmethod
     def get_fast_sender_dir():
         # 使用内置配置路径
         data_path = FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
-        return os.path.join(data_path, FsConstants.FAST_SENDER_DIR)
+        return os.path.join(data_path, FsConstants.EXTERNAL_FAST_SENDER_DIR)
 
     # 获得Flask Mini全路径
     @staticmethod
     def get_flask_mini_dir():
         # 使用内置配置路径
         data_path = FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
-        return os.path.join(data_path, FsConstants.FLASK_MINI_DIR)
+        return os.path.join(data_path, FsConstants.EXTERNAL_FLASK_MINI_DIR)
+
+    # 获得Flask Mini全路径
+    @staticmethod
+    def get_flask_mini_dir():
+        # 使用内置配置路径
+        data_path = FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
+        return os.path.join(data_path, FsConstants.EXTERNAL_FLASK_MINI_DIR)
 
     # 静止外部类调用这个方法
     @staticmethod
@@ -173,3 +180,18 @@ class CommonUtil:
             return ip
         except Exception as e:
             return "127.0.0.1"
+
+    # 优先使用外部配置文件，如果外部配置文件不存在，则使用内部配置文件
+    @staticmethod
+    def get_app_ini_path():
+        """
+        获取应用程序配置文件的路径
+        """
+        # 优先使用外部配置文件
+        data_path = FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
+        app_ini_path =  os.path.join(data_path, FsConstants.EXTERNAL_APP_INI_FILE)
+        if os.path.exists(app_ini_path):
+            # 如果外部配置文件存在，则使用外部配置文件
+            return app_ini_path
+        # 否则使用内部配置文件
+        return CommonUtil.get_resource_path(FsConstants.APP_INI_FILE)

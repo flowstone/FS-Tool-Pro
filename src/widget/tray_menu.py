@@ -1,3 +1,4 @@
+import os
 import sys
 
 from PySide6.QtCore import Signal, QObject
@@ -31,9 +32,12 @@ class TrayMenu(QObject):
             tray_menu = QMenu()
             show_action = QAction("主界面", main_window)
             show_action.triggered.connect(self.show_main_signal_emit)
+            restart_action = QAction("重启", main_window)
+            restart_action.triggered.connect(self.restart_app)
             quit_action = QAction("退出", main_window)
             quit_action.triggered.connect(QApplication.quit)
             tray_menu.addAction(show_action)
+            tray_menu.addAction(restart_action)
             tray_menu.addAction(quit_action)
             self.tray_icon.setContextMenu(tray_menu)
         except Exception as e:
@@ -47,3 +51,12 @@ class TrayMenu(QObject):
 
     def show_main_signal_emit(self):
         self.show_main_signal.emit()
+
+
+    # 重启应用
+    @staticmethod
+    def restart_app():
+        # 获取当前脚本路径并重新启动应用
+        logger.info("重启应用")
+        python = sys.executable
+        os.execl(python, python, *sys.argv)  # 重新启动当前应用

@@ -1,6 +1,5 @@
 from werkzeug.serving import make_server
 import threading
-import logging
 from flask import Flask, render_template, request, send_from_directory
 import os
 
@@ -35,8 +34,6 @@ def create_app():
     工厂函数，用于动态创建 Flask 应用实例。
     """
     app = Flask(__name__)
-    app.config['DEBUG'] = True  # 启用调试模式
-    app.config['PROPAGATE_EXCEPTIONS'] = True  # 让异常在控制台中显示
 
     @app.route('/')
     def index():
@@ -77,14 +74,13 @@ def create_app():
 def run_flask():
     """启动 Flask 服务"""
     app = create_app()  # 动态创建 Flask 应用实例
-    server = make_server("127.0.0.1", 5678, app)
+    server = make_server("0.0.0.0", 5678, app)
     server.timeout = 1  # 设置超时时间，避免 handle_request 无限阻塞
     try:
-        logging.basicConfig(level=logging.DEBUG)  # 配置日志输出等级为 DEBUG
-        logging.info("Flask server starting on http://127.0.0.1:5678")
+        logger.info("Flask server starting on http://127.0.0.1:5678")
         server.serve_forever()  # 永久运行 Flask 服务
     except Exception as e:
-        logging.error(f"Error in Flask service: {e}")
+        logger.error(f"Error in Flask service: {e}")
 
 def start_flask_in_thread():
     """将 Flask 服务启动在单独的线程中"""

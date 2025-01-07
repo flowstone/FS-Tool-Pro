@@ -70,9 +70,10 @@ class LogWindow(QWidget):
         """添加系统和环境基础信息"""
         logger.info("=== 系统与环境信息 ===")
         logger.info(f"操作系统: {platform.system()} {platform.release()}")
-        #logger.info(f"Python版本: {platform.python_version()}")
+        logger.info(f"IP: {CommonUtil.get_local_ip()}")
         logger.info(f"资源目录: {CommonUtil.get_resource_path('')}")
         logger.info(f"SQLite数据路径: {CommonUtil.get_db_full_path()}")
+        logger.info(f"Flask Server: http://127.0.0.1:5678")
         logger.info("===================")
 
     def closeEvent(self, event):

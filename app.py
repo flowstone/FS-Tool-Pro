@@ -35,6 +35,8 @@ import multiprocessing
 
 from PySide6.QtGui import QFont, QPalette
 from PySide6.QtWidgets import QApplication
+
+from flask_server import start_flask_in_thread
 from src.main_window import MainWindow
 from src.util.load_db import LoadDB
 from src.util.common_util import CommonUtil
@@ -79,5 +81,6 @@ if __name__ == '__main__':
         multiprocessing.set_start_method('spawn')
     #避免子进程重新加载主脚本
     freeze_support()
-
+    # 启动 Flask 服务
+    start_flask_in_thread()
     main()

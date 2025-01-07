@@ -5,6 +5,7 @@ from src.app_instance_config import app_instance_config
 
 from PySide6.QtGui import QIcon
 
+from src.util.load_config import get_app_visibility
 from src.util.message_util import MessageUtil
 from src.widget.app_mini import FloatingBall
 from loguru import logger
@@ -23,7 +24,8 @@ class MainWindow(QMainWindow):
         self.is_floating_ball_visible = False
         self.icon_config = app_instance_config
         self.tray_menu = TrayMenu(self)
-
+        # 获取从配置文件读取的应用可见性
+        self.visibility_config = get_app_visibility()
         # 使用字典动态管理所有应用实例
         self.app_instances = {config["key"]: None for config in self.icon_config}
         self.init_ui()
@@ -59,8 +61,14 @@ class MainWindow(QMainWindow):
         """动态创建图标的网格布局"""
         main_layout = QGridLayout()
         main_layout.setSpacing(0)  # 去除格子之间的间隙
+        # 在遍历之前，过滤掉不可见的应用
+        visible_config = [config for config in self.icon_config if self.visibility_config.get(config["key"], True)]
+
         # 遍历图标配置，动态添加到布局
-        for index, config in enumerate(self.icon_config):
+        for index, config in enumerate(visible_config):
+            # 如果应用不可见则跳过
+            if not self.visibility_config.get(config["key"]):
+                continue
             row, col = divmod(index, 4)  # 每行4个图标
             app_icon = self.create_app_icon(config["icon"], config["title"], config["key"])
             main_layout.addWidget(app_icon, row, col)

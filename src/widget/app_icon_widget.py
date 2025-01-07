@@ -1,4 +1,3 @@
-# app_icon_widget.py
 from PySide6.QtCore import Signal, Qt, QPropertyAnimation, QEasingCurve
 from PySide6.QtGui import QPixmap, QColor
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsColorizeEffect
@@ -7,6 +6,11 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsColorizeEff
 class AppIconWidget(QWidget):
     # 定义一个信号，当图标被点击时发出
     iconClicked = Signal(str)  # 传递图标名称
+
+    # 颜色字典，减少硬编码
+    COLOR_NORMAL = QColor("#1E90FF")
+    COLOR_PRESSED = QColor("4169E1")
+    COLOR_HOVER = QColor("#6495ED")
 
     def __init__(self, icon_path, name, parent=None):
         super().__init__(parent)
@@ -32,8 +36,6 @@ class AppIconWidget(QWidget):
         # 创建第二个 QLabel 用于显示名称
         self.name_label = QLabel(name, self)
         self.name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # 名称居中显示
-
-        # 设置名称标签最大宽度为图片宽度
         self.name_label.setMaximumWidth(100)  # 设置最大宽度与图片一致
 
         # 将两个 QLabel 添加到布局中
@@ -48,9 +50,10 @@ class AppIconWidget(QWidget):
 
         # 设置固定大小
         self.setFixedSize(100, 120)  # 设置整个小部件的固定大小（宽度与图标相同，高度适合图标和名称）
+
         # 图标颜色特效
         self.color_effect = QGraphicsColorizeEffect(self.icon_label)
-        self.color_effect.setColor(QColor("#1E90FF"))  # 设置染色颜色为蓝色
+        self.color_effect.setColor(self.COLOR_NORMAL)  # 初始颜色
 
         self.icon_label.setGraphicsEffect(self.color_effect)
 
@@ -59,39 +62,29 @@ class AppIconWidget(QWidget):
         self.color_animation.setDuration(200)  # 动画时长 200 毫秒
         self.color_animation.setEasingCurve(QEasingCurve.Type.InOutQuad)
 
-    def mousePressEvent(self, event):
-        """鼠标按下时改变颜色"""
-        # 设置颜色动画：从白色变为深灰色
-        self.color_animation.setStartValue(QColor("4169E1"))
-        self.color_animation.setEndValue(QColor("#1E90FF"))
+    def _animate_color(self, start_color, end_color):
+        """简化动画的颜色设置"""
+        self.color_animation.setStartValue(start_color)
+        self.color_animation.setEndValue(end_color)
         self.color_animation.start()
 
-        # 发出点击信号
-        self.iconClicked.emit(self.name)
-
+    def mousePressEvent(self, event):
+        """鼠标按下时改变颜色"""
+        self._animate_color(self.COLOR_PRESSED, self.COLOR_NORMAL)
+        self.iconClicked.emit(self.name)  # 发出点击信号
         super().mousePressEvent(event)
 
     def mouseReleaseEvent(self, event):
         """鼠标释放时恢复颜色"""
-        # 设置颜色动画：从灰色恢复为白色
-        self.color_animation.setStartValue(QColor("#1E90FF"))
-        self.color_animation.setEndValue(QColor("4169E1"))
-        self.color_animation.start()
-
+        self._animate_color(self.COLOR_NORMAL, self.COLOR_PRESSED)
         super().mouseReleaseEvent(event)
 
     def enterEvent(self, event):
         """鼠标悬停时颜色加深"""
-        self.color_animation.setStartValue(QColor("#1E90FF"))
-        self.color_animation.setEndValue(QColor("#6495ED"))
-        self.color_animation.start()
-
+        self._animate_color(self.COLOR_NORMAL, self.COLOR_HOVER)
         super().enterEvent(event)
 
     def leaveEvent(self, event):
         """鼠标离开时恢复原始颜色"""
-        self.color_animation.setStartValue(QColor("#6495ED"))
-        self.color_animation.setEndValue(QColor("#1E90FF"))
-        self.color_animation.start()
-
+        self._animate_color(self.COLOR_HOVER, self.COLOR_NORMAL)
         super().leaveEvent(event)

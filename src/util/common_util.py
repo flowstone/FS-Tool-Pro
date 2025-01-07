@@ -68,7 +68,7 @@ class CommonUtil:
             return db_location
 
         # 使用内置配置路径
-        data_path = FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
+        data_path = CommonUtil.get_external_path()
         # 构建数据库文件的相对路径,假设数据库文件名为database.db
         return os.path.join(data_path, FsConstants.EXTERNAL_DATABASE_FILE)
 
@@ -76,22 +76,17 @@ class CommonUtil:
     @staticmethod
     def get_fast_sender_dir():
         # 使用内置配置路径
-        data_path = FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
+        data_path = CommonUtil.get_external_path()
         return os.path.join(data_path, FsConstants.EXTERNAL_FAST_SENDER_DIR)
 
     # 获得Flask Mini全路径
     @staticmethod
     def get_flask_mini_dir():
         # 使用内置配置路径
-        data_path = FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
+        data_path = CommonUtil.get_external_path()
         return os.path.join(data_path, FsConstants.EXTERNAL_FLASK_MINI_DIR)
 
-    # 获得Flask Mini全路径
-    @staticmethod
-    def get_flask_mini_dir():
-        # 使用内置配置路径
-        data_path = FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
-        return os.path.join(data_path, FsConstants.EXTERNAL_FLASK_MINI_DIR)
+
 
     # 静止外部类调用这个方法
     @staticmethod
@@ -188,10 +183,18 @@ class CommonUtil:
         获取应用程序配置文件的路径
         """
         # 优先使用外部配置文件
-        data_path = FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
+        data_path = CommonUtil.get_external_path()
         app_ini_path =  os.path.join(data_path, FsConstants.EXTERNAL_APP_INI_FILE)
         if os.path.exists(app_ini_path):
             # 如果外部配置文件存在，则使用外部配置文件
             return app_ini_path
         # 否则使用内部配置文件
         return CommonUtil.get_resource_path(FsConstants.APP_INI_FILE)
+
+    # 获得外部目录
+    @staticmethod
+    def get_external_path() -> str:
+        # 使用内置配置路径
+        # SAVE_FILE_PATH_WIN = "C:\\FS-Tool-Pro\\"
+        # SAVE_FILE_PATH_MAC = "~/FS-Tool-Pro/"
+        return FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()

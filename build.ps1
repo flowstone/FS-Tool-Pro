@@ -6,13 +6,13 @@ param(
 )
 
 $buildFSToolPro = {
-    Write-Host "Building FS-Tool-Pro..."
+    Write-Host "正在打包FS-Tool-Pro..."
     python -m nuitka --show-progress --assume-yes-for-downloads app.py
 }
 
 $cleanFSToolPro = {
     Write-Host "Cleaning..."
-    Remove-Item -Recurse -Force app.exe, ./app.build/, ./app.dist/, ./app.onefile-build/
+    Remove-Item -Recurse -Force app.exe, ./app.build/, ./app.dist/, ./app.onefile-build/ ,/build/ ,/dist/ ,FS-Tool-Pro.spec
 }
 
 switch ($Task.ToLower()) {

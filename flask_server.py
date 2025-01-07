@@ -19,9 +19,10 @@ os.makedirs(EXTERNAL_TEMPLATES_DIR, exist_ok=True)
 
 # 存储上传的文本消息
 uploaded_texts = []
-
 # 允许上传的文件类型
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+# 全局变量存储动态路由和标题
+dynamic_routes = []
 
 
 def allowed_file(filename):
@@ -30,9 +31,14 @@ def allowed_file(filename):
 
 
 def render_index_page(error=None):
-    """渲染主页，避免重复代码，传递错误信息"""
-    return render_template('index.html', files=os.listdir(EXTERNAL_UPDATE_DIR), texts=uploaded_texts, error=error)
-
+    """渲染主页，传递错误信息和动态路由信息"""
+    return render_template(
+        'index.html',
+        files=os.listdir(EXTERNAL_UPDATE_DIR),
+        texts=uploaded_texts,
+        error=error,
+        dynamic_routes=dynamic_routes
+    )
 
 
 def create_app():
@@ -84,19 +90,42 @@ def create_app():
 
     # 动态创建路由
     def create_dynamic_routes():
-        # 获取 templates 和 external/pages 目录下的所有 HTML 文件
+        """
+        动态创建路由，同时记录路由和对应 HTML 的标题。
+        """
         for directory in [EXTERNAL_TEMPLATES_DIR]:
             for filename in os.listdir(directory):
                 if filename.endswith('.html'):
                     route_name = filename.replace('.html', '')
+                    route_path = f"/{route_name}"
 
-                    # 为每个 HTML 文件创建一个动态路由
-                    @app.route(f'/{route_name}')
+                    # 从 HTML 文件中提取标题
+                    html_file_path = os.path.join(directory, filename)
+                    with open(html_file_path, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    title = extract_html_title(content)
+
+                    # 添加到动态路由列表
+                    dynamic_routes.append({'route': route_path, 'title': title})
+
+                    # 创建动态路由
+                    @app.route(route_path)
                     def dynamic_route(route_name=route_name):
                         return render_template(f'{route_name}.html')
 
+
+
     create_dynamic_routes()
     return app
+
+# 从 HTML 文件内容中提取标题标签内容。
+def extract_html_title(content):
+    """
+    从 HTML 文件内容中提取标题标签内容。
+    """
+    import re
+    match = re.search(r'<title>(.*?)</title>', content, re.IGNORECASE)
+    return match.group(1) if match else 'No Title'
 
 def run_flask():
     """启动 Flask 服务"""

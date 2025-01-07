@@ -47,6 +47,9 @@
         .form-control {
             margin-bottom: 15px;
         }
+        .area {
+            margin: 30px;
+        }
     </style>
 </head>
 
@@ -56,47 +59,119 @@
     </header>
 
     <div class="container mt-5">
-        <!-- Send Text Form -->
-        <h2>发送文本</h2>
-        <!-- 错误信息提示 -->
-        {% if error %}
-            <div class="alert alert-danger" role="alert">
-                {{ error }}
-            </div>
-        {% endif %}
-        <form method="POST" action="/send_text">
-            <div class="mb-3">
-                <textarea class="form-control" name="text" placeholder="输入文本信息..." rows="4"></textarea>
-            </div>
-            <button type="submit" class="btn btn-custom">发送文本</button>
-        </form>
+        <div class="area">
+            <!-- Send Text Form -->
+            <h4>发送文本</h4>
+            <!-- 错误信息提示 -->
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
+            <form method="POST" action="/send_text">
+                <div class="mb-3">
+                    <textarea class="form-control" name="text" placeholder="输入文本信息..." rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">发送文本</button>
+            </form>
+        </div>
+        <div class="area">
+            <!-- Upload File Form -->
+            <h4 class="mt-4">上传文件</h4>
+            <form method="POST" enctype="multipart/form-data" action="/upload">
+                <div class="mb-3">
+                    <input class="form-control" type="file" name="file" />
+                </div>
+                <button type="submit" class="btn btn-primary">上传文件</button>
+            </form>
+        </div>
 
-        <!-- Upload File Form -->
-        <h2 class="mt-4">上传文件</h2>
-        <form method="POST" enctype="multipart/form-data" action="/upload">
-            <div class="mb-3">
-                <input class="form-control" type="file" name="file" />
+        <div class="area">
+             <div class="accordion" id="updateTextList">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#updateTextListOne" aria-expanded="true" aria-controls="updateTextListOne">
+                      已上传的文本
+                  </button>
+                </h2>
+                <div id="updateTextListOne" class="accordion-collapse collapse show" data-bs-parent="#updateTextList">
+                  <div class="accordion-body">
+                    <ul class="list-group">
+                        {% for text in texts %}
+                        <li class="list-group-item"><pre>{{ text }}</pre></li>
+                        {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
-            <button type="submit" class="btn btn-custom">上传文件</button>
-        </form>
 
-        <!-- Uploaded Texts -->
-        <h2 class="mt-4">已上传的文本:</h2>
-        <ul class="list-group">
-            {% for text in texts %}
-            <li class="list-group-item"><pre>{{ text }}</pre></li>
-            {% endfor %}
-        </ul>
+        </div>
 
-        <!-- Uploaded Files -->
-        <h2 class="mt-4">已上传的文件:</h2>
-        <ul class="list-group file-list">
-            {% for file in files %}
-            <li class="list-group-item">
-                <a href="{{ url_for('uploaded_file', filename=file) }}">{{ file }}</a>
-            </li>
-            {% endfor %}
-        </ul>
+        <div class="area">
+            <div class="accordion" id="updateFileList">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#updateFileListOne" aria-expanded="true" aria-controls="updateFileListOne">
+                      已上传的文件
+                  </button>
+                </h2>
+                <div id="updateFileListOne" class="accordion-collapse collapse show" data-bs-parent="#updateFileList">
+                  <div class="accordion-body">
+                        <table class="table table-striped-columns">
+                            <thead>
+                                <tr>
+                                    <th>文件名</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for file in files %}
+                                <tr>
+                                    <td><a href="{{ url_for('uploaded_file', filename=file) }}">{{ file }}</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+
+        <div class="area">
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      路由列表
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                        <table class="table table-striped-columns">
+                            <thead>
+                                <tr>
+                                    <th>路由</th>
+                                    <th>HTML 文件标题</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for route in dynamic_routes %}
+                                <tr>
+                                    <td><a href="{{ route.route }}">{{ route.route }}</a></td>
+                                    <td>{{ route.title }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+
     </div>
 
     <!-- 引入 Bootstrap JS 和 Popper.js -->

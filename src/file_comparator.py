@@ -20,6 +20,8 @@ from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class CompareThread(QThread):
+    progress_signal = Signal(int)     # 更新进度信号
+
     update_signal = Signal(str)
     break_signal = Signal(str)
     done_signal = Signal(int, int)  # 返回比较结果，(相同文件数量, 不同文件数量)
@@ -34,18 +36,19 @@ class CompareThread(QThread):
         """执行文件比较"""
         source_files = set(os.listdir(self.source_directory))
         target_files = set(os.listdir(self.target_directory))
-        common_files = source_files.intersection(target_files)
+        common_files = list(source_files.intersection(target_files))  # 转为列表以便索引
+        total_files = len(common_files)
 
-        if not common_files:
+        if total_files == 0:
             self.update_signal.emit("没有相同文件名的文件。")
             self.break_signal.emit("没有相同文件名的文件。")
             return
-
         total_same_files = 0
         total_diff_files = 0
+
         result = "文件比较结果:\n\n"
 
-        for file_name in common_files:
+        for index, file_name in enumerate(common_files):
             source_file_path = os.path.join(self.source_directory, file_name)
             target_file_path = os.path.join(self.target_directory, file_name)
 
@@ -82,16 +85,19 @@ class CompareThread(QThread):
                 else:
                     total_diff_files += 1
                     result += "  校验和不匹配\n"
+                    # 更新进度
 
             self.update_signal.emit(result)  # 逐步更新UI
+            progress = int((index + 1) / total_files * 100)
+            self.progress_signal.emit(progress)  # 通过信号更新进度
 
         self.done_signal.emit(total_same_files, total_diff_files)
-
-    def compare_by_size(self, file1, file2):
+    @staticmethod
+    def compare_by_size(file1, file2):
         """通过文件大小比较"""
         return os.path.getsize(file1) == os.path.getsize(file2)
-
-    def compare_by_hash(self, file1, file2):
+    @staticmethod
+    def compare_by_hash(file1, file2):
         """通过哈希算法比较"""
         def file_hash(file_path):
             sha256_hash = hashlib.sha256()
@@ -101,8 +107,8 @@ class CompareThread(QThread):
             return sha256_hash.hexdigest()
 
         return file_hash(file1) == file_hash(file2)
-
-    def compare_by_bytes(self, file1, file2):
+    @staticmethod
+    def compare_by_bytes(file1, file2):
         """逐字节比较"""
         with open(file1, "rb") as f1, open(file2, "rb") as f2:
             while True:
@@ -113,7 +119,8 @@ class CompareThread(QThread):
                 if not byte1:
                     return True
 
-    def compare_by_checksum(self, file1, file2):
+    @staticmethod
+    def compare_by_checksum(file1, file2):
         """通过校验和比较"""
         def file_checksum(file_path):
             checksum = 0
@@ -209,10 +216,10 @@ class FileComparatorApp(QWidget):
             MessageUtil.show_warning_message("请先选择源目录和目标目录！")
             return
         self.compare_button.setEnabled(False)
-        self.progress_bar.set_range(0,0)
         method = self.method_combo.currentText()
         self.compare_thread = CompareThread(self.source_directory, self.target_directory, method)
         self.compare_thread.update_signal.connect(self.update_result)
+        self.compare_thread.progress_signal.connect(self.progress_bar.update_progress)
         self.compare_thread.done_signal.connect(self.display_summary)
         self.compare_thread.break_signal.connect(self.break_summary)
         self.compare_thread.start()

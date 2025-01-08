@@ -296,7 +296,8 @@ class FileEncryptorApp(QWidget):
         """解密错误提示"""
         MessageUtil.show_error_message(f"解密过程中发生错误: {error_msg}")
 
-    def derive_key(self, password: str, key_length: int):
+    @staticmethod
+    def derive_key(password: str, key_length: int):
         """通过 PBKDF2 生成密钥"""
         salt = b'fs_tool_salt'  # 可以随机生成并保存到文件中
         return PBKDF2(password, salt, dkLen=key_length // 8, count=100000, hmac_hash_module=SHA256)

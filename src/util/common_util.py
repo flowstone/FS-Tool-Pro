@@ -118,7 +118,7 @@ class CommonUtil:
 
     #递归函数来遍历文件夹及其子文件夹中的所有文件
     @staticmethod
-    def count_files_recursive(folder_path:str):
+    def count_files_in_directory_tree(folder_path:str):
         """
         递归函数来遍历文件夹及其子文件夹中的所有文件
         """
@@ -127,9 +127,9 @@ class CommonUtil:
             count += len(files)
         return count
 
-    # 遍历文件夹的所有文件
+    # 统计指定文件夹下文件的个数（不进入子文件夹统计）
     @staticmethod
-    def count_files_in_folder(folder_path: str):
+    def count_files_in_current_folder(folder_path: str):
         """
         统计指定文件夹下文件的个数（不进入子文件夹统计）
         """
@@ -142,7 +142,7 @@ class CommonUtil:
 
     # 统计文件夹下的所有文件夹总数
     @staticmethod
-    def count_folders_in_folder(folder_path: str):
+    def count_folders_in_current_folder(folder_path: str):
         """
         统计指定文件夹下的文件夹数量（不进入子文件夹统计）
         """

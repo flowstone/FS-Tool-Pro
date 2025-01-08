@@ -129,10 +129,10 @@ class RenameGenerateApp(QWidget):
         folder_path = self.folder_entry.text()
         if folder_path:
             self.setEnabled(False)
-            self.progress_bar.set_range(0,0)
-
             self.worker_thread = FileRenameThread(folder_path, self.check_type_text, self.naming_type)
             self.worker_thread.finished_signal.connect(self.operation_finished)
+            self.worker_thread.progress_signal.connect(self.progress_bar.update_progress)  # 连接进度信号
+
             self.worker_thread.error_signal.connect(self.operation_error)
             self.worker_thread.start()
             self.progress_bar.show()
@@ -174,6 +174,7 @@ class RenameGenerateApp(QWidget):
 class FileRenameThread(QThread):
     finished_signal = Signal()
     error_signal = Signal(str)
+    progress_signal = Signal(int)  # 新增信号，发送当前进度百分比
 
     def __init__(self, folder_path, check_type, naming_type):
         super().__init__()
@@ -194,20 +195,30 @@ class FileRenameThread(QThread):
             self.error_signal.emit(str(e))
 
     def rename_files(self):
-        for idx, filename in enumerate(os.listdir(self.folder_path), start=1):
+        files = [f for f in os.listdir(self.folder_path) if os.path.isfile(os.path.join(self.folder_path, f))]
+        total_files = len(files)
+        for idx, filename in enumerate(files, start=1):
             old_path = os.path.join(self.folder_path, filename)
-            if os.path.isfile(old_path):
-                new_filename = self.generate_name(idx) + os.path.splitext(filename)[1]
-                new_path = os.path.join(self.folder_path, new_filename)
-                os.rename(old_path, new_path)
+            new_filename = self.generate_name(idx) + os.path.splitext(filename)[1]
+            new_path = os.path.join(self.folder_path, new_filename)
+            os.rename(old_path, new_path)
+
+            # 发送进度信号
+            progress = int((idx / total_files) * 100)
+            self.progress_signal.emit(progress)
 
     def rename_folders(self):
-        for idx, folder_name in enumerate(os.listdir(self.folder_path), start=1):
+        folders = [f for f in os.listdir(self.folder_path) if os.path.isdir(os.path.join(self.folder_path, f))]
+        total_folders = len(folders)
+        for idx, folder_name in enumerate(folders, start=1):
             old_path = os.path.join(self.folder_path, folder_name)
-            if os.path.isdir(old_path):
-                new_folder_name = self.generate_name(idx)
-                new_path = os.path.join(self.folder_path, new_folder_name)
-                os.rename(old_path, new_path)
+            new_folder_name = self.generate_name(idx)
+            new_path = os.path.join(self.folder_path, new_folder_name)
+            os.rename(old_path, new_path)
+
+            # 发送进度信号
+            progress = int((idx / total_folders) * 100)
+            self.progress_signal.emit(progress)
 
     def generate_name(self, idx):
         if self.naming_type == "序号":

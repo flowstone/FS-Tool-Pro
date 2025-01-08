@@ -172,11 +172,11 @@ class RenameReplaceApp(QWidget):
 
         if folder_path:
             self.setEnabled(False)
-            self.progress_bar.set_range(0,0)
 
             self.worker_thread = FileRenameThread(folder_path, prefix, suffix, char_to_find, replace_char,
                                                   self.check_type_text)
             self.worker_thread.finished_signal.connect(self.operation_finished)
+            self.worker_thread.progress_signal.connect(self.progress_bar.update_progress)  # 连接进度信号
             self.worker_thread.error_signal.connect(self.operation_error)
             self.worker_thread.start()
             self.progress_bar.show()
@@ -205,6 +205,7 @@ class RenameReplaceApp(QWidget):
 class FileRenameThread(QThread):
     finished_signal = Signal()
     error_signal = Signal(str)
+    progress_signal = Signal(int)  # 新增进度信号，发送当前进度百分比
 
     def __init__(self, folder_path, prefix, suffix, char_to_find, replace_char, check_type_text):
         super().__init__()
@@ -233,32 +234,35 @@ class FileRenameThread(QThread):
 
     def rename_files(self):
         # 遍历文件夹下的文件名
-
-        for filename in os.listdir(self.folder_path):
+        files = [f for f in os.listdir(self.folder_path) if os.path.isfile(os.path.join(self.folder_path, f))]
+        total_files = len(files)
+        for idx, filename in enumerate(files, start=1):
             old_path = os.path.join(self.folder_path, filename)
-            # 判断是否是文件
-            if os.path.isfile(old_path):
-                new_filename = f"{self.prefix}{filename}{self.suffix}"
-                # 判断是否需要进行文件替换操作
-                if self.char_to_find and self.replace_char:
-                    # 替换字符
-                    new_filename = new_filename.replace(self.char_to_find, self.replace_char)
-                new_path = os.path.join(self.folder_path, new_filename)
-                os.rename(old_path, new_path)
+            new_filename = f"{self.prefix}{filename}{self.suffix}"
+            if self.char_to_find and self.replace_char:
+                new_filename = new_filename.replace(self.char_to_find, self.replace_char)
+            new_path = os.path.join(self.folder_path, new_filename)
+            os.rename(old_path, new_path)
+
+            # 发送进度信号
+            progress = int((idx / total_files) * 100)
+            self.progress_signal.emit(progress)
 
 
     def rename_folder(self):
+        folders = [f for f in os.listdir(self.folder_path) if os.path.isdir(os.path.join(self.folder_path, f))]
+        total_folders = len(folders)
+        for idx, folder_name in enumerate(folders, start=1):
+            old_path = os.path.join(self.folder_path, folder_name)
+            new_folder_name = f"{self.prefix}{folder_name}{self.suffix}"
+            if self.char_to_find and self.replace_char:
+                new_folder_name = new_folder_name.replace(self.char_to_find, self.replace_char)
+            new_path = os.path.join(self.folder_path, new_folder_name)
+            os.rename(old_path, new_path)
 
-        for dir_name in os.listdir(self.folder_path):
-            old_path = os.path.join(self.folder_path, dir_name)
-            if os.path.isdir(old_path):
-                new_folder_name = f"{self.prefix}{dir_name}{self.suffix}"
-                # 判断是否需要进行文件替换操作
-                if self.char_to_find and self.replace_char:
-                    # 替换字符
-                    new_folder_name = new_folder_name.replace(self.char_to_find, self.replace_char)
-                new_path = os.path.join(self.folder_path, new_folder_name)
-                os.rename(old_path, new_path)
+            # 发送进度信号
+            progress = int((idx / total_folders) * 100)
+            self.progress_signal.emit(progress)
 
 
 if __name__ == "__main__":

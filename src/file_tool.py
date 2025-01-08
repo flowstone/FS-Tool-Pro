@@ -66,7 +66,7 @@ class FileToolApp(QWidget):
             ("高级", [
                 (FileGeneratorApp(), "文件生成"),
                 (FileComparatorApp(), "文件比较"),
-                (FileEncryptorApp(), "文件加密"),
+                (FileEncryptorApp(), "文件加密(递归)"),
             ]),
         ]
 

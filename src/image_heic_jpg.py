@@ -119,8 +119,9 @@ class HeicToJpgApp(QWidget):
         if folder_path:
             logger.info("---- 有选择文件夹，开始执行操作 ----")
             self.setEnabled(False)  # 禁用按钮，防止多次点击
-            self.progress_bar.set_range(0,0)
             self.worker = HeicToJpgAppThread(folder_path)
+            self.worker.update_progress_signal.connect(self.progress_bar.update_progress)
+
             self.worker.finished_signal.connect(self.operation_finished)
             self.worker.error_signal.connect(self.operation_error)  # 连接异常信号处理方法
             self.worker.start()
@@ -150,6 +151,7 @@ class HeicToJpgApp(QWidget):
 class HeicToJpgAppThread(QThread):
     finished_signal = Signal()
     error_signal = Signal(str)  # 新增信号，用于发送错误信息
+    update_progress_signal = Signal(int)
 
     def __init__(self, folder_path):
         super().__init__()
@@ -170,25 +172,43 @@ class HeicToJpgAppThread(QThread):
         # 注册HEIC文件 opener，使得PIL能够识别并打开HEIC格式文件
         # register_heif_opener()
 
-    @staticmethod
-    def heic_to_jpg_v2(folder_path):
+    def heic_to_jpg_v2(self, folder_path):
+        all_files = []
         for root, dirs, files in os.walk(folder_path):
             for file in files:
                 if file.endswith('.HEIC') or file.endswith('.heic'):
-                    file_path = os.path.join(root, file)
-                    image = Image.open(file_path)
-                    # 使用exif_transpose方法根据EXIF信息调整图像方向
-                    image = ImageOps.exif_transpose(image)
-                    file_name = file.split('.')[0] + '.jpg'
-                    output_path = os.path.join(root, file_name)
-                    image.convert('RGB').save(output_path, 'JPEG')
-                    logger.info(f"{file_path} 已成功转换为 {output_path}")
-        logger.info("所有HEIC图片转换完成！")
+                    all_files.append(os.path.join(root, file))
+
+        total_files = len(all_files)
+        if total_files == 0:
+            logger.info("没有找到任何 HEIC 文件")
+            return
+
+        for index, file_path in enumerate(all_files):
+            try:
+                image = Image.open(file_path)
+                # 使用 exif_transpose 方法根据 EXIF 信息调整图像方向
+                image = ImageOps.exif_transpose(image)
+                file_name = os.path.splitext(os.path.basename(file_path))[0] + '.jpg'
+                output_path = os.path.join(os.path.dirname(file_path), file_name)
+                image.convert('RGB').save(output_path, 'JPEG')
+                logger.info(f"{file_path} 已成功转换为 {output_path}")
+
+                # 计算并发送进度
+                progress = int((index + 1) / total_files * 100)
+                self.update_progress_signal.emit(progress)
+
+            except Exception as e:
+                logger.error(f"转换失败：{file_path}，错误信息：{e}")
+                continue
+
+        logger.info("所有 HEIC 图片转换完成！")
 
     # 创建文件夹，并移动到指定目录下
     # import whatimage
     # import pillow_heif
     # 但是个别HEIC图片无法识别
+
     @staticmethod
     def heic_to_jpg(folder_path):
         for root, dirs, files in os.walk(folder_path):

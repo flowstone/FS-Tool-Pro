@@ -23,7 +23,7 @@ from src.widget.transparent_textbox_widget import TransparentTextBox
 
 class FileGenerationThread(QThread):
     # Signals to communicate with the main thread
-    update_progress_signal = Signal(str)
+    update_progress_signal = Signal(int)
     file_generated_signal = Signal(int, str)
     finished_signal = Signal()
 
@@ -37,7 +37,9 @@ class FileGenerationThread(QThread):
     def run(self):
         try:
             for i in range(self.file_count):
-                self.update_progress_signal.emit(f"生成文件 {i + 1}...")
+                progress = int((i + 1) / self.file_count * 100)  # 计算进度
+                logger.info(f"生成文件进度：{progress}%")
+                self.update_progress_signal.emit(progress)  # 发送进度百分比
                 if self.file_type == "文本文件":
                     self.generate_text_file(i + 1)
                 elif self.file_type == "图片文件":
@@ -50,7 +52,7 @@ class FileGenerationThread(QThread):
             self.finished_signal.emit()
         except Exception as e:
             logger.error(f"生成文件失败：{str(e)}")
-            self.update_progress_signal.emit(f"生成文件失败：{str(e)}")
+            #self.update_progress_signal.emit(-1)  # 发送错误信号
 
     def generate_text_file(self, index):
         """生成文本文件"""
@@ -204,18 +206,17 @@ class FileGeneratorApp(QWidget):
 
         file_type = self.file_type_combo.currentText()
         self.generate_button.setEnabled(False)
-        self.progress_bar.set_range(0,0)
         self.thread = FileGenerationThread(self.folder_path, file_count, file_size, file_type)
-        self.thread.update_progress_signal.connect(self.update_progress)
+        self.thread.update_progress_signal.connect(self.progress_bar.update_progress)
         self.thread.file_generated_signal.connect(self.file_generated)
         self.thread.finished_signal.connect(self.file_generation_finished)
         self.thread.start()
         self.progress_bar.show()
 
-    def update_progress(self, message):
-        logger.info(message)
 
-    def file_generated(self, index, file_type):
+
+    @staticmethod
+    def file_generated(index, file_type):
         logger.info(f"第 {index} 个 {file_type} 文件已生成")
 
     def file_generation_finished(self):

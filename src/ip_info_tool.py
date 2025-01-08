@@ -39,7 +39,7 @@ class IpInfoToolApp(QWidget):
 
 
     def add_tabs(self):
-        self.tab_widget.addTab(IpInfoApp(), "IP信息")
+        self.tab_widget.addTab(IpInfoApp(), "网络信息")
         self.tab_widget.addTab(PortScannerApp(), "端口扫描")
         self.tab_widget.addTab(PortKillerApp(), "端口关闭")
 

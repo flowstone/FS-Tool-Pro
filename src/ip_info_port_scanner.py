@@ -91,8 +91,6 @@ class PortScannerApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_IP_INFO_PORT_SCANNER)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
-        self.setGeometry(100, 100, 600, 500)
-
         # 主界面布局
         self.layout = QVBoxLayout(self)
         title_label = QLabel(FsConstants.WINDOW_TITLE_IP_INFO_PORT_SCANNER)
@@ -121,9 +119,7 @@ class PortScannerApp(QWidget):
         self.result_box = QTextEdit()
         self.result_box.setReadOnly(True)
 
-        # 添加进度条
-        self.progress_bar = CustomProgressBar()
-        self.progress_bar.hide()
+
         # 布局
         self.layout.addWidget(self.description_label)
         self.layout.addWidget(self.ip_input_label)
@@ -131,6 +127,9 @@ class PortScannerApp(QWidget):
         self.layout.addWidget(self.port_input_label)
         self.layout.addWidget(self.port_input)
         self.layout.addWidget(self.scan_button)
+        # 添加进度条
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
         self.layout.addWidget(self.progress_bar)
         self.layout.addWidget(self.result_box)
 

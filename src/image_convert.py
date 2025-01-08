@@ -74,9 +74,7 @@ class ImageConvertApp(QWidget):
         scroll_area.setWidget(self.checkbox_frame)
         scroll_area.setWidgetResizable(True)
         layout.addWidget(scroll_area)
-        self.progress_bar = CustomProgressBar()
-        self.progress_bar.hide()
-        layout.addWidget(self.progress_bar)
+
         # 按钮布局
         button_layout = QHBoxLayout()
 
@@ -93,7 +91,9 @@ class ImageConvertApp(QWidget):
         # button_layout.addWidget(self.close_button)
 
         layout.addLayout(button_layout)
-
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
         self.setLayout(layout)
 
 

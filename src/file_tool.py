@@ -9,6 +9,7 @@ from src.create_folder import CreateFolderApp
 from src.file_comparator import FileComparatorApp
 from src.file_encryptor import FileEncryptorApp
 from src.file_generator import FileGeneratorApp
+from src.move_file import MoveFileApp
 from src.rename_generate import RenameGenerateApp
 from src.rename_replace import RenameReplaceApp
 from src.util.common_util import CommonUtil
@@ -29,7 +30,7 @@ class FileToolApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_FILE_TOOL)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setFixedWidth(700)
-        self.setFixedHeight(600)
+        self.setFixedHeight(700)
         self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
 
@@ -60,7 +61,7 @@ class FileToolApp(QWidget):
             ]),
             ("移动", [
                 (CreateFolderApp(), "创建文件夹"),
-
+                (MoveFileApp(), "移动文件"),
             ]),
             ("高级", [
                 (FileGeneratorApp(), "文件生成"),

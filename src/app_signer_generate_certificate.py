@@ -27,7 +27,6 @@ class GenerateCertificateApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_APP_SIGNER_GENERATE_CERTIFICATE)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
-        #self.setGeometry(100, 100, 600, 500)
 
         # 界面组件
         self.label_common_name = QLabel("Common Name (CN):")

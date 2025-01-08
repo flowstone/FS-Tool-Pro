@@ -18,6 +18,7 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class FileGenerationThread(QThread):
@@ -108,8 +109,6 @@ class FileGeneratorApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_FILE_GENERATOR)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
-        #self.setFixedSize(750, 400)
-        self.setFixedHeight(400)
         self.setAcceptDrops(True)
 
         layout = QVBoxLayout()
@@ -153,17 +152,18 @@ class FileGeneratorApp(QWidget):
         self.file_type_combo = QComboBox()
         self.file_type_combo.addItems(["文本文件", "图片文件", "JSON文件", "CSV文件"])
         layout.addWidget(self.file_type_combo)
-        self.progress_bar = CustomProgressBar()
-        self.progress_bar.hide()
-        layout.addWidget(self.progress_bar)
+
 
         button_layout = QHBoxLayout()
         self.generate_button = QPushButton("生成文件")
         self.generate_button.clicked.connect(self.start_file_generation)
         button_layout.addWidget(self.generate_button)
 
-
         layout.addLayout(button_layout)
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
+        layout.addWidget(TransparentTextBox())
         self.setLayout(layout)
 
     def select_folder(self):

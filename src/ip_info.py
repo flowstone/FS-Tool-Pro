@@ -188,23 +188,24 @@ class IpInfoApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_IP_INFO)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
-        self.setGeometry(100, 100, 500, 400)
+        self.setMinimumWidth(600)
 
         title_label = QLabel(FsConstants.WINDOW_TITLE_IP_INFO)
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setObjectName("app_title")
         self.text_area = QTextEdit()
         self.text_area.setReadOnly(True)
-        self.progress_bar = CustomProgressBar()
-        self.progress_bar.hide()
+
         self.button = QPushButton("获取网络信息")
         self.button.clicked.connect(self.fetch_network_info)
 
         layout = QVBoxLayout()
         layout.addWidget(title_label)
         layout.addWidget(self.text_area)
-        layout.addWidget(self.progress_bar)
         layout.addWidget(self.button)
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
 
         self.setLayout(layout)
 

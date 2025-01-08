@@ -16,6 +16,7 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.transparent_textbox_widget import TransparentTextBox
 
 # 注册HEIC文件 opener，使得PIL能够识别并打开HEIC格式文件，仅限V2方法使用
 register_heif_opener()
@@ -34,8 +35,8 @@ class HeicToJpgApp(QWidget):
 
         self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
-        self.setFixedHeight(200)
-        self.setFixedWidth(600)
+        # self.setFixedHeight(200)
+        # self.setFixedWidth(600)
 
 
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
@@ -81,11 +82,12 @@ class HeicToJpgApp(QWidget):
         layout.addWidget(folder_path_label)
 
         layout.addLayout(folder_path_layout)
+
+        layout.addLayout(button_layout)
         self.progress_bar = CustomProgressBar()
         self.progress_bar.hide()
         layout.addWidget(self.progress_bar)
-        layout.addLayout(button_layout)
-
+        layout.addWidget(TransparentTextBox())
         self.setLayout(layout)
 
 

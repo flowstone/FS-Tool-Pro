@@ -18,6 +18,7 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class RenameGenerateApp(QWidget):
@@ -39,7 +40,7 @@ class RenameGenerateApp(QWidget):
         layout = QVBoxLayout()
 
         # 标题
-        title_label = QLabel("批量随机文件/文件夹名")
+        title_label = QLabel("批量随机文件重命名")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setObjectName("app_title")
         layout.addWidget(title_label)
@@ -92,9 +93,7 @@ class RenameGenerateApp(QWidget):
         naming_group_layout.addWidget(naming_group)
         layout.addLayout(naming_group_layout)
 
-        self.progress_bar = CustomProgressBar()
-        self.progress_bar.hide()
-        layout.addWidget(self.progress_bar)
+
 
         # 操作按钮
         button_layout = QHBoxLayout()
@@ -103,7 +102,10 @@ class RenameGenerateApp(QWidget):
 
         button_layout.addWidget(self.start_button)
         layout.addLayout(button_layout)
-
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
+        layout.addWidget(TransparentTextBox())
         self.setLayout(layout)
 
     def radio_btn_toggled(self):

@@ -17,6 +17,9 @@ from src.util.common_util import CommonUtil
 from loguru import logger
 from PySide6.QtCore import QThread, Signal
 
+from src.widget.transparent_textbox_widget import TransparentTextBox
+
+
 class PasswordGeneratorThread(QThread):
     password_generated = Signal(str)
 
@@ -63,7 +66,6 @@ class PasswordGeneratorApp(QWidget):
 
         self.setWindowTitle(FsConstants.WINDOW_TITLE_PASSWORD_GENERATOR)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setFixedHeight(450)
         # 初始化界面元素
         title_label = QLabel("密码生成器")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -118,7 +120,7 @@ class PasswordGeneratorApp(QWidget):
         password_display_layout.addWidget(self.generated_password)
         password_display_layout.addWidget(self.copy_button)
         layout.addLayout(password_display_layout)
-
+        layout.addWidget(TransparentTextBox())
         self.setLayout(layout)
 
     def start_password_generation(self):

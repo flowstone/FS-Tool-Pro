@@ -13,6 +13,7 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class RenameReplaceApp(QWidget):
@@ -32,7 +33,7 @@ class RenameReplaceApp(QWidget):
 
 
         layout = QVBoxLayout()
-        title_label = QLabel("批量修改文件/文件夹名")
+        title_label = QLabel("批量文件重命名")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setObjectName("app_title")
         layout.addWidget(title_label)
@@ -111,9 +112,7 @@ class RenameReplaceApp(QWidget):
         replace_char_layout.addWidget(self.replace_char_entry)
         layout.addLayout(replace_char_layout)
 
-        self.progress_bar = CustomProgressBar()
-        self.progress_bar.hide()
-        layout.addWidget(self.progress_bar)
+
         # 操作按钮
         button_layout = QHBoxLayout()
         self.start_button = QPushButton("开始")
@@ -129,6 +128,10 @@ class RenameReplaceApp(QWidget):
         # button_layout.addWidget(self.exit_button)
         layout.addLayout(button_layout)
 
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
+        layout.addWidget(TransparentTextBox())
         self.setLayout(layout)
 
 

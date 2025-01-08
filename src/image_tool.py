@@ -24,7 +24,7 @@ class ImageToolApp(QWidget):
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
-
+        self.setMinimumWidth(600)
         # 创建主布局
         layout = QVBoxLayout(self)
         # 创建 TabWidget

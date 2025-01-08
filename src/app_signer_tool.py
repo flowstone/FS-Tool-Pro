@@ -25,7 +25,7 @@ class AppSignerTool(QWidget):
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_APP_SIGNER_TOOL} ----")
         self.setWindowTitle(FsConstants.WINDOW_TITLE_APP_SIGNER_TOOL)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setFixedWidth(700)
+        self.setMinimumWidth(700)
         self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
 

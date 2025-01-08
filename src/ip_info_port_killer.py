@@ -92,7 +92,7 @@ class PortKillerApp(QWidget):
 
         self.setWindowTitle(FsConstants.WINDOW_TITLE_IP_INFO_PORT_KILLER)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setFixedWidth(600)
+
         # 主界面布局
         self.layout = QVBoxLayout(self)
 
@@ -116,9 +116,7 @@ class PortKillerApp(QWidget):
         self.port_input.setPlaceholderText("例如: 1-1000")
         self.port_input.setText("1-65535")
 
-        # 进度条
-        self.progress_bar = CustomProgressBar()
-        self.progress_bar.hide()
+
         button_layout = QHBoxLayout()
         self.admin_button = QPushButton("授权")
         self.admin_button.clicked.connect(self.get_admin)
@@ -144,6 +142,9 @@ class PortKillerApp(QWidget):
         self.layout.addWidget(self.port_input_label)
         self.layout.addWidget(self.port_input)
         self.layout.addLayout(button_layout)
+        # 进度条
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
         self.layout.addWidget(self.progress_bar)
         self.layout.addWidget(self.port_list)
 

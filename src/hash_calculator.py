@@ -143,16 +143,17 @@ class HashCalculatorApp(QWidget):
         self.file_info_text = QTextEdit()
         self.file_info_text.setReadOnly(True)
 
-        # 进度条
-        self.progress_bar = CustomProgressBar()
-        self.progress_bar.hide()
+
+
         # 布局组合
         layout.addLayout(file_layout)
         layout.addLayout(hash_selection_layout)
         layout.addWidget(self.file_info_text)
-        layout.addWidget(self.progress_bar)
         layout.addLayout(button_layout)
-
+        # 进度条
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
         self.setLayout(layout)
 
     def browse_file(self):

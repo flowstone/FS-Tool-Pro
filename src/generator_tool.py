@@ -24,7 +24,7 @@ class GeneratorToolApp(QWidget):
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_GENERATOR_TOOL} ----")
         self.setWindowTitle(FsConstants.WINDOW_TITLE_GENERATOR_TOOL)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setFixedHeight(500)
+        #self.setFixedHeight(500)
         self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
 

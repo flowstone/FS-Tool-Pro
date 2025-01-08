@@ -18,6 +18,7 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class EncryptThread(QThread):
@@ -121,8 +122,6 @@ class FileEncryptorApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_FILE_ENCRYPTOR)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
-        #self.setFixedSize(500, 550)  # 调整窗口大小
-        self.setFixedHeight(400)
         self.setAcceptDrops(True)
 
         layout = QVBoxLayout()
@@ -179,10 +178,7 @@ class FileEncryptorApp(QWidget):
         self.show_password_button.clicked.connect(self.toggle_password_visibility)
         password_input_layout.addWidget(self.show_password_button)
         layout.addLayout(password_input_layout)
-        # 进度条
-        self.progress_bar = CustomProgressBar()
-        self.progress_bar.hide()
-        layout.addWidget(self.progress_bar)
+
 
         button_layout = QHBoxLayout()
 
@@ -197,7 +193,11 @@ class FileEncryptorApp(QWidget):
         button_layout.addWidget(self.decrypt_button)
 
         layout.addLayout(button_layout)
-
+        # 进度条
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
+        layout.addWidget(TransparentTextBox())
 
 
         self.setLayout(layout)

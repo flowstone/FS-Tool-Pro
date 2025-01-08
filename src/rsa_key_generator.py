@@ -13,6 +13,8 @@ from src.util.common_util import CommonUtil
 from src.const.font_constants import FontConstants
 from loguru import logger
 
+from src.widget.transparent_textbox_widget import TransparentTextBox
+
 
 class RSAKeyGeneratorThread(QThread):
     result_signal = Signal(str, str)  # 用于将公钥和私钥传递回主线程
@@ -66,9 +68,6 @@ class RSAKeyGeneratorApp(QWidget):
 
         self.setWindowTitle(FsConstants.WINDOW_TITLE_RSA_GENERATOR)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        #self.setFixedSize(700, 600)
-        self.setFixedHeight(450)
-        self.setFixedWidth(600)
 
         # 第一行：密钥长度选择和加密方式选择
         key_length_label = QLabel("密钥长度:")
@@ -120,7 +119,6 @@ class RSAKeyGeneratorApp(QWidget):
         layout.addWidget(self.public_key_text)
         layout.addWidget(private_key_label)
         layout.addWidget(self.private_key_text)
-
         self.setLayout(layout)
 
         # 信号连接

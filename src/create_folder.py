@@ -13,6 +13,7 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class CreateFolderApp(QWidget):
@@ -27,7 +28,6 @@ class CreateFolderApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_CREATE_FOLDER)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
-        self.setFixedHeight(300)
         # 设置窗口背景色为淡灰色
         self.setAutoFillBackground(True)
         self.setAcceptDrops(True)
@@ -66,11 +66,7 @@ class CreateFolderApp(QWidget):
         start_button = QPushButton("开始")
         start_button.clicked.connect(self.start_operation)
 
-        exit_button = QPushButton("退出")
-        exit_button.clicked.connect(self.close)
-
         button_layout.addWidget(start_button)
-        button_layout.addWidget(exit_button)
 
         # 布局调整
         layout.addWidget(description_label)
@@ -78,12 +74,13 @@ class CreateFolderApp(QWidget):
         layout.addLayout(folder_path_layout)
         layout.addWidget(slice_label)
         layout.addWidget(self.slice_entry)
+
+        layout.addLayout(button_layout)
         self.progress_bar = CustomProgressBar()
         self.progress_bar.hide()
         layout.addWidget(self.progress_bar)
 
-        layout.addLayout(button_layout)
-
+        layout.addWidget(TransparentTextBox())
         self.setLayout(layout)
 
 

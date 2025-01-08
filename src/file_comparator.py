@@ -16,6 +16,7 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class CompareThread(QThread):
@@ -137,8 +138,6 @@ class FileComparatorApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_FILE_COMPARATOR)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
-        #self.setFixedSize(800, 600)
-
         layout = QVBoxLayout()
         title_label = QLabel("批量文件比较")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -174,13 +173,13 @@ class FileComparatorApp(QWidget):
         self.method_combo = QComboBox()
         self.method_combo.addItems(["文件大小比较", "哈希算法比较", "逐字节比较", "校验和比较"])
         layout.addWidget(self.method_combo)
-        self.progress_bar = CustomProgressBar()
-        self.progress_bar.hide()
-        layout.addWidget(self.progress_bar)
+
         self.compare_button = QPushButton("开始比较")
         self.compare_button.clicked.connect(self.start_comparison)
         layout.addWidget(self.compare_button)
-
+        self.progress_bar = CustomProgressBar()
+        self.progress_bar.hide()
+        layout.addWidget(self.progress_bar)
         self.result_text = QTextEdit()
 
         self.result_text.setReadOnly(True)

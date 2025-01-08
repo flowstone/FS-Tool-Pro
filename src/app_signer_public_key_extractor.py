@@ -10,6 +10,7 @@ from loguru import logger
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
+from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class PublicKeyExtractorApp(QWidget):
@@ -22,8 +23,6 @@ class PublicKeyExtractorApp(QWidget):
 
         self.setWindowTitle(FsConstants.WINDOW_TITLE_APP_SIGNER_PUBLIC_KEY_EXTRACTOR)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setFixedHeight(250)
-        #self.setGeometry(100, 100, 400, 300)
         layout = QVBoxLayout()
         # 说明文本
         description_label = QLabel("从证书文件中提取公钥，以提供给签名工具使用。")
@@ -44,7 +43,7 @@ class PublicKeyExtractorApp(QWidget):
 
         self.result_label = QLabel()
         layout.addWidget(self.result_label)
-
+        layout.addWidget(TransparentTextBox())
         self.setLayout(layout)
 
 

@@ -38,45 +38,37 @@ from PySide6.QtWidgets import QApplication
 
 from flask_server import start_flask_in_thread
 from src.main_window import MainWindow
-from src.util.init_file import  write_init_file
-from src.util.load_config import get_ini_flask_flag
-from src.util.load_db import LoadDB
+from src.util.app_init_util import AppInitUtil
+from src.util.config_util import ConfigUtil
+from src.util.init_db import InitDB
 from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
 import  os
-from src.util.load_font import load_external_font
 
 def main():
     app = QApplication(sys.argv)
 
     # 初始化数据库
-    load_db = LoadDB(CommonUtil.get_db_full_path())
-    load_db.create_table()
-    load_db.close_connection()
-
+    AppInitUtil.init_db()
     # 初始化配置文件
-    write_init_file()
+    AppInitUtil.write_init_file()
 
     # 启动 Flask 服务
-    if get_ini_flask_flag():
+    if ConfigUtil.get_ini_flask_flag():
         start_flask_in_thread()
 
     # 加载样式表文件
-    stylesheet_path = CommonUtil.get_resource_path(FsConstants.BASE_QSS_PATH)
-    if os.path.exists(stylesheet_path):
-        with open(stylesheet_path, "r", encoding='utf-8') as file:
-            stylesheet = file.read()
-            # 为应用程序设置样式表
-            app.setStyleSheet(stylesheet)
+    AppInitUtil.load_external_stylesheet(app)
     # 获取系统的默认调色板
-    palette = QPalette()
-    app.setPalette(palette)
+    #palette = QPalette()
+    #app.setPalette(palette)
+
 
     # 加载外部字体
-    font_path = CommonUtil.get_resource_path(FsConstants.FONT_FILE_PATH)
-    font_family = load_external_font(font_path)
+    font_family = AppInitUtil.load_external_font()
     if font_family:
         app.setFont(QFont(font_family))
+
 
     window = MainWindow()
     window.show()

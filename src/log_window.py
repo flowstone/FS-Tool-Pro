@@ -8,7 +8,7 @@ import os
 from src.util.common_util import CommonUtil
 from loguru import logger
 
-from src.util.load_config import get_ini_flask_flag
+from src.util.config_util import ConfigUtil
 
 
 class LogStream:
@@ -75,7 +75,7 @@ class LogWindow(QWidget):
         logger.info(f"IP: {CommonUtil.get_local_ip()}")
         logger.info(f"资源目录: {CommonUtil.get_resource_path('')}")
         logger.info(f"外部目录: {CommonUtil.get_external_path()}")
-        if get_ini_flask_flag():
+        if ConfigUtil.get_ini_flask_flag():
             logger.info(f"Flask Server: http://127.0.0.1:5678")
         logger.info("===================")
 

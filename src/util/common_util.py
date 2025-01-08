@@ -5,7 +5,6 @@ import socket
 
 from loguru import logger
 from src.const.fs_constants import FsConstants
-from src.util.load_config import  get_ini_sqlite_path
 
 
 class CommonUtil:
@@ -61,21 +60,7 @@ class CommonUtil:
         return CommonUtil.get_resource_path(FsConstants.APP_MINI_ICON_FULL_PATH)
 
 
-    # 获得数据库文件全路径
-    @staticmethod
-    def get_db_full_path():
-        # 优先使用INI文件中的配置
-        ini_db_path = get_ini_sqlite_path()
-        if ini_db_path:
-            logger.info(f"使用INI文件中的数据库路径:{ini_db_path}")
-            return ini_db_path
 
-        # 使用常量中的默认数据库路径
-        db_default_path = CommonUtil.get_external_path()
-        # 构建数据库文件的相对路径,假设数据库文件名为database.db
-        db_default_full_path = os.path.join(db_default_path, FsConstants.EXTERNAL_DATABASE_FILE)
-        logger.info(f"使用常量中的默认数据库路径:{db_default_full_path}")
-        return db_default_full_path
 
     # 获得Fast Sender全路径
     @staticmethod

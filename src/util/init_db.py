@@ -1,10 +1,11 @@
 from loguru import logger
 
 from src.util.common_util import CommonUtil
+from src.util.config_util import ConfigUtil
 from src.util.sqlite_connection_pool import SQLiteConnectionPool
 
 
-class LoadDB:
+class InitDB:
     def __init__(self, db_name):
         """
         初始化数据库连接和游标
@@ -56,7 +57,7 @@ class LoadDB:
 
 # 示例用法
 if __name__ == "__main__":
-    db_tool = LoadDB(CommonUtil.get_db_full_path())
+    db_tool = InitDB(ConfigUtil.get_db_full_path())
     db_tool.create_table()
     #db_tool.drop_table()
     # 关闭连接

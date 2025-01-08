@@ -9,7 +9,7 @@ import subprocess
 
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
-from src.util.load_config import get_ini_flask_flag, set_ini_flask_flag
+from src.util.config_util import ConfigUtil
 from src.util.message_util import MessageUtil
 
 
@@ -30,7 +30,7 @@ class OptionGeneral(QWidget):
         base_group_box_layout = QVBoxLayout()
         self.flask_checkbox = QCheckBox("Flask服务")
         # 从配置文件加载 Flask 服务是否启用的配置
-        if get_ini_flask_flag():
+        if ConfigUtil.get_ini_flask_flag():
             self.flask_checkbox.setChecked(True)
         base_group_box_layout.addWidget(self.flask_checkbox)
         base_group_box.setLayout(base_group_box_layout)
@@ -116,7 +116,7 @@ class OptionGeneral(QWidget):
         """保存设置到 ini 文件"""
         flask_enabled = self.flask_checkbox.isChecked()
         try:
-            set_ini_flask_flag(flask_enabled)  # 将 Flask 服务的状态写入到配置文件
+            ConfigUtil.set_ini_flask_flag(flask_enabled)  # 将 Flask 服务的状态写入到配置文件
             MessageUtil.show_success_message("设置已成功保存！")
         except Exception as e:
             MessageUtil.show_error_message(f"保存设置失败: {e}")

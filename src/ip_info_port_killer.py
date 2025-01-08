@@ -17,7 +17,7 @@ from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
-from src.util.permission_util import check_admin
+from src.util.permission_util import PermissionUtil
 from src.widget.custom_progress_widget import CustomProgressBar
 
 
@@ -150,7 +150,7 @@ class PortKillerApp(QWidget):
 
     def get_admin(self):
         """获得管理员权限"""
-        check_admin()
+        PermissionUtil.check_admin()
 
     def search_ports(self):
         """搜索被占用的端口"""
@@ -215,7 +215,7 @@ class PortKillerApp(QWidget):
             MessageUtil.show_warning_message("无法解析选中的端口信息。")
             return
         try:
-            check_admin()
+            PermissionUtil.check_admin()
             for conn in psutil.net_connections(kind="inet"):
                 if conn.laddr and conn.laddr.port == port:
                     pid = conn.pid

@@ -66,7 +66,10 @@ class RSAKeyGeneratorApp(QWidget):
 
         self.setWindowTitle(FsConstants.WINDOW_TITLE_RSA_GENERATOR)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setFixedSize(700, 600)
+        #self.setFixedSize(700, 600)
+        self.setFixedHeight(450)
+        self.setFixedWidth(600)
+
         # 第一行：密钥长度选择和加密方式选择
         key_length_label = QLabel("密钥长度:")
         self.key_length_combo = QComboBox()

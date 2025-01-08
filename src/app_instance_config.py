@@ -2,6 +2,7 @@ from src.app_signer_tool import AppSignerTool
 from src.desktop_clock import  DesktopClockSetting
 from src.fast_sender_tool import FastSenderToolApp
 from src.file_tool import FileToolApp
+from src.generator_tool import GeneratorToolApp
 from src.image_tool import ImageToolApp
 from src.ip_info_tool import IpInfoToolApp
 from src.create_folder import CreateFolderApp
@@ -26,17 +27,23 @@ app_instance_config = [
             "title": FsConstants.APP_TITLE_STICK_NOTE,
             "class": StickyNoteApp
         },
+        # {
+        #     "key": "password_generator",
+        #     "icon": FsConstants.APP_ICON_PASSWORD_GENERATOR,
+        #     "title": FsConstants.APP_TITLE_PASSWORD_GENERATOR,
+        #     "class": PasswordGeneratorApp
+        # },
+        # {
+        #     "key": "rsa_key_generator",
+        #     "icon": FsConstants.APP_ICON_RSA_GENERATOR,
+        #     "title": FsConstants.APP_TITLE_RSA_GENERATOR,
+        #     "class": RSAKeyGeneratorApp
+        # },
         {
-            "key": "password_generator",
-            "icon": FsConstants.APP_ICON_PASSWORD_GENERATOR,
-            "title": FsConstants.APP_TITLE_PASSWORD_GENERATOR,
-            "class": PasswordGeneratorApp
-        },
-        {
-            "key": "rsa_key_generator",
-            "icon": FsConstants.APP_ICON_RSA_GENERATOR,
-            "title": FsConstants.APP_TITLE_RSA_GENERATOR,
-            "class": RSAKeyGeneratorApp
+            "key": "generator_tool",
+            "icon": FsConstants.APP_ICON_GENERATOR_TOOL,
+            "title": FsConstants.APP_TITLE_GENERATOR_TOOL,
+            "class": GeneratorToolApp
         },
         # {
         #     "key": "rename_tool",

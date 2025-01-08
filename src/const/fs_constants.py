@@ -24,6 +24,7 @@ class FsConstants:
     APP_TITLE_STICK_NOTE = "快捷便签"
     APP_TITLE_PASSWORD_GENERATOR = "密码生成器"
     APP_TITLE_RSA_GENERATOR = "RSA生成器"
+    APP_TITLE_GENERATOR_TOOL = "生成器工具"
     APP_TITLE_RENAMER_TOOL = "重命名工具"
     APP_TITLE_IMAGE_TOOL = "图片工具"
     APP_TITLE_FILE_TOOL = "文件工具"
@@ -35,6 +36,7 @@ class FsConstants:
 
     WINDOW_TITLE_DESKTOP_CLOCK = "透明时间"
     WINDOW_TITLE_STICK_NOTE = "快捷便签"
+    WINDOW_TITLE_GENERATOR_TOOL = "生成器工具"
     WINDOW_TITLE_PASSWORD_GENERATOR = "密码生成器"
     WINDOW_TITLE_RSA_GENERATOR = "RSA生成器"
     WINDOW_TITLE_RENAME_TOOL = "重命名工具"
@@ -113,6 +115,7 @@ class FsConstants:
     APP_ICON_STICK_NOTE = "stick_note_icon.svg"
     APP_ICON_PASSWORD_GENERATOR = "password_generator_icon.svg"
     APP_ICON_RSA_GENERATOR = "rsa_generator_icon.svg"
+    APP_ICON_GENERATOR_TOOL = "rsa_generator_icon.svg"
     APP_ICON_RENAMER_TOOL = "renamer_tool_icon.svg"
     APP_ICON_IMAGE_TOOL = "image_tool_icon.svg"
     APP_ICON_FILE_TOOL = "file_tool_icon.svg"

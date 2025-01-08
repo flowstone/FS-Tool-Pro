@@ -63,8 +63,7 @@ class PasswordGeneratorApp(QWidget):
 
         self.setWindowTitle(FsConstants.WINDOW_TITLE_PASSWORD_GENERATOR)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-        self.setFixedSize(500, 350)
-
+        self.setFixedHeight(450)
         # 初始化界面元素
         title_label = QLabel("密码生成器")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -156,6 +155,7 @@ class PasswordGeneratorApp(QWidget):
         password = self.generated_password.text()
         if password:
             pyperclip.copy(password)
+            self.generated_password.selectAll()  # 全选文本框中的文本
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

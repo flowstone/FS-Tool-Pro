@@ -2,6 +2,8 @@ from PySide6.QtCore import Signal, Qt, QPropertyAnimation, QEasingCurve
 from PySide6.QtGui import QPixmap, QColor
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsColorizeEffect
 
+from src.const.font_constants import FontConstants
+
 
 class AppIconWidget(QWidget):
     # 定义一个信号，当图标被点击时发出
@@ -37,7 +39,7 @@ class AppIconWidget(QWidget):
         self.name_label = QLabel(name, self)
         self.name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # 名称居中显示
         self.name_label.setMaximumWidth(100)  # 设置最大宽度与图片一致
-
+        self.name_label.setFont(FontConstants.BOLD_SMALL)
         # 将两个 QLabel 添加到布局中
         layout.addWidget(self.icon_label)
         layout.addWidget(self.name_label)

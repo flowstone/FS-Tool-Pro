@@ -1,7 +1,7 @@
 from PySide6.QtGui import QColor, QFont
 
 
-def create_font(size: int, bold: bool = False, weight: int = QFont.Weight.Normal, italic: bool = False) -> QFont:
+def create_font(size: int, bold: bool = False, weight = QFont.Weight.Normal, italic: bool = False) -> QFont:
     """动态生成字体"""
     font = QFont()
     font.setPointSize(size)
@@ -24,3 +24,8 @@ class FontConstants:
     ITALIC_LARGE = create_font(18, italic=True)
     ITALIC_NORMAL = create_font(16, italic=True)
     ITALIC_SMALL = create_font(14, italic=True)
+
+    # 粗体字体
+    BOLD_LARGE = create_font(18, bold=True, weight=QFont.Weight.Bold)
+    BOLD_NORMAL = create_font(16, bold=True, weight=QFont.Weight.Bold)
+    BOLD_SMALL = create_font(14, bold=True, weight=QFont.Weight.Bold)

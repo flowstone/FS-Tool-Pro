@@ -27,7 +27,7 @@ class CreateFolderApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_CREATE_FOLDER)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
-
+        self.setFixedHeight(300)
         # 设置窗口背景色为淡灰色
         self.setAutoFillBackground(True)
         self.setAcceptDrops(True)

@@ -108,8 +108,8 @@ class FileGeneratorApp(QWidget):
         self.setWindowTitle(FsConstants.WINDOW_TITLE_FILE_GENERATOR)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
 
-        self.setFixedSize(750, 400)
-
+        #self.setFixedSize(750, 400)
+        self.setFixedHeight(400)
         self.setAcceptDrops(True)
 
         layout = QVBoxLayout()

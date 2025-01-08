@@ -7,6 +7,7 @@ from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 from cryptography.x509 import load_pem_x509_certificate, load_der_x509_certificate
 from loguru import logger
 
+from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 
@@ -21,10 +22,13 @@ class PublicKeyExtractorApp(QWidget):
 
         self.setWindowTitle(FsConstants.WINDOW_TITLE_APP_SIGNER_PUBLIC_KEY_EXTRACTOR)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-
+        self.setFixedHeight(250)
         #self.setGeometry(100, 100, 400, 300)
         layout = QVBoxLayout()
-
+        # 说明文本
+        description_label = QLabel("从证书文件中提取公钥，以提供给签名工具使用。")
+        description_label.setFont(FontConstants.ITALIC_SMALL)
+        layout.addWidget(description_label)
         # 替换 QLabel 为 QLineEdit
         self.cert_path_input = QLineEdit()
         self.cert_path_input.setPlaceholderText("选择证书文件路径...")

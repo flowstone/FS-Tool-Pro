@@ -41,7 +41,7 @@ class AppSignerTool(QWidget):
         self.setLayout(layout)
 
     def add_tabs(self):
-        self.tab_widget.addTab(AppSignerApp(), "应用签名")
+        self.tab_widget.addTab(AppSignerApp(), "文件签名")
         self.tab_widget.addTab(GenerateCertificateApp(), "证书生成")
         self.tab_widget.addTab(PublicKeyExtractorApp(), "证书转换")
 

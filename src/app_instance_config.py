@@ -38,12 +38,12 @@ app_instance_config = [
             "title": FsConstants.APP_TITLE_RSA_GENERATOR,
             "class": RSAKeyGeneratorApp
         },
-        {
-            "key": "rename_tool",
-            "icon": FsConstants.APP_ICON_RENAMER_TOOL,
-            "title": FsConstants.APP_TITLE_RENAMER_TOOL,
-            "class": RenameToolApp
-        },
+        # {
+        #     "key": "rename_tool",
+        #     "icon": FsConstants.APP_ICON_RENAMER_TOOL,
+        #     "title": FsConstants.APP_TITLE_RENAMER_TOOL,
+        #     "class": RenameToolApp
+        # },
         {
             "key": "image_tool",
             "icon": FsConstants.APP_ICON_IMAGE_TOOL,
@@ -56,12 +56,12 @@ app_instance_config = [
             "title": FsConstants.APP_TITLE_FILE_TOOL,
             "class": FileToolApp
         },
-        {
-            "key": "create_folder",
-            "icon": FsConstants.APP_ICON_CREATE_FOLDER,
-            "title": FsConstants.APP_TITLE_CREATE_FOLDER,
-            "class": CreateFolderApp
-        },
+        # {
+        #     "key": "create_folder",
+        #     "icon": FsConstants.APP_ICON_CREATE_FOLDER,
+        #     "title": FsConstants.APP_TITLE_CREATE_FOLDER,
+        #     "class": CreateFolderApp
+        # },
         {
             "key": "hash_calculator",
             "icon": FsConstants.APP_ICON_HASH_CALCULATOR,

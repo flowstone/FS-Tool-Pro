@@ -29,7 +29,7 @@ class AppSignerApp(QWidget):
         layout = QVBoxLayout()
 
         # 标题
-        title_label = QLabel("应用程序签名工具")
+        title_label = QLabel("文件签名工具")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         #title_label.setStyleSheet("font-size: 24px; font-weight: bold; color: #333;")
         title_label.setObjectName("app_title")
@@ -37,11 +37,11 @@ class AppSignerApp(QWidget):
 
 
         # 签名应用程序的部分
-        sign_app_group = QGroupBox("签名应用程序")
+        sign_app_group = QGroupBox("签名文件")
         sign_app_layout = QVBoxLayout()
 
         # 上传应用程序文件
-        app_file_label = QLabel("选择应用程序文件：")
+        app_file_label = QLabel("选择文件：")
         self.app_file_input = QLineEdit()
         self.upload_app_btn = QPushButton("选择")
         self.upload_app_btn.setObjectName("browse_button")
@@ -65,7 +65,7 @@ class AppSignerApp(QWidget):
         sign_app_layout.addLayout(key_layout)
 
         # 签名按钮
-        self.sign_app_btn = QPushButton("签名应用")
+        self.sign_app_btn = QPushButton("签名文件")
         self.sign_app_btn.clicked.connect(self.sign_application)
         sign_app_layout.addWidget(self.sign_app_btn)
 
@@ -77,7 +77,7 @@ class AppSignerApp(QWidget):
         verify_sign_layout = QVBoxLayout()
 
         # 上传验证的应用程序文件
-        verify_app_file_label = QLabel("选择验证的应用程序文件：")
+        verify_app_file_label = QLabel("选择验证的文件：")
         self.verify_app_file_input = QLineEdit()
         self.upload_verify_app_btn = QPushButton("选择")
         self.upload_verify_app_btn.setObjectName("browse_button")
@@ -125,7 +125,7 @@ class AppSignerApp(QWidget):
 
     def upload_application_file(self):
         """上传应用程序文件"""
-        self.app_file, _ = QFileDialog.getOpenFileName(self, "选择应用程序文件")
+        self.app_file, _ = QFileDialog.getOpenFileName(self, "选择文件")
         self.app_file_input.setText(self.app_file)
 
     def upload_key_file(self):
@@ -136,7 +136,7 @@ class AppSignerApp(QWidget):
     def sign_application(self):
         """签名应用程序"""
         if not hasattr(self, "app_file") or not self.app_file:
-            MessageUtil.show_warning_message("请先选择应用程序文件！")
+            MessageUtil.show_warning_message("请先选择文件！")
             return
         if not hasattr(self, "key_file") or not self.key_file:
             MessageUtil.show_warning_message("请先选择私钥文件！")
@@ -148,7 +148,7 @@ class AppSignerApp(QWidget):
                 ["openssl", "dgst", "-sha256", "-sign", self.key_file, "-out", signature_file, self.app_file],
                 check=True
             )
-            MessageUtil.show_success_message(f"应用程序签名成功！\n签名文件: {signature_file}")
+            MessageUtil.show_success_message(f"文件签名成功！\n签名文件: {signature_file}")
         except subprocess.CalledProcessError as e:
             logger.error(f"签名失败：\n{e}")
             MessageUtil.show_error_message(f"签名失败：\n{e}")
@@ -158,7 +158,7 @@ class AppSignerApp(QWidget):
 
     def upload_verify_application_file(self):
         """上传验证的应用程序文件"""
-        self.verify_app_file, _ = QFileDialog.getOpenFileName(self, "选择验证的应用程序文件")
+        self.verify_app_file, _ = QFileDialog.getOpenFileName(self, "选择验证的文件")
         self.verify_app_file_input.setText(self.verify_app_file)
 
     def upload_signature_file(self):
@@ -174,7 +174,7 @@ class AppSignerApp(QWidget):
     def verify_signature(self):
         """验证签名"""
         if not hasattr(self, "verify_app_file") or not self.verify_app_file:
-            MessageUtil.show_warning_message("请先选择验证的应用程序文件！")
+            MessageUtil.show_warning_message("请先选择验证的文件！")
             return
         if not hasattr(self, "signature_file") or not self.signature_file:
             MessageUtil.show_warning_message("请先选择签名文件！")

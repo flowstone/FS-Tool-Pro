@@ -150,7 +150,19 @@ class RenameGenerateApp(QWidget):
         self.setEnabled(True)
         MessageUtil.show_error_message(f"遇到错误：{error_msg}")
         logger.error(f"错误：{error_msg}")
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
 
+    def dropEvent(self, event):
+        if event.mimeData().hasUrls():
+            folder_path = event.mimeData().urls()[0].toLocalFile()
+            if os.path.isdir(folder_path):
+                self.folder_entry.setText(folder_path)
+            else:
+                MessageUtil.show_warning_message("拖入的不是有效文件夹！")
     def closeEvent(self, event):
         self.closed_signal.emit()
         super().closeEvent(event)

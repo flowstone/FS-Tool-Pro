@@ -1,20 +1,25 @@
 import sys
-
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QToolBox
 from loguru import logger
 
 from src.const.fs_constants import FsConstants
+from src.create_folder import CreateFolderApp
 from src.file_comparator import FileComparatorApp
 from src.file_encryptor import FileEncryptorApp
 from src.file_generator import FileGeneratorApp
+from src.rename_generate import RenameGenerateApp
+from src.rename_replace import RenameReplaceApp
 from src.util.common_util import CommonUtil
 
 
 class FileToolApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal = Signal()
+    """
+    应用签名工具主窗口
+    """
+    closed_signal = Signal()  # 窗口关闭时发出的信号
+
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -23,30 +28,74 @@ class FileToolApp(QWidget):
         logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_FILE_TOOL} ----")
         self.setWindowTitle(FsConstants.WINDOW_TITLE_FILE_TOOL)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+        self.setFixedWidth(700)
+        self.setFixedHeight(600)
         self.setWindowFlags(self.windowFlags() | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setAcceptDrops(True)
 
         # 创建主布局
         layout = QVBoxLayout(self)
-        # 创建 TabWidget
-        self.tab_widget = QTabWidget()
-        # 添加标签页
-        self.add_tabs()
-        # 将 TabWidget 添加到布局
-        layout.addWidget(self.tab_widget)
-        # 设置主窗口布局
+
+        # 创建 QToolBox
+        self.toolbox = QToolBox()
+        self.toolbox.setObjectName("mainToolBox")
+
+        # 添加工具箱子项
+        self.add_toolbox_items()
+
+        # 将 ToolBox 添加到主布局
+        layout.addWidget(self.toolbox)
+
+        # 设置窗口布局
         self.setLayout(layout)
 
 
-    def add_tabs(self):
-        self.tab_widget.addTab(FileGeneratorApp(), "文件生成")
-        self.tab_widget.addTab(FileComparatorApp(), "文件比较")
-        self.tab_widget.addTab(FileEncryptorApp(), "文件加密")
+    def add_toolbox_items(self):
+        """向 QToolBox 添加子项"""
+        # 每个工具箱子项中都添加一个 QTabWidget
+        toolbox_data = [
+            ("重命名", [
+                (RenameGenerateApp(), "随机"),
+                (RenameReplaceApp(), "替换"),
+            ]),
+            ("移动", [
+                (CreateFolderApp(), "创建文件夹"),
+
+            ]),
+            ("高级", [
+                (FileGeneratorApp(), "文件生成"),
+                (FileComparatorApp(), "文件比较"),
+                (FileEncryptorApp(), "文件加密"),
+            ]),
+        ]
+
+        for toolbox_title, tabs in toolbox_data:
+            tab_widget = self.create_tab_widget(tabs)
+            self.toolbox.addItem(tab_widget, toolbox_title)
+
+    @staticmethod
+    def create_tab_widget(tabs):
+        """
+        创建一个 QTabWidget 并为其添加标签页
+        :param tabs: List[Tuple[QWidget, str]] 子页面和标题的列表
+        :return: QTabWidget
+        """
+        tab_widget = QTabWidget()
+        tab_widget.setTabPosition(QTabWidget.TabPosition.North)
+        tab_widget.setDocumentMode(True)
+
+        for tab, title in tabs:
+            tab_widget.addTab(tab, title)
+
+        return tab_widget
+
 
     def closeEvent(self, event):
-        # 在关闭事件中发出信号
+        """窗口关闭事件"""
+        logger.info("窗口正在关闭...")
         self.closed_signal.emit()
         super().closeEvent(event)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

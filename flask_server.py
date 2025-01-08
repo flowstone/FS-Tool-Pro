@@ -61,12 +61,12 @@ def create_app():
     @app.route('/upload', methods=['POST'])
     def upload_file():
         if 'file' not in request.files:
-            return render_index_page(error="No file part")
+            return render_index_page(error="没有文件部分")
 
         file = request.files['file']
 
         if file.filename == '':
-            return render_index_page(error="No selected file")
+            return render_index_page(error="请选择文件")
 
         secure_name = file.filename
         logger.info(f"安全处理后的文件名: {secure_name}")
@@ -82,7 +82,7 @@ def create_app():
             uploaded_texts.append(text)
             return render_index_page()
 
-        return render_index_page(error="Text cannot be empty!")
+        return render_index_page(error="请输入文本!")
 
     @app.route('/files/<filename>')
     def uploaded_file(filename):

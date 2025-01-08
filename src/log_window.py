@@ -8,6 +8,8 @@ import os
 from src.util.common_util import CommonUtil
 from loguru import logger
 
+from src.util.load_config import get_ini_flask_flag
+
 
 class LogStream:
     """自定义日志流，将输出重定向到 QTextEdit"""
@@ -73,8 +75,8 @@ class LogWindow(QWidget):
         logger.info(f"IP: {CommonUtil.get_local_ip()}")
         logger.info(f"资源目录: {CommonUtil.get_resource_path('')}")
         logger.info(f"外部目录: {CommonUtil.get_external_path()}")
-        logger.info(f"SQLite数据路径: {CommonUtil.get_db_full_path()}")
-        logger.info(f"Flask Server: http://127.0.0.1:5678")
+        if get_ini_flask_flag():
+            logger.info(f"Flask Server: http://127.0.0.1:5678")
         logger.info("===================")
 
     def closeEvent(self, event):

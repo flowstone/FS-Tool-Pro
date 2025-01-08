@@ -39,6 +39,7 @@ from PySide6.QtWidgets import QApplication
 from flask_server import start_flask_in_thread
 from src.main_window import MainWindow
 from src.util.init_file import  write_init_file
+from src.util.load_config import get_ini_flask_flag
 from src.util.load_db import LoadDB
 from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
@@ -55,6 +56,10 @@ def main():
 
     # 初始化配置文件
     write_init_file()
+
+    # 启动 Flask 服务
+    if get_ini_flask_flag():
+        start_flask_in_thread()
 
     # 加载样式表文件
     stylesheet_path = CommonUtil.get_resource_path(FsConstants.BASE_QSS_PATH)
@@ -85,6 +90,5 @@ if __name__ == '__main__':
         multiprocessing.set_start_method('spawn')
     #避免子进程重新加载主脚本
     freeze_support()
-    # 启动 Flask 服务
-    start_flask_in_thread()
+
     main()

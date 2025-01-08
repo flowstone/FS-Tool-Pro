@@ -156,7 +156,7 @@ class FloatingBall(QWidget):
         layout = QVBoxLayout()
         # 这里使用一个示例图片路径，你可以替换为真实路径
         pixmap = QPixmap(CommonUtil.get_mini_ico_full_path())
-        pixmap = pixmap.scaled(self.size())
+        pixmap = pixmap.scaled(self.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.background_label = QLabel(self)
         self.background_label.setPixmap(pixmap)
         self.background_label.resize(self.size())

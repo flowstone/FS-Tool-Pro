@@ -106,7 +106,8 @@ class ImageConvertApp(QWidget):
             try:
                 self.preview_image = Image.open(self.image_path)
                 pixmap = QPixmap(self.image_path)
-                self.image_label.setPixmap(pixmap.scaled(FsConstants.PIC_CONVERSION_WINDOW_WIDTH, FsConstants.PIC_CONVERSION_WINDOW_WIDTH, Qt.AspectRatioMode.KeepAspectRatio))
+                pixmap = pixmap.scaled(FsConstants.PIC_CONVERSION_WINDOW_WIDTH, FsConstants.PIC_CONVERSION_WINDOW_WIDTH, Qt.AspectRatioMode.KeepAspectRatio,Qt.TransformationMode.SmoothTransformation)
+                self.image_label.setPixmap(pixmap)
             except Exception as e:
                 logger.error(f"显示图片时出错: {e}")
 

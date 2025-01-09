@@ -82,6 +82,56 @@ class ConfigUtil:
         config, _ = ConfigUtil.get_ini_config()
         return config.getboolean("Flask", "flag", fallback=True)
 
+    # 从 INI 文件读取 遮罩是否启用的配置
+    @staticmethod
+    def get_ini_mini_mask_checked():
+        """
+        从 INI 文件读取 遮罩是否启用的配置
+        """
+        config, _ = ConfigUtil.get_ini_config()
+        return config.getboolean("Settings", "mini.mask_checked", fallback=True)
+
+    @staticmethod
+    def get_ini_mini_checked():
+        """
+        从 INI 文件读取 遮罩是否启用的配置
+        """
+        config, _ = ConfigUtil.get_ini_config()
+        return config.getboolean("Settings", "mini.checked", fallback=False)
+
+    @staticmethod
+    def get_ini_mini_size():
+        """
+        从 INI 文件读取 遮罩是否启用的配置
+        """
+        config, _ = ConfigUtil.get_ini_config()
+        return config.getint("Settings", "mini.size", fallback=FsConstants.APP_MINI_SIZE)
+
+    @staticmethod
+    def get_ini_mini_image():
+        """
+        从 INI 文件读取 遮罩是否启用的配置
+        """
+        config, _ = ConfigUtil.get_ini_config()
+        return config.get("Settings", "mini.image", fallback=CommonUtil.get_mini_ico_full_path())
+
+    @staticmethod
+    def get_ini_tray_menu_checked():
+        """
+        从 INI 文件读取 遮罩是否启用的配置
+        """
+        config, _ = ConfigUtil.get_ini_config()
+        return config.getboolean("Settings", "tray_menu.checked", fallback=False)
+
+    @staticmethod
+    def get_ini_tray_menu_image():
+        """
+        从 INI 文件读取 遮罩是否启用的配置
+        """
+        config, _ = ConfigUtil.get_ini_config()
+        return config.get("Settings", "tray_menu.image", fallback=CommonUtil.get_resource_path(FsConstants.APP_BAR_ICON_FULL_PATH))
+
+
     # 将应用可见性写入到 INI 配置文件中
     @staticmethod
     def set_ini_flask_flag(enabled):
@@ -94,6 +144,76 @@ class ConfigUtil:
         ConfigUtil.update_ini_line(ini_path, "Flask", "flag", "true" if enabled else "false")
         logger.info(f"Flask 服务状态已更新为: {'启用' if enabled else '禁用'}")
 
+    # 从 INI 文件读取 遮罩是否启用的配置
+    @staticmethod
+    def set_ini_mini_mask_checked(enabled):
+        """
+        将 遮罩动画的启用状态写入到 INI 配置文件中，保留注释。
+        :param enabled: bool, True 表示启用 遮罩动画，False 表示禁用。
+        """
+        config, ini_path = ConfigUtil.get_ini_config()
+        # 更新配置值
+        ConfigUtil.update_ini_line(ini_path, "Settings", "mini.mask_checked", "true" if enabled else "false")
+        logger.info(f"遮罩状态已更新为: {'启用' if enabled else '禁用'}")
+    @staticmethod
+    def set_ini_mini_checked(enabled):
+        """
+        将 悬浮球修改状态写入到 INI 配置文件中，保留注释。
+        :param enabled: bool, True 表示启用 悬浮球修改，False 表示禁用。
+        """
+        config, ini_path = ConfigUtil.get_ini_config()
+        # 更新配置值
+        ConfigUtil.update_ini_line(ini_path, "Settings", "mini.checked", "true" if enabled else "false")
+        logger.info(f"悬浮球状态已更新为: {'启用' if enabled else '禁用'}")
+
+
+    @staticmethod
+    def set_ini_mini_size(size: int):
+        """
+        将 悬浮球大小写入到 INI 配置文件中，保留注释。
+        :param size: int, 悬浮球大小。
+        """
+        config, ini_path = ConfigUtil.get_ini_config()
+        # 更新配置值
+        ConfigUtil.update_ini_line(ini_path, "Settings", "mini.size", str(size))
+        logger.info(f"悬浮球大小已更新为: {str(size)}")
+
+    @staticmethod
+    def set_ini_mini_image(image:str):
+        """
+        将 悬浮球背景写入到 INI 配置文件中，保留注释。
+        :param image: str, 悬浮球背景图片。
+        """
+        config, ini_path = ConfigUtil.get_ini_config()
+        # 更新配置值
+        ConfigUtil.update_ini_line(ini_path, "Settings", "mini.image", image)
+        return config.get("Settings", "mini.image", fallback=CommonUtil.get_mini_ico_full_path())
+
+    @staticmethod
+    def set_ini_tray_menu_checked(enabled):
+        """
+        将 托盘图标修改状态写入到 INI 配置文件中，保留注释。
+        :param enabled: bool, True 表示启用 托盘图标修改，False 表示禁用。
+        """
+        config, ini_path = ConfigUtil.get_ini_config()
+        # 更新配置值
+        ConfigUtil.update_ini_line(ini_path, "Settings", "tray_menu.checked", "true" if enabled else "false")
+        logger.info(f"托盘图标状态已更新为: {'启用' if enabled else '禁用'}")
+
+
+    #
+    @staticmethod
+    def set_ini_tray_menu_image(image:str):
+        """
+        将 托盘图标写入到 INI 配置文件中，保留注释。
+        :param image: str, 托盘图标图片。
+        """
+        config, ini_path = ConfigUtil.get_ini_config()
+        # 更新配置值
+        ConfigUtil.update_ini_line(ini_path, "Settings", "tray_menu.image", image)
+        logger.info(f"托盘图标已更新为: {image}")
+
+    # 将应用可见性写入到 INI 配置文件中
     @staticmethod
     def update_ini_line(ini_path, section, key, value):
         """

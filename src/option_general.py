@@ -18,7 +18,7 @@ from src.widget.transparent_textbox_widget import TransparentTextBox
 class OptionGeneral(QWidget):
     def __init__(self):
         super().__init__()
-        self.slider_value = None
+        self.slider_value = FsConstants.APP_MINI_SIZE
 
         self.init_ui()
 
@@ -69,6 +69,8 @@ class OptionGeneral(QWidget):
         # 遮罩动画复选框
         self.mask_checkbox = QCheckBox("遮罩动画")
         layout.addWidget(self.mask_checkbox)
+        if ConfigUtil.get_ini_mini_mask_checked():
+            self.mask_checkbox.setChecked(True)
 
         # 悬浮球设置
         self.float_ball_checkbox = QCheckBox("设置悬浮球")
@@ -78,6 +80,11 @@ class OptionGeneral(QWidget):
         self.float_ball_hide_widget = self.create_float_ball_widget()
         layout.addWidget(self.float_ball_hide_widget)
 
+        if ConfigUtil.get_ini_mini_checked():
+            self.float_ball_checkbox.setChecked(True)
+            self.slider.setValue(ConfigUtil.get_ini_mini_size())
+            self.float_ball_path_input.setText(ConfigUtil.get_ini_mini_image())
+
         # 托盘图标设置
         self.tray_menu_checkbox = QCheckBox("设置托盘图标")
         self.tray_menu_checkbox.stateChanged.connect(self.tray_menu_visibility)
@@ -85,6 +92,9 @@ class OptionGeneral(QWidget):
 
         self.tray_menu_widget = self.create_tray_menu_widget()
         layout.addWidget(self.tray_menu_widget)
+        if ConfigUtil.get_ini_tray_menu_checked():
+            self.tray_menu_checkbox.setChecked(True)
+            self.tray_menu_path_input.setText(ConfigUtil.get_ini_tray_menu_image())
 
         group_box.setLayout(layout)
         return group_box
@@ -227,8 +237,19 @@ class OptionGeneral(QWidget):
             return
         """保存设置到 ini 文件"""
         flask_enabled = self.flask_checkbox.isChecked()
+        mask_enabled = self.mask_checkbox.isChecked()
+        mini_enabled = self.float_ball_checkbox.isChecked()
+        tray_menu_enabled = self.tray_menu_checkbox.isChecked()
         try:
             ConfigUtil.set_ini_flask_flag(flask_enabled)  # 将 Flask 服务的状态写入到配置文件
+            ConfigUtil.set_ini_mini_mask_checked(mask_enabled)  # 将 Flask 服务的状态写入到配置文件
+            ConfigUtil.set_ini_mini_checked(mini_enabled)  # 将 悬浮球修改状态写入到配置文件
+            ConfigUtil.set_ini_tray_menu_checked(tray_menu_enabled)  # 将 托盘图标修改的状态写入到配置文件
+            if mini_enabled:
+                ConfigUtil.set_ini_mini_size(self.slider_value)
+                ConfigUtil.set_ini_mini_image(self.float_ball_path_input.text().strip())
+            if tray_menu_enabled:
+                ConfigUtil.set_ini_tray_menu_image(self.tray_menu_path_input.text().strip())
             MessageUtil.show_success_message("设置已成功保存！")
         except Exception as e:
             MessageUtil.show_error_message(f"保存设置失败: {e}")

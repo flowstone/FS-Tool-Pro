@@ -7,6 +7,7 @@ from PySide6.QtGui import QIcon, QAction
 from loguru import logger
 from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
+from src.util.config_util import ConfigUtil
 
 
 class TrayMenu(QObject):
@@ -23,7 +24,7 @@ class TrayMenu(QObject):
         # 创建系统托盘图标
         self.tray_icon = QSystemTrayIcon(main_window)
         self.tray_icon.setIcon(
-            QIcon(CommonUtil.get_resource_path(FsConstants.APP_BAR_ICON_FULL_PATH)))  # 这里需要一个名为icon.png的图标文件，可以替换为真实路径
+            QIcon(ConfigUtil.get_ini_tray_menu_image()))  # 这里需要一个名为icon.png的图标文件，可以替换为真实路径
         # 双击托盘图标，打开主界面
         self.tray_icon.activated.connect(self.activate_signal_emit)
 

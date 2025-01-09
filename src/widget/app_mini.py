@@ -9,6 +9,7 @@ from loguru import logger
 
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
+from src.util.config_util import ConfigUtil
 
 
 class FloatingBall(QWidget):
@@ -25,8 +26,8 @@ class FloatingBall(QWidget):
     def init_ui(self):
         logger.info("---- 悬浮球初始化 ----")
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
-
-        self.setGeometry(0, 0, FsConstants.APP_MINI_WINDOW_WIDTH, FsConstants.APP_MINI_WINDOW_HEIGHT)  # 设置悬浮球大小
+        app_mini_size = ConfigUtil.get_ini_mini_size()
+        self.setGeometry(0, 0, app_mini_size, app_mini_size)  # 设置悬浮球大小
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)  # 设置窗口背景透明
 
         #self.setWindowOpacity(0.8)  # 设置透明度
@@ -43,8 +44,9 @@ class FloatingBall(QWidget):
         #self.breathing_light_window()
         # 悬浮球的缓慢漂浮（上下浮动）
         self.add_float_animation()
-        self.add_mask_animation()
-        self.add_mask_breathing_effect()
+        if ConfigUtil.get_ini_mini_mask_checked():
+            self.add_mask_animation()
+            self.add_mask_breathing_effect()
         # 随机跑
         #self.add_random_walk()
 
@@ -155,7 +157,7 @@ class FloatingBall(QWidget):
         logger.info("---- 初始化悬浮球背景图 ----")
         layout = QVBoxLayout()
         # 这里使用一个示例图片路径，你可以替换为真实路径
-        pixmap = QPixmap(CommonUtil.get_mini_ico_full_path())
+        pixmap = QPixmap(ConfigUtil.get_ini_mini_image())
         pixmap = pixmap.scaled(self.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.background_label = QLabel(self)
         self.background_label.setPixmap(pixmap)
@@ -163,7 +165,8 @@ class FloatingBall(QWidget):
         layout.addWidget(self.background_label)
         self.setLayout(layout)
         # 添加遮罩
-        self.add_mask()
+        if ConfigUtil.get_ini_mini_mask_checked():
+            self.add_mask()
 
 
 

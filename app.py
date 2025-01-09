@@ -35,6 +35,7 @@ import multiprocessing
 
 from PySide6.QtGui import QFont, QPalette
 from PySide6.QtWidgets import QApplication
+from loguru import logger
 
 from flask_server import start_flask_in_thread
 from src.main_window import MainWindow
@@ -44,6 +45,11 @@ from src.util.init_db import InitDB
 from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
 import  os
+
+def exception_hook(exctype, value, traceback):
+    logger.info("全局异常捕获:", exctype, value, traceback)
+    sys.__excepthook__(exctype, value, traceback)
+sys.excepthook = exception_hook
 
 def main():
     app = QApplication(sys.argv)

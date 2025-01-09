@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QApplication, QWidget, QGroupBox, QVBoxLayout, QHBoxLayout, QLabel,
     QLineEdit, QPushButton, QFileDialog, QMessageBox, QCheckBox, QSlider
@@ -16,6 +16,8 @@ from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class OptionGeneral(QWidget):
+    # 定义一个信号，在窗口关闭时触发
+    closed_signal = Signal()
     def __init__(self):
         super().__init__()
         self.slider_value = FsConstants.APP_MINI_SIZE
@@ -27,7 +29,6 @@ class OptionGeneral(QWidget):
         self.setFixedWidth(600)
         #self.setMinimumHeight(400)
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
-
         # 主布局
         main_layout = QVBoxLayout()
 
@@ -253,6 +254,11 @@ class OptionGeneral(QWidget):
             MessageUtil.show_success_message("设置已成功保存！")
         except Exception as e:
             MessageUtil.show_error_message(f"保存设置失败: {e}")
+    def closeEvent(self, event):
+        self.hide()  # 隐藏窗口而不是销毁
+        event.ignore()  # 忽略关闭事件
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = OptionGeneral()

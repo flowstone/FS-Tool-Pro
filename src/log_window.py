@@ -87,4 +87,5 @@ class LogWindow(QWidget):
             sys.stderr = self.original_stderr
         except Exception as e:
             logger.warning(f"关闭日志窗口时发生错误: {e}")
-        super().closeEvent(event)
+        self.hide()  # 隐藏窗口而不是销毁
+        event.ignore()  # 忽略关闭事件

@@ -27,3 +27,4 @@ class TransparentTextBox(QTextEdit):
         # 禁用滚动条
         self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.setMinimumHeight(10)  # 设置最小高度

@@ -75,12 +75,12 @@ class ConfigUtil:
 
     #  从 INI 文件读取 Flask 服务是否启用的配置
     @staticmethod
-    def get_ini_flask_flag():
+    def get_ini_flask_checked():
         """
         从 INI 文件读取 Flask 服务是否启用的配置
         """
         config, _ = ConfigUtil.get_ini_config()
-        return config.getboolean("Flask", "flag", fallback=True)
+        return config.getboolean("Flask", "flask.checked", fallback=True)
 
     # 从 INI 文件读取 遮罩是否启用的配置
     @staticmethod
@@ -105,7 +105,8 @@ class ConfigUtil:
         从 INI 文件读取 遮罩是否启用的配置
         """
         config, _ = ConfigUtil.get_ini_config()
-        return config.getint("Settings", "mini.size", fallback=FsConstants.APP_MINI_SIZE)
+        mini_size =  config.getint("Settings", "mini.size", fallback=FsConstants.APP_MINI_SIZE)
+        return mini_size if ConfigUtil.get_ini_mini_checked() else FsConstants.APP_MINI_SIZE
 
     @staticmethod
     def get_ini_mini_image():
@@ -113,7 +114,13 @@ class ConfigUtil:
         从 INI 文件读取 遮罩是否启用的配置
         """
         config, _ = ConfigUtil.get_ini_config()
-        return config.get("Settings", "mini.image", fallback=CommonUtil.get_mini_ico_full_path())
+        mini_image =  config.get("Settings", "mini.image", fallback=CommonUtil.get_mini_ico_full_path())
+        # 如果悬浮球修改未启用，返回默认悬浮球图标
+        if ConfigUtil.get_ini_mini_checked():
+            # 如果悬浮球背景图片存在，返回图片路径，否则返回默认悬浮球图标
+            return mini_image if os.path.exists(mini_image) else CommonUtil.get_mini_ico_full_path()
+        else:
+            return CommonUtil.get_mini_ico_full_path()
 
     @staticmethod
     def get_ini_tray_menu_checked():
@@ -129,19 +136,25 @@ class ConfigUtil:
         从 INI 文件读取 遮罩是否启用的配置
         """
         config, _ = ConfigUtil.get_ini_config()
-        return config.get("Settings", "tray_menu.image", fallback=CommonUtil.get_resource_path(FsConstants.APP_BAR_ICON_FULL_PATH))
+        tray_menu_image =  config.get("Settings", "tray_menu.image", fallback=CommonUtil.get_resource_path(FsConstants.APP_BAR_ICON_FULL_PATH))
+        # 如果托盘图标修改未启用，返回默认托盘图标
+        if ConfigUtil.get_ini_tray_menu_checked():
+            # 如果托盘图标图片存在，返回图片路径，否则返回默认托盘图标
+            return tray_menu_image if os.path.exists(tray_menu_image) else CommonUtil.get_resource_path(FsConstants.APP_BAR_ICON_FULL_PATH)
+        else:
+            return CommonUtil.get_resource_path(FsConstants.APP_BAR_ICON_FULL_PATH)
 
 
     # 将应用可见性写入到 INI 配置文件中
     @staticmethod
-    def set_ini_flask_flag(enabled):
+    def set_ini_flask_checked(enabled):
         """
         将 Flask 服务的启用状态写入到 INI 配置文件中，保留注释。
         :param enabled: bool, True 表示启用 Flask 服务，False 表示禁用。
         """
         config, ini_path = ConfigUtil.get_ini_config()
         # 更新配置值
-        ConfigUtil.update_ini_line(ini_path, "Flask", "flag", "true" if enabled else "false")
+        ConfigUtil.update_ini_line(ini_path, "Flask", "flask.checked", "true" if enabled else "false")
         logger.info(f"Flask 服务状态已更新为: {'启用' if enabled else '禁用'}")
 
     # 从 INI 文件读取 遮罩是否启用的配置

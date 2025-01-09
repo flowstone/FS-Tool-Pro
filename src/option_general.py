@@ -56,7 +56,7 @@ class OptionGeneral(QWidget):
         base_group_box = QGroupBox("基础配置")
         layout = QVBoxLayout()
         self.flask_checkbox = QCheckBox("Flask服务")
-        self.flask_checkbox.setChecked(ConfigUtil.get_ini_flask_flag())
+        self.flask_checkbox.setChecked(ConfigUtil.get_ini_flask_checked())
         layout.addWidget(self.flask_checkbox)
         base_group_box.setLayout(layout)
         return base_group_box
@@ -241,7 +241,7 @@ class OptionGeneral(QWidget):
         mini_enabled = self.float_ball_checkbox.isChecked()
         tray_menu_enabled = self.tray_menu_checkbox.isChecked()
         try:
-            ConfigUtil.set_ini_flask_flag(flask_enabled)  # 将 Flask 服务的状态写入到配置文件
+            ConfigUtil.set_ini_flask_checked(flask_enabled)  # 将 Flask 服务的状态写入到配置文件
             ConfigUtil.set_ini_mini_mask_checked(mask_enabled)  # 将 Flask 服务的状态写入到配置文件
             ConfigUtil.set_ini_mini_checked(mini_enabled)  # 将 悬浮球修改状态写入到配置文件
             ConfigUtil.set_ini_tray_menu_checked(tray_menu_enabled)  # 将 托盘图标修改的状态写入到配置文件

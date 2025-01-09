@@ -54,7 +54,7 @@ def main():
     AppInitUtil.write_init_file()
 
     # 启动 Flask 服务
-    if ConfigUtil.get_ini_flask_flag():
+    if ConfigUtil.get_ini_flask_checked():
         start_flask_in_thread()
 
     # 加载样式表文件

@@ -1,7 +1,6 @@
 # FS Tool Pro
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue)
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
-![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![PySide6](https://img.shields.io/badge/PySide-6.8.1%2B-orange)
 
 一个轻量级的个人工具，基于 **PySide6** 构建，代码由ChatGPT、豆包生成，本人只是搬运工。
@@ -58,8 +57,8 @@ requirements.txt# 依赖包
 ```
 
 #### 添加功能
-1. 在 `src` 目录下新建一个 `.py` 文件，编写功能代码
-##### 添加子功能
+ 在 `src` 目录下新建一个 `.py` 文件，编写功能代码
+##### 1. 添加子功能
 在现有的功能下添加子功能，找到对应的功能文件，主界面功能的入口的命名规则为 `*_tool.py`,你只需要修改部分代码，如下：
 ``` python
  def add_tabs(self):
@@ -67,7 +66,7 @@ requirements.txt# 依赖包
     self.tab_widget.addTab(PortScannerApp(), "端口扫描")
     self.tab_widget.addTab(PortKillerApp(), "端口关闭") # 新添加的子功能
 ```
-##### 添加新功能(主界面)
+##### 2. 添加新功能(主界面)
 准备好应用的图片资源，放在 `resources/images/icon` 目录下，可以把路径地址写到常量文件`fs_constants.py`中，当然也可以在代码中写死，
 只需要在`app_instance_config`中添加新代码即可，如下：
 ``` python
@@ -88,6 +87,18 @@ app_instance_config = [
 ```
 上述代码中，json块的顺序即为应用的顺序，你可以根据自己的需求调整顺序，程序会根据这个配置生成应用的图标和标题。
 
+#### 特殊说明
+1. 程序第一次运行时，会在系统中生成文件夹，macOS在~/FS-Tool-Pro,Win在C:\FS-Tool-Pro，详细说明如下：
+``` bash
+FS-Tool-Pro /                  # 
+    ├── fs_flask_web/          # flask服务相关目录，flask服务地址http://127.0.0.1:5678
+        ├── pages/             # html文件,flask启动时会自动分析，生成动态路由，加到首页中
+        ├── uploads/           # flask服务首页上传文件的保存目录
+    ├── fs-tool-pro.db         # SQLite数据库文件(暂未用到)
+    ├── fs_received_files/     # 快速发送功能发送文件保存的目录
+    ├── fs-tool-pro.db  # SQLite数据库文件(暂未用到)
+```
+2. 使用杀死端口功能时，Win授权不需要输入密码，macOS需要点击[授权]按钮(独有按钮)输入密码，重新从主界面打开网络工具，选择端口点击停止按钮即可，注意不用退出应用
 ---
 
 ### 🛠️ 未来计划

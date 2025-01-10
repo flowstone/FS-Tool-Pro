@@ -11,6 +11,7 @@ from src.rename_generate import RenameGenerateApp
 from src.rename_replace import RenameReplaceApp
 from src.rsa_key_generator import RSAKeyGeneratorApp
 from src.util.common_util import CommonUtil
+from src.widget.tabwidget_animation import AnimatedTabWidget
 
 
 class GeneratorToolApp(QWidget):
@@ -31,7 +32,7 @@ class GeneratorToolApp(QWidget):
         # 创建主布局
         layout = QVBoxLayout(self)
         # 创建 TabWidget
-        self.tab_widget = QTabWidget()
+        self.tab_widget = AnimatedTabWidget()
         # 添加标签页
         self.add_tabs()
         # 将 TabWidget 添加到布局

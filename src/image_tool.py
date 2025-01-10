@@ -9,6 +9,7 @@ from src.const.fs_constants import FsConstants
 from src.image_convert import ImageConvertApp
 from src.image_heic_jpg import HeicToJpgApp
 from src.util.common_util import CommonUtil
+from src.widget.tabwidget_animation import AnimatedTabWidget
 
 
 class ImageToolApp(QWidget):
@@ -28,7 +29,7 @@ class ImageToolApp(QWidget):
         # 创建主布局
         layout = QVBoxLayout(self)
         # 创建 TabWidget
-        self.tab_widget = QTabWidget()
+        self.tab_widget = AnimatedTabWidget()
         # 添加标签页
         self.add_tabs()
         # 将 TabWidget 添加到布局

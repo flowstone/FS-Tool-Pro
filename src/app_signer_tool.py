@@ -12,6 +12,7 @@ from src.app_signer_generate_certificate import GenerateCertificateApp
 from src.app_signer_public_key_extractor import PublicKeyExtractorApp
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
+from src.widget.tabwidget_animation import AnimatedTabWidget
 
 
 class AppSignerTool(QWidget):
@@ -32,7 +33,7 @@ class AppSignerTool(QWidget):
         # 创建主布局
         layout = QVBoxLayout(self)
         # 创建 TabWidget
-        self.tab_widget = QTabWidget()
+        self.tab_widget = AnimatedTabWidget()
         # 添加标签页
         self.add_tabs()
         # 将 TabWidget 添加到布局

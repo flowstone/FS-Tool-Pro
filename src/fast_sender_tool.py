@@ -8,6 +8,7 @@ from loguru import logger
 from src.const.fs_constants import FsConstants
 from src.fast_sender import FastSenderApp
 from src.util.common_util import CommonUtil
+from src.widget.tabwidget_animation import AnimatedTabWidget
 
 
 class FastSenderToolApp(QWidget):
@@ -28,7 +29,7 @@ class FastSenderToolApp(QWidget):
         # 创建主布局
         layout = QVBoxLayout(self)
         # 创建 TabWidget
-        self.tab_widget = QTabWidget()
+        self.tab_widget = AnimatedTabWidget()
         # 添加标签页
         self.add_tabs()
         # 将 TabWidget 添加到布局

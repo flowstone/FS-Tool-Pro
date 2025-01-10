@@ -177,10 +177,10 @@ class CommonUtil:
         app_ini_path =  os.path.join(data_path, FsConstants.EXTERNAL_APP_INI_FILE)
         if os.path.exists(app_ini_path):
             # 如果外部配置文件存在，则使用外部配置文件
-            logger.info(f"使用外部配置文件:{app_ini_path}")
+            #logger.info(f"使用外部配置文件:{app_ini_path}")
             return app_ini_path
         # 否则使用内部配置文件
-        logger.info(f"使用内部配置文件:{FsConstants.APP_INI_FILE}")
+        #logger.info(f"使用内部配置文件:{FsConstants.APP_INI_FILE}")
         return CommonUtil.get_resource_path(FsConstants.APP_INI_FILE)
 
     # 获得外部目录

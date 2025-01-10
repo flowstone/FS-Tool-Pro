@@ -34,7 +34,7 @@ from multiprocessing import freeze_support
 import multiprocessing
 
 from PySide6.QtGui import QFont, QPalette
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QStyleFactory
 from loguru import logger
 
 from flask_server import start_flask_in_thread
@@ -69,12 +69,16 @@ def main():
     #palette = QPalette()
     #app.setPalette(palette)
 
+    # Qt界面风格
+    #Windows 风格：标签会显示为按钮样式。
+    #Macintosh 风格：标签看起来更加扁平，符合macOS的设计。
+    #Fusion 风格：提供统一的现代外观，适合跨平台使用。
+    app.setStyle(QStyleFactory.create("Fusion"))
 
     # 加载外部字体
     font_family = AppInitUtil.load_external_font()
     if font_family:
         app.setFont(QFont(font_family))
-
 
     window = MainWindow()
     window.show()

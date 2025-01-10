@@ -84,6 +84,15 @@ class ConfigUtil:
 
     # 从 INI 文件读取 遮罩是否启用的配置
     @staticmethod
+    def get_ini_icon_font_bold_checked():
+        """
+        从 INI 文件读取 遮罩是否启用的配置
+        """
+        config, _ = ConfigUtil.get_ini_config()
+        return config.getboolean("Settings", "icon_font_bold", fallback=False)
+
+    # 从 INI 文件读取 遮罩是否启用的配置
+    @staticmethod
     def get_ini_mini_mask_checked():
         """
         从 INI 文件读取 遮罩是否启用的配置
@@ -157,6 +166,17 @@ class ConfigUtil:
         ConfigUtil.update_ini_line(ini_path, "Flask", "flask.checked", "true" if enabled else "false")
         logger.info(f"Flask 服务状态已更新为: {'启用' if enabled else '禁用'}")
 
+
+    @staticmethod
+    def set_ini_icon_font_bold_checked(enabled):
+        """
+        将 应用字体加粗的启用状态写入到 INI 配置文件中，保留注释。
+        :param enabled: bool, True 表示启用 应用字体加粗，False 表示禁用。
+        """
+        config, ini_path = ConfigUtil.get_ini_config()
+        # 更新配置值
+        ConfigUtil.update_ini_line(ini_path, "Settings", "icon_font_bold", "true" if enabled else "false")
+        logger.info(f"应用字体加粗状态已更新为: {'启用' if enabled else '禁用'}")
     # 从 INI 文件读取 遮罩是否启用的配置
     @staticmethod
     def set_ini_mini_mask_checked(enabled):

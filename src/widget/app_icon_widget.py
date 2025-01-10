@@ -3,6 +3,7 @@ from PySide6.QtGui import QPixmap, QColor
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsColorizeEffect
 
 from src.const.font_constants import FontConstants
+from src.util.config_util import ConfigUtil
 
 
 class AppIconWidget(QWidget):
@@ -39,7 +40,9 @@ class AppIconWidget(QWidget):
         self.name_label = QLabel(name, self)
         self.name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # 名称居中显示
         self.name_label.setMaximumWidth(100)  # 设置最大宽度与图片一致
-        self.name_label.setFont(FontConstants.BOLD_SMALL)
+        if ConfigUtil.get_ini_icon_font_bold_checked():
+            self.name_label.setFont(FontConstants.BOLD_SMALL)
+
         # 将两个 QLabel 添加到布局中
         layout.addWidget(self.icon_label)
         layout.addWidget(self.name_label)

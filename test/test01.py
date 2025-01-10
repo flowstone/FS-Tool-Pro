@@ -1,77 +1,120 @@
 import sys
-import psutil
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLabel
-from PySide6.QtCore import QThread, Signal
+import threading
+import time
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtGui import QCursor
+import pyautogui
 
 
-def get_open_ports():
-    """
-    获取当前设备的所有网络端口信息
-    """
-    connections = psutil.net_connections(kind="inet")
-    ports_info = []
-
-    for conn in connections:
-        laddr = conn.laddr.port if conn.laddr else "N/A"
-        raddr = conn.raddr.port if conn.raddr else "N/A"
-        status = conn.status
-        ports_info.append(f"本地端口: {laddr} | 远程端口: {raddr} | 状态: {status}")
-
-    if not ports_info:
-        return ["未检测到任何打开的端口"]
-    return ports_info
-
-
-class PortScannerWorker(QThread):
-    result_signal = Signal(list)  # 信号，用于返回结果
-
-    def run(self):
-        ports_info = get_open_ports()
-        self.result_signal.emit(ports_info)  # 发送结果
-
-
-class PortViewerApp(QWidget):
+class MouseClicker(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("本地端口查看器")
-        self.setGeometry(100, 100, 600, 400)
+        self.setWindowTitle("鼠标连点器")
+        self.setFixedSize(300, 250)
 
-        # 界面组件
-        self.label = QLabel("点击按钮查看本地端口：")
-        self.text_area = QTextEdit()
-        self.text_area.setReadOnly(True)
-        self.button = QPushButton("刷新端口信息")
-        self.button.clicked.connect(self.fetch_ports)
+        # 初始化状态
+        self.clicking = False
+        self.click_thread = None
+        self.click_position = None  # 默认点击位置
 
-        # 布局
+        # 界面布局
+        self.init_ui()
+
+    def init_ui(self):
         layout = QVBoxLayout()
-        layout.addWidget(self.label)
-        layout.addWidget(self.text_area)
-        layout.addWidget(self.button)
-        self.setLayout(layout)
 
-    def fetch_ports(self):
-        """
-        开始获取端口信息
-        """
-        self.text_area.clear()
-        self.button.setEnabled(False)
+        # 提示标签
+        self.label_interval = QLabel("设置点击间隔时间（秒）：")
+        layout.addWidget(self.label_interval)
 
-        # 启动后台线程获取端口
-        self.worker = PortScannerWorker()
-        self.worker.result_signal.connect(self.display_ports)
-        self.worker.start()
+        # 输入框
+        self.input_interval = QLineEdit()
+        self.input_interval.setPlaceholderText("例如：0.1")
+        self.input_interval.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.input_interval)
 
-    def display_ports(self, ports_info):
-        """
-        显示端口信息
-        """
-        self.text_area.setText("\n".join(ports_info))
-        self.button.setEnabled(True)
+        # 设置位置按钮
+        self.set_position_button = QPushButton("设置点击位置")
+        self.set_position_button.clicked.connect(self.set_click_position)
+        layout.addWidget(self.set_position_button)
+
+        # 显示点击位置
+        self.position_label = QLabel("点击位置：未设置")
+        self.position_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.position_label)
+
+        # 开始按钮
+        self.start_button = QPushButton("开始")
+        self.start_button.clicked.connect(self.start_clicking)
+        layout.addWidget(self.start_button)
+
+        # 停止按钮
+        self.stop_button = QPushButton("停止")
+        self.stop_button.clicked.connect(self.stop_clicking)
+        self.stop_button.setEnabled(False)
+        layout.addWidget(self.stop_button)
+
+        # 状态提示
+        self.status_label = QLabel("状态：未开始")
+        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.status_label)
+
+        # 主窗口设置
+        central_widget = QWidget()
+        central_widget.setLayout(layout)
+        self.setCentralWidget(central_widget)
+
+    def set_click_position(self):
+        # 获取当前鼠标的位置
+        self.click_position = QCursor.pos()
+        self.position_label.setText(f"点击位置：{self.click_position.x()}, {self.click_position.y()}")
+
+    def start_clicking(self):
+        if self.click_position is None:
+            self.status_label.setText("状态：请先设置点击位置！")
+            return
+
+        try:
+            interval = float(self.input_interval.text())
+            if interval <= 0:
+                raise ValueError
+        except ValueError:
+            self.status_label.setText("状态：间隔时间无效，请输入有效数字！")
+            return
+
+        self.clicking = True
+        self.start_button.setEnabled(False)
+        self.stop_button.setEnabled(True)
+        self.status_label.setText("状态：连点中...")
+
+        # 开启线程执行连点
+        self.click_thread = threading.Thread(target=self.click_loop, args=(interval,))
+        self.click_thread.start()
+
+    def stop_clicking(self):
+        self.clicking = False
+        self.start_button.setEnabled(True)
+        self.stop_button.setEnabled(False)
+        self.status_label.setText("状态：已停止")
+
+    def click_loop(self, interval):
+        while self.clicking:
+            # 使用设置的位置进行点击
+            pyautogui.click(self.click_position.x(), self.click_position.y())
+            time.sleep(interval)
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = PortViewerApp()
+
+    # 检测 pyautogui 模块是否正常运行
+    try:
+        QCursor.pos()
+    except Exception as e:
+        print(f"检测鼠标权限错误：{e}")
+        sys.exit()
+
+    window = MouseClicker()
     window.show()
     sys.exit(app.exec())

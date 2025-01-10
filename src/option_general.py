@@ -68,10 +68,14 @@ class OptionGeneral(QWidget):
         layout = QVBoxLayout()
 
         # 遮罩动画复选框
+        self.icon_font_bold_checkbox = QCheckBox("主界面字体加粗")
+        layout.addWidget(self.icon_font_bold_checkbox)
+        self.icon_font_bold_checkbox.setChecked(ConfigUtil.get_ini_icon_font_bold_checked())
+
+        # 遮罩动画复选框
         self.mask_checkbox = QCheckBox("遮罩动画")
         layout.addWidget(self.mask_checkbox)
-        if ConfigUtil.get_ini_mini_mask_checked():
-            self.mask_checkbox.setChecked(True)
+        self.mask_checkbox.setChecked(ConfigUtil.get_ini_mini_mask_checked())
 
         # 悬浮球设置
         self.float_ball_checkbox = QCheckBox("设置悬浮球")
@@ -239,10 +243,12 @@ class OptionGeneral(QWidget):
         """保存设置到 ini 文件"""
         flask_enabled = self.flask_checkbox.isChecked()
         mask_enabled = self.mask_checkbox.isChecked()
+        icon_font_bold_enabled = self.icon_font_bold_checkbox.isChecked()
         mini_enabled = self.float_ball_checkbox.isChecked()
         tray_menu_enabled = self.tray_menu_checkbox.isChecked()
         try:
             ConfigUtil.set_ini_flask_checked(flask_enabled)  # 将 Flask 服务的状态写入到配置文件
+            ConfigUtil.set_ini_icon_font_bold_checked(icon_font_bold_enabled)
             ConfigUtil.set_ini_mini_mask_checked(mask_enabled)  # 将 Flask 服务的状态写入到配置文件
             ConfigUtil.set_ini_mini_checked(mini_enabled)  # 将 悬浮球修改状态写入到配置文件
             ConfigUtil.set_ini_tray_menu_checked(tray_menu_enabled)  # 将 托盘图标修改的状态写入到配置文件

@@ -23,7 +23,7 @@
 
 ### 🖥️ 应用演示
 
-<img src="https://raw.githubusercontent.com/flowstone/fs-tool-pro/main/preview/start-work.gif" alt="应用截图" width="500px">
+<img src="https://raw.githubusercontent.com/flowstone/fs-tool-pro/main/preview/start-work.gif" alt="应用截图">
 <img src="https://raw.githubusercontent.com/flowstone/fs-tool-pro/main/preview/float_ball_start.gif" alt="应用截图">
 
 

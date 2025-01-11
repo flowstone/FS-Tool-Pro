@@ -5,7 +5,7 @@ name: Win/macOS Package
 on:
   push:
     branches: [ "main" ]
-
+  workflow_dispatch:
 
 permissions:
   contents: read

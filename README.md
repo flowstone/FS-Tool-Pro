@@ -2,8 +2,6 @@
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue)
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![PySide6](https://img.shields.io/badge/PySide-6.8.1%2B-orange)
-
-#### 📈 访客统计
 ![访客统计](https://visitor-badge.laobi.icu/badge?page_id=flowstone.FS-Tool-Pro)
 
 一个轻量级的个人工具，基于 **PySide6** 构建，代码由ChatGPT、豆包生成，本人只是搬运工。

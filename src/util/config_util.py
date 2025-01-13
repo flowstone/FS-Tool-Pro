@@ -246,7 +246,6 @@ class ConfigUtil:
         ConfigUtil.update_ini_line(ini_path, "Settings", "tray_menu.image", image)
         logger.info(f"托盘图标已更新为: {image}")
 
-    # 将应用可见性写入到 INI 配置文件中
     @staticmethod
     def update_ini_line(ini_path, section, key, value):
         """
@@ -267,6 +266,7 @@ class ConfigUtil:
         in_target_section = False
         section_header = f"[{section}]"
         new_line = f"{key} = {value}\n"
+        section_end_index = -1  # 初始化目标节的结束索引
 
         for i, line in enumerate(lines):
             stripped_line = line.strip()
@@ -274,6 +274,7 @@ class ConfigUtil:
             # 检测到目标节
             if stripped_line == section_header:
                 in_target_section = True
+                section_end_index = i  # 记录目标节的最后一行索引
                 continue
 
             # 检测到目标键，并处于目标节
@@ -284,13 +285,19 @@ class ConfigUtil:
 
             # 检测到新节开始，退出目标节
             if in_target_section and stripped_line.startswith("[") and stripped_line != section_header:
+                in_target_section = True
+                section_end_index = i - 1  # 目标节的最后一行索引
                 break
 
-        # 如果没有找到目标节或键，则新增
+        # 如果没有找到目标键，添加到目标节末尾
         if not updated:
-            if not in_target_section:
+            if in_target_section:
+                # 在目标节的末尾插入新键值对
+                lines.insert(section_end_index + 1, new_line)
+            else:
+                # 如果没有找到目标节，新增节和键值对
                 lines.append(f"\n{section_header}\n")
-            lines.append(new_line)
+                lines.append(new_line)
 
         # 写回修改后的文件
         with open(ini_path, "w", encoding="utf-8") as f:

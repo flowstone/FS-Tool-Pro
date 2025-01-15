@@ -4,10 +4,14 @@ class FsConstants:
     宽度为0 高度为0,则表示窗口【宽高】由组件们决定
     ---------------------
     """
+
     # 主窗口相关常量
     APP_WINDOW_WIDTH = 300
     APP_WINDOW_HEIGHT = 300
     APP_WINDOW_TITLE = "FS Tool Pro"
+    VERSION = "0.2.5"
+    COPYRIGHT_INFO = f"© 2025 {APP_WINDOW_TITLE}"
+
 
     # 悬浮球相关常量
     APP_MINI_SIZE = 80
@@ -105,10 +109,10 @@ class FsConstants:
     AUTHOR_MAIL = "xueyao.me@gmail.com"
     AUTHOR_BLOG = "https://blog.xueyao.tech"
     AUTHOR_GITHUB = "https://github.com/flowstone"
-    PROJECT_ADDRESS = "https://github.com/flowstone/FS-Tool"
+    PROJECT_ADDRESS = "https://github.com/flowstone/FS-Tool-Pro"
     BASE_QSS_PATH = "resources/qss/base.qss"
     BASE_COLOR_MAP = "resources/images/img_colormap.gif"
-
+    LICENSE_FILE_PATH = "resources/txt/LICENSE"
 
     APP_ICON_RESOURCE_PATH = "resources/images/icon/"
     APP_ICON_DESKTOP_CLOCK = "desktop_clock_icon.svg"

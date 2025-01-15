@@ -11,7 +11,7 @@
 #    nuitka-project: --windows-icon-from-ico={MAIN_DIRECTORY}/resources/images/app.ico
 # 特有配置  禁用命令窗口
 #    nuitka-project: --windows-console-mode=disable
-
+import logging
 # 打包单文件的系统
 # nuitka-project-if: {OS} in ("Linux", "FreeBSD", "OpenBSD"):
 #    nuitka-project: --onefile
@@ -41,16 +41,11 @@ from flask_server import start_flask_in_thread
 from src.main_window import MainWindow
 from src.util.app_init_util import AppInitUtil
 from src.util.config_util import ConfigUtil
-from src.util.init_db import InitDB
 from src.util.common_util import CommonUtil
-from src.const.fs_constants import FsConstants
-import  os
+# 配置 loguru 日志输出（可选）
+logger.add(f"{CommonUtil.get_external_path()}/error.log", rotation="10 MB", retention="10 days", level="ERROR")
 
-def exception_hook(exctype, value, traceback):
-    logger.info("全局异常捕获:", exctype, value, traceback)
-    sys.__excepthook__(exctype, value, traceback)
-sys.excepthook = exception_hook
-
+@logger.catch
 def main():
     app = QApplication(sys.argv)
 

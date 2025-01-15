@@ -1,5 +1,7 @@
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMenuBar, QMenu
+
+from src.about_window import AboutWindow
 from src.const.fs_constants import FsConstants
 import os
 
@@ -18,6 +20,7 @@ class MenuBar:
         self.log_window = LogWindow()
         # 初始化首选项窗口
         self.option_general = OptionGeneral()
+        self.about_window = AboutWindow()
         self._create_help_menu()
 
     def _create_help_menu(self):
@@ -25,7 +28,7 @@ class MenuBar:
         help_menu = QMenu(FsConstants.TOOLBAR_HELP_TITLE, self.parent)
 
         # 创建菜单项
-        readme_action = QAction(FsConstants.TOOLBAR_README_TITLE, self.parent)
+        readme_action = QAction("说明", self.parent)
         readme_action.triggered.connect(open_readme)
 
         # 创建首选项菜单项
@@ -36,10 +39,15 @@ class MenuBar:
         open_log_action = QAction("日志", self.parent)
         open_log_action.triggered.connect(self.show_log_window)
 
+        # 创建日志窗口菜单项
+        about_action = QAction("关于", self.parent)
+        about_action.triggered.connect(self.show_about_window)
+
         # 将菜单项添加到“帮助”菜单中
         help_menu.addAction(option_general_action)
         help_menu.addAction(open_log_action)
         help_menu.addAction(readme_action)
+        help_menu.addAction(about_action)
 
 
         # 添加帮助菜单到菜单栏
@@ -56,6 +64,10 @@ class MenuBar:
     def show_option_general(self):
         """显示首选项窗口"""
         self.option_general.show()
+
+
+    def show_about_window(self):
+        self.about_window.show()
 
 def open_readme():
     try:

@@ -76,8 +76,6 @@ class CommonUtil:
         data_path = CommonUtil.get_external_path()
         return os.path.join(data_path, FsConstants.EXTERNAL_FLASK_MINI_DIR)
 
-
-
     # 静止外部类调用这个方法
     @staticmethod
     def get_mac_user_path():

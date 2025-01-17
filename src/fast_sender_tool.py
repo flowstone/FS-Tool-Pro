@@ -8,6 +8,7 @@ from loguru import logger
 from src.const.fs_constants import FsConstants
 from src.fast_sender import FastSenderApp
 from src.util.common_util import CommonUtil
+from src.webdav_server import WebDAVServerApp
 from src.widget.tabwidget_animation import AnimatedTabWidget
 
 
@@ -40,6 +41,8 @@ class FastSenderToolApp(QWidget):
 
     def add_tabs(self):
         self.tab_widget.addTab(FastSenderApp(), "文件传输")
+        if CommonUtil.check_win_os():
+            self.tab_widget.addTab(WebDAVServerApp(), "WebDAV服务")
 
     def closeEvent(self, event):
         """在主窗口关闭时，通知所有子 Tab 的关闭事件"""

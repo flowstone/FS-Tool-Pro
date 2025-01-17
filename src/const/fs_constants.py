@@ -67,6 +67,7 @@ class FsConstants:
     WINDOW_TITLE_FAST_SENDER_TOOL = "局域网文件传输"
     WINDOW_TITLE_FAST_SENDER = "局域网文件传输"
     WINDOW_TITLE_FAST_SENDER_MINI = "Flask Mini 服务"
+    WINDOW_TITLE_WEBDAV_SERVER = "WebDAV服务"
     WINDOW_TITLE_COLOR_PICKER = "图片取色器"
 
 

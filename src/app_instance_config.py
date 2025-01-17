@@ -1,4 +1,5 @@
 from src.app_signer_tool import AppSignerTool
+from src.color_picker import ColorPickerApp
 from src.desktop_clock import  DesktopClockSetting
 from src.fast_sender_tool import FastSenderToolApp
 from src.file_tool import FileToolApp
@@ -92,5 +93,11 @@ app_instance_config = [
             "icon": FsConstants.APP_ICON_FAST_SENDER_TOOL,
             "title": FsConstants.APP_TITLE_FAST_SENDER_TOOL,
             "class": FastSenderToolApp
+        },
+        {
+            "key": "color_picker",
+            "icon": FsConstants.APP_ICON_COLOR_PICKER,
+            "title": FsConstants.APP_TITLE_COLOR_PICKER,
+            "class": ColorPickerApp
         },
 ]

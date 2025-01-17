@@ -10,14 +10,17 @@ from src.util.common_util import CommonUtil
 class MessageUtil:
     @staticmethod
     def show_success_message(message):
+        logger.info(message)
         MessageUtil.show_message("提示", message)
 
     @staticmethod
     def show_error_message(message):
+        logger.error(message)
         MessageUtil.show_message("错误", message, message_type="error")
 
     @staticmethod
     def show_warning_message(message):
+        logger.warning(message)
         MessageUtil.show_message("警告", message, message_type="warning")
 
     @staticmethod

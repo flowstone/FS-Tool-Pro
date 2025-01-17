@@ -36,6 +36,7 @@ class FsConstants:
     APP_TITLE_IP_TOOL = "网络工具"
     APP_TITLE_APP_SIGNER = "文件签名"
     APP_TITLE_FAST_SENDER_TOOL = "快速发送"
+    APP_TITLE_COLOR_PICKER = "取色器"
 
     WINDOW_TITLE_DESKTOP_CLOCK = "透明时间"
     WINDOW_TITLE_STICK_NOTE = "快捷便签"
@@ -48,6 +49,7 @@ class FsConstants:
     WINDOW_TITLE_IMAGE_TOOL = "图片工具"
     WINDOW_TITLE_IMAGE_CONVERT = "图片转换"
     WINDOW_TITLE_IMAGE_HEIC_JPG = "批量HEIC转JPG"
+    WINDOW_TITLE_INVISIBLE_WATERMARK = "图片隐水印"
     WINDOW_TITLE_FILE_TOOL = "文件工具"
     WINDOW_TITLE_FILE_GENERATOR = "文件批量生成"
     WINDOW_TITLE_FILE_COMPARATOR = "文件比较"
@@ -66,6 +68,8 @@ class FsConstants:
     WINDOW_TITLE_FAST_SENDER_TOOL = "局域网文件传输"
     WINDOW_TITLE_FAST_SENDER = "局域网文件传输"
     WINDOW_TITLE_FAST_SENDER_MINI = "Flask Mini 服务"
+    WINDOW_TITLE_WEBDAV_SERVER = "WebDAV服务"
+    WINDOW_TITLE_COLOR_PICKER = "图片取色器"
 
 
 
@@ -128,6 +132,7 @@ class FsConstants:
     APP_ICON_IP_TOOL = "ip_tool_icon.svg"
     APP_ICON_APP_SIGNER = "app_signer_icon.svg"
     APP_ICON_FAST_SENDER_TOOL = "fast_sender_icon.svg"
+    APP_ICON_COLOR_PICKER = "color_picker_icon.svg"
 
 
 

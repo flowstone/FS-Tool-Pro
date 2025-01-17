@@ -8,6 +8,7 @@ from loguru import logger
 from src.const.fs_constants import FsConstants
 from src.image_convert import ImageConvertApp
 from src.image_heic_jpg import HeicToJpgApp
+from src.invisible_watermark import InvisibleWatermarkApp
 from src.util.common_util import CommonUtil
 from src.widget.tabwidget_animation import AnimatedTabWidget
 
@@ -41,6 +42,7 @@ class ImageToolApp(QWidget):
     def add_tabs(self):
         self.tab_widget.addTab(ImageConvertApp(), "图片转换")
         self.tab_widget.addTab(HeicToJpgApp(), "HEIC转JPG")
+        self.tab_widget.addTab(InvisibleWatermarkApp(), "隐水印")
 
     def closeEvent(self, event):
         # 在关闭事件中发出信号

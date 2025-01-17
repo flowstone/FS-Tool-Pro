@@ -144,7 +144,7 @@ class ImageConvertApp(QWidget):
         self.setEnabled(True)
         logger.info(
             f"图片已成功转换为所选格式，保存路径分别为: {[f'{os.path.splitext(self.image_path)[0]}.{f.lower()}' for f in self.selected_formats]}")
-        MessageUtil.show_success_message("移动文件完成！")
+        MessageUtil.show_success_message("图片转换完成！")
 
 
     def conversion_error(self, error_msg):

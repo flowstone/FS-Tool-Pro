@@ -39,3 +39,4 @@ flask==3.1.0
 nuitka==2.5.9
 wsgidav==4.3.3
 cheroot==10.0.1
+numpy==2.0.2

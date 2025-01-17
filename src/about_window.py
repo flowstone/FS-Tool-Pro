@@ -58,7 +58,7 @@ class AboutWindow(QDialog):
         # 许可证文本滚动区域
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
-        scroll_area.setStyleSheet("background-color: white;")
+        #scroll_area.setStyleSheet("background-color: white;")
 
         scroll_content = QWidget()
         scroll_layout = QVBoxLayout(scroll_content)

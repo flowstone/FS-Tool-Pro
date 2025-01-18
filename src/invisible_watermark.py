@@ -12,6 +12,7 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class WatermarkThread(QThread):
@@ -114,6 +115,7 @@ class InvisibleWatermarkApp(QWidget):
         layout.addWidget(self.input_watermark)
         layout.addLayout(button_layout)
         layout.addWidget(self.progress_bar)
+        layout.addWidget(TransparentTextBox())
         self.setLayout(layout)
 
         # 绑定事件

@@ -9,7 +9,7 @@ class FsConstants:
     APP_WINDOW_WIDTH = 300
     APP_WINDOW_HEIGHT = 300
     APP_WINDOW_TITLE = "FS Tool Pro"
-    VERSION = "0.2.5"
+    VERSION = "0.2.6"
     COPYRIGHT_INFO = f"© 2025 {APP_WINDOW_TITLE}"
 
 

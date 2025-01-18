@@ -28,6 +28,8 @@ class TransparentTextBox(QTextEdit):
         # 禁用滚动条
         self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        # 固定宽度
+        self.setFixedWidth(100)
 
     def sizeHint(self):
         """

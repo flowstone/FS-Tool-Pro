@@ -31,7 +31,6 @@ class StickyNoteApp(QWidget):
             QTextEdit {
                 border-radius: 5px;
                 padding: 10px;
-                color: #333333;
             }
             QTextEdit::verticalScrollBar {
                 width: 10px;

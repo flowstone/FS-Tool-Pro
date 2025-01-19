@@ -120,6 +120,9 @@ class AboutWindow(QDialog):
         """打开指定的 URL"""
         QDesktopServices.openUrl(QUrl(url))
 
+    def closeEvent(self, event):
+        self.hide()  # 隐藏窗口而不是销毁
+        event.ignore()  # 忽略关闭事件
 
 if __name__ == "__main__":
     import sys

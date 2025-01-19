@@ -12,12 +12,13 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.config_util import ConfigUtil
 from src.util.message_util import MessageUtil
+from src.widget.menu_window_widget import MenuWindowWidget
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
-class OptionGeneral(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal = Signal()
+class OptionGeneral(MenuWindowWidget):
+
     def __init__(self):
         super().__init__()
         self.slider_value = FsConstants.APP_MINI_SIZE
@@ -260,9 +261,6 @@ class OptionGeneral(QWidget):
             MessageUtil.show_success_message("设置已成功保存！")
         except Exception as e:
             MessageUtil.show_error_message(f"保存设置失败: {e}")
-    def closeEvent(self, event):
-        self.hide()  # 隐藏窗口而不是销毁
-        event.ignore()  # 忽略关闭事件
 
 
 if __name__ == "__main__":

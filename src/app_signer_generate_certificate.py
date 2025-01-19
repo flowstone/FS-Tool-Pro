@@ -14,9 +14,10 @@ from loguru import logger
 
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
+from src.widget.sub_window_widget import SubWindowWidget
 
 
-class GenerateCertificateApp(QWidget):
+class GenerateCertificateApp(SubWindowWidget):
     def __init__(self):
         super().__init__()
         self.init_ui()

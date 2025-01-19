@@ -13,12 +13,12 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
-class CreateFolderApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal =  Signal()
+class CreateFolderApp(SubWindowWidget):
+
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -133,10 +133,7 @@ class CreateFolderApp(QWidget):
         self.setEnabled(True)
         MessageUtil.show_warning_message("遇到异常停止工作")
 
-    def closeEvent(self, event):
-        # 在关闭事件中发出信号
-        self.closed_signal.emit()
-        super().closeEvent(event)
+
 
 class FileOperationThread(QThread):
     progress_signal = Signal(int)

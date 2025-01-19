@@ -18,6 +18,7 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
@@ -109,9 +110,8 @@ class DecryptThread(QThread):
             self.error.emit(str(e))  # 发送错误信息
             self.finished.emit()
 
-class FileEncryptorApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal = Signal()
+class FileEncryptorApp(SubWindowWidget):
+
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -302,10 +302,6 @@ class FileEncryptorApp(QWidget):
         salt = b'fs_tool_salt'  # 可以随机生成并保存到文件中
         return PBKDF2(password, salt, dkLen=key_length // 8, count=100000, hmac_hash_module=SHA256)
 
-    def closeEvent(self, event):
-        # 在关闭事件中发出信号
-        self.closed_signal.emit()
-        super().closeEvent(event)
 
     def toggle_password_visibility(self):
         if self.password_input.echoMode() == QLineEdit.EchoMode.Password:

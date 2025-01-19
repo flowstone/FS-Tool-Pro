@@ -9,9 +9,11 @@ from src.util.message_util import MessageUtil
 from src.widget.hover_image_button import HoverImageButton
 from loguru import logger
 
-class StickyNoteApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal =  Signal()
+from src.widget.sub_window_widget import SubWindowWidget
+
+
+class StickyNoteApp(SubWindowWidget):
+
     def __init__(self):
         super().__init__()
         # 标记窗口当前是否可操作（初始设为可操作）

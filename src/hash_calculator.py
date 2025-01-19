@@ -17,6 +17,7 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.sub_window_widget import SubWindowWidget
 
 
 class HashCalculatorThread(QThread):
@@ -82,8 +83,7 @@ class HashCalculatorThread(QThread):
             MessageUtil.show_error_message(f"计算哈希失败：{str(e)}")
 
 
-class HashCalculatorApp(QWidget):
-    closed_signal = Signal()
+class HashCalculatorApp(SubWindowWidget):
 
     def __init__(self):
         super().__init__()
@@ -220,9 +220,6 @@ class HashCalculatorApp(QWidget):
             "修改时间": CommonUtil.format_time(modification_time)
         }
 
-    def closeEvent(self, event):
-        self.closed_signal.emit()
-        super().closeEvent(event)
 
 
 if __name__ == "__main__":

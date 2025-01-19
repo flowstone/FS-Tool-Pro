@@ -12,6 +12,7 @@ from loguru import logger
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.sub_window_widget import SubWindowWidget
 
 
 def scan_port(ip, port):
@@ -76,8 +77,7 @@ class WorkerThread(QThread):
             self.result_signal.emit(open_ports)
 
 
-class PortScannerApp(QWidget):
-    closed_signal = Signal()  # 定义一个信号，在窗口关闭时触发
+class PortScannerApp(SubWindowWidget):
 
     def __init__(self):
         super().__init__()
@@ -245,10 +245,7 @@ class PortScannerApp(QWidget):
         self.description_label.setText("好像遇到问题了...")
         self.result_box.append(f"错误: {error_message}")
 
-    def closeEvent(self, event):
-        # 在关闭事件中发出信号
-        self.closed_signal.emit()
-        super().closeEvent(event)
+
 
 
 if __name__ == "__main__":

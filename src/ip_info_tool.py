@@ -10,12 +10,12 @@ from src.ip_info import IpInfoApp
 from src.ip_info_port_killer import PortKillerApp
 from src.ip_info_port_scanner import PortScannerApp
 from src.util.common_util import CommonUtil
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.tabwidget_animation import AnimatedTabWidget
 
 
-class IpInfoToolApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal = Signal()
+class IpInfoToolApp(SubWindowWidget):
+
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -44,10 +44,7 @@ class IpInfoToolApp(QWidget):
         self.tab_widget.addTab(PortScannerApp(), "端口扫描")
         self.tab_widget.addTab(PortKillerApp(), "端口关闭")
 
-    def closeEvent(self, event):
-        # 在关闭事件中发出信号
-        self.closed_signal.emit()
-        super().closeEvent(event)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

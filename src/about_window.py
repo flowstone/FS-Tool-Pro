@@ -7,9 +7,10 @@ from PySide6.QtGui import QDesktopServices
 
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
+from src.widget.menu_window_widget import MenuWindowWidget
 
 
-class AboutWindow(QDialog):
+class AboutWindow(MenuWindowWidget):
     def __init__(self):
         super().__init__()
         app_name = FsConstants.APP_WINDOW_TITLE
@@ -120,9 +121,7 @@ class AboutWindow(QDialog):
         """打开指定的 URL"""
         QDesktopServices.openUrl(QUrl(url))
 
-    def closeEvent(self, event):
-        self.hide()  # 隐藏窗口而不是销毁
-        event.ignore()  # 忽略关闭事件
+
 
 if __name__ == "__main__":
     import sys

@@ -15,6 +15,7 @@ from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.sub_window_widget import SubWindowWidget
 
 
 def get_local_ip():
@@ -175,9 +176,8 @@ class NetworkInfoWorker(QThread):
         except Exception as e:
             self.error_signal.emit(str(e))  # 发送错误信号
 
-class IpInfoApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal = Signal()
+class IpInfoApp(SubWindowWidget):
+
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -240,10 +240,7 @@ class IpInfoApp(QWidget):
         self.text_area.setText(f"发生错误：\n{error}")
         self.button.setEnabled(True)
 
-    def closeEvent(self, event):
-        # 在关闭事件中发出信号
-        self.closed_signal.emit()
-        super().closeEvent(event)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

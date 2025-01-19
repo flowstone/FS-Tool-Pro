@@ -18,6 +18,7 @@ from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.util.permission_util import PermissionUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.sub_window_widget import SubWindowWidget
 
 
 def scan_port(ip, port):
@@ -79,8 +80,7 @@ class PortScannerThread(QThread):
         self.result_signal.emit(open_ports)
 
 
-class PortKillerApp(QWidget):
-    closed_signal = Signal()
+class PortKillerApp(SubWindowWidget):
 
     def __init__(self):
         super().__init__()
@@ -264,9 +264,6 @@ class PortKillerApp(QWidget):
             return
         MessageUtil.show_warning_message(f"未能找到占用端口 {port} 的进程。")
 
-    def closeEvent(self, event):
-        self.closed_signal.emit()
-        super().closeEvent(event)
 
 
 if __name__ == "__main__":

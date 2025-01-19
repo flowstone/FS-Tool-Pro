@@ -10,6 +10,7 @@ import os
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
@@ -61,8 +62,7 @@ class WebDAVThread(QThread):
             self.log_signal.emit("WebDAV 服务已停止")
 
 
-class WebDAVServerApp(QWidget):
-    closed_signal = Signal()
+class WebDAVServerApp(SubWindowWidget):
 
     def __init__(self):
         super().__init__()
@@ -175,9 +175,6 @@ class WebDAVServerApp(QWidget):
     def append_log(self, message):
         self.text_log.append(message)
 
-    def closeEvent(self, event):
-        self.closed_signal.emit()
-        super().closeEvent(event)
 
 if __name__ == "__main__":
     app = QApplication([])

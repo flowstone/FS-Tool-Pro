@@ -11,12 +11,12 @@ from src.rename_generate import RenameGenerateApp
 from src.rename_replace import RenameReplaceApp
 from src.rsa_key_generator import RSAKeyGeneratorApp
 from src.util.common_util import CommonUtil
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.tabwidget_animation import AnimatedTabWidget
 
 
-class GeneratorToolApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal = Signal()
+class GeneratorToolApp(SubWindowWidget):
+
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -45,10 +45,7 @@ class GeneratorToolApp(QWidget):
         self.tab_widget.addTab(PasswordGeneratorApp(), "密码生成")
         self.tab_widget.addTab(RSAKeyGeneratorApp(), "RSA生成")
 
-    def closeEvent(self, event):
-        # 在关闭事件中发出信号
-        self.closed_signal.emit()
-        super().closeEvent(event)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

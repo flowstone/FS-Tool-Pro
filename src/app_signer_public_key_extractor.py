@@ -10,10 +10,11 @@ from loguru import logger
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
-class PublicKeyExtractorApp(QWidget):
+class PublicKeyExtractorApp(SubWindowWidget):
     def __init__(self):
         super().__init__()
         self.init_ui()

@@ -18,11 +18,11 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
-class RenameGenerateApp(QWidget):
-    closed_signal = Signal()
+class RenameGenerateApp(SubWindowWidget):
 
     def __init__(self):
         super().__init__()
@@ -165,9 +165,6 @@ class RenameGenerateApp(QWidget):
                 self.folder_entry.setText(folder_path)
             else:
                 MessageUtil.show_warning_message("拖入的不是有效文件夹！")
-    def closeEvent(self, event):
-        self.closed_signal.emit()
-        super().closeEvent(event)
 
 
 

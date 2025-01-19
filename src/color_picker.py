@@ -6,6 +6,7 @@ from loguru import logger
 
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
+from src.widget.sub_window_widget import SubWindowWidget
 
 
 class CustomGraphicsView(QGraphicsView):
@@ -39,8 +40,7 @@ class CustomGraphicsView(QGraphicsView):
         super().mouseDoubleClickEvent(event)
 
 
-class ColorPickerApp(QWidget):
-    closed_signal = Signal()
+class ColorPickerApp(SubWindowWidget):
 
     def __init__(self):
         super().__init__()
@@ -146,9 +146,7 @@ class ColorPickerApp(QWidget):
                 logger.info(f"颜色已复制: {hex_color}")
                 self.color_label.setStyleSheet(f"background-color: {hex_color};")
 
-    def closeEvent(self, event):
-        self.closed_signal.emit()
-        super().closeEvent(event)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

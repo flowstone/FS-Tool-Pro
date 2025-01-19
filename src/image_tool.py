@@ -10,12 +10,12 @@ from src.image_convert import ImageConvertApp
 from src.image_heic_jpg import HeicToJpgApp
 from src.invisible_watermark import InvisibleWatermarkApp
 from src.util.common_util import CommonUtil
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.tabwidget_animation import AnimatedTabWidget
 
 
-class ImageToolApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal = Signal()
+class ImageToolApp(SubWindowWidget):
+
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -44,10 +44,7 @@ class ImageToolApp(QWidget):
         self.tab_widget.addTab(HeicToJpgApp(), "HEIC转JPG")
         self.tab_widget.addTab(InvisibleWatermarkApp(), "隐水印")
 
-    def closeEvent(self, event):
-        # 在关闭事件中发出信号
-        self.closed_signal.emit()
-        super().closeEvent(event)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

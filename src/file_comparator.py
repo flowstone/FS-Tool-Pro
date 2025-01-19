@@ -16,6 +16,7 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
@@ -132,9 +133,7 @@ class CompareThread(QThread):
         return file_checksum(file1) == file_checksum(file2)
 
 
-class FileComparatorApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal = Signal()
+class FileComparatorApp(SubWindowWidget):
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -241,11 +240,6 @@ class FileComparatorApp(QWidget):
         self.result_text.append(summary)
         self.compare_button.setEnabled(True)
         self.progress_bar.hide()
-
-    def closeEvent(self, event):
-        # 在关闭事件中发出信号
-        self.closed_signal.emit()
-        super().closeEvent(event)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

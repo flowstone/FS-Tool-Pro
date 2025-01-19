@@ -12,10 +12,10 @@ from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
+from src.widget.sub_window_widget import SubWindowWidget
 
 
-class AppSignerApp(QWidget):
-    closed_signal = Signal()
+class AppSignerApp(SubWindowWidget):
 
     def __init__(self):
         super().__init__()
@@ -201,9 +201,6 @@ class AppSignerApp(QWidget):
             logger.error(f"签名验证失败：\n{e}")
             MessageUtil.show_error_message(f"签名验证失败：\n{e}")
 
-    def closeEvent(self, event):
-        self.closed_signal.emit()
-        super().closeEvent(event)
 
 if __name__ == "__main__":
     app = QApplication([])

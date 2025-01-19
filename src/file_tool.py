@@ -13,15 +13,13 @@ from src.move_file import MoveFileApp
 from src.rename_generate import RenameGenerateApp
 from src.rename_replace import RenameReplaceApp
 from src.util.common_util import CommonUtil
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.tabwidget_animation import AnimatedTabWidget
 from src.widget.toolbox_animation import AnimatedToolBox
 
 
-class FileToolApp(QWidget):
-    """
-    应用签名工具主窗口
-    """
-    closed_signal = Signal()  # 窗口关闭时发出的信号
+class FileToolApp(SubWindowWidget):
+
 
     def __init__(self):
         super().__init__()
@@ -93,11 +91,6 @@ class FileToolApp(QWidget):
         return tab_widget
 
 
-    def closeEvent(self, event):
-        """窗口关闭事件"""
-        logger.info("窗口正在关闭...")
-        self.closed_signal.emit()
-        super().closeEvent(event)
 
 
 if __name__ == "__main__":

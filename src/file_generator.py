@@ -18,6 +18,7 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.util.message_util import MessageUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
@@ -97,9 +98,8 @@ class FileGenerationThread(QThread):
         return random_content
 
 
-class FileGeneratorApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal = Signal()
+class FileGeneratorApp(SubWindowWidget):
+
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -224,11 +224,6 @@ class FileGeneratorApp(QWidget):
         self.progress_bar.hide()
         MessageUtil.show_success_message("文件生成完成！")
 
-
-    def closeEvent(self, event):
-        # 在关闭事件中发出信号
-        self.closed_signal.emit()
-        super().closeEvent(event)
 
 
 if __name__ == "__main__":

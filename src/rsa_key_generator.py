@@ -13,6 +13,7 @@ from src.util.common_util import CommonUtil
 from src.const.font_constants import FontConstants
 from loguru import logger
 
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
@@ -49,9 +50,8 @@ class RSAKeyGeneratorThread(QThread):
             self.error_signal.emit(str(e))
 
 
-class RSAKeyGeneratorApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal = Signal()
+class RSAKeyGeneratorApp(SubWindowWidget):
+
 
     def __init__(self):
         super().__init__()
@@ -197,9 +197,6 @@ class RSAKeyGeneratorApp(QWidget):
 
             self.private_key_text.setPlainText(f"密钥已保存到: {save_path}")
 
-    def closeEvent(self, event):
-        self.closed_signal.emit()
-        super().closeEvent(event)
 
 
 if __name__ == "__main__":

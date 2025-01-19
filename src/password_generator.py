@@ -17,6 +17,7 @@ from src.util.common_util import CommonUtil
 from loguru import logger
 from PySide6.QtCore import QThread, Signal
 
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
@@ -54,8 +55,7 @@ class PasswordGeneratorThread(QThread):
         password = ''.join(random.sample(password, len(password)))  # 打乱密码
         self.password_generated.emit(password)
 
-class PasswordGeneratorApp(QWidget):
-    closed_signal = Signal()
+class PasswordGeneratorApp(SubWindowWidget):
 
     def __init__(self):
         super().__init__()
@@ -149,9 +149,6 @@ class PasswordGeneratorApp(QWidget):
         # 显示生成的密码
         self.generated_password.setText(password)
 
-    def closeEvent(self, event):
-        self.closed_signal.emit()
-        super().closeEvent(event)
 
     def copy_password(self):
         password = self.generated_password.text()

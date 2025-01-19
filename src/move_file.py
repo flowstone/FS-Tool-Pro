@@ -11,12 +11,12 @@ from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.widget.custom_progress_widget import CustomProgressBar
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
-class MoveFileApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal = Signal()
+class MoveFileApp(SubWindowWidget):
+
 
     def __init__(self):
         super().__init__()
@@ -132,9 +132,6 @@ class MoveFileApp(QWidget):
         msg_box.setText(message)
         msg_box.exec()
 
-    def closeEvent(self, event):
-        self.closed_signal.emit()
-        super().closeEvent(event)
 
 
 class FileMoveThread(QThread):

@@ -12,11 +12,11 @@ from src.app_signer_generate_certificate import GenerateCertificateApp
 from src.app_signer_public_key_extractor import PublicKeyExtractorApp
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.tabwidget_animation import AnimatedTabWidget
 
 
-class AppSignerTool(QWidget):
-    closed_signal = Signal()
+class AppSignerTool(SubWindowWidget):
 
     def __init__(self):
         super().__init__()
@@ -46,10 +46,7 @@ class AppSignerTool(QWidget):
         self.tab_widget.addTab(GenerateCertificateApp(), "证书生成")
         self.tab_widget.addTab(PublicKeyExtractorApp(), "证书转换")
 
-    def closeEvent(self, event):
-        # 在关闭事件中发出信号
-        self.closed_signal.emit()
-        super().closeEvent(event)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

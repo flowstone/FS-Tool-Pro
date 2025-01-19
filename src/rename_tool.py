@@ -9,12 +9,12 @@ from src.const.fs_constants import FsConstants
 from src.rename_generate import RenameGenerateApp
 from src.rename_replace import RenameReplaceApp
 from src.util.common_util import CommonUtil
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.tabwidget_animation import AnimatedTabWidget
 
 
-class RenameToolApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal = Signal()
+class RenameToolApp(SubWindowWidget):
+
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -43,10 +43,7 @@ class RenameToolApp(QWidget):
         self.tab_widget.addTab(RenameGenerateApp(), "随机")
         self.tab_widget.addTab(RenameReplaceApp(), "替换")
 
-    def closeEvent(self, event):
-        # 在关闭事件中发出信号
-        self.closed_signal.emit()
-        super().closeEvent(event)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

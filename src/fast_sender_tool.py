@@ -9,12 +9,12 @@ from src.const.fs_constants import FsConstants
 from src.fast_sender import FastSenderApp
 from src.util.common_util import CommonUtil
 from src.webdav_server import WebDAVServerApp
+from src.widget.sub_window_widget import SubWindowWidget
 from src.widget.tabwidget_animation import AnimatedTabWidget
 
 
-class FastSenderToolApp(QWidget):
-    # 定义一个信号，在窗口关闭时触发
-    closed_signal = Signal()
+class FastSenderToolApp(SubWindowWidget):
+
     def __init__(self):
         super().__init__()
         self.init_ui()

@@ -9,6 +9,7 @@ from src.util.common_util import CommonUtil
 from loguru import logger
 
 from src.util.config_util import ConfigUtil
+from src.widget.menu_window_widget import MenuWindowWidget
 
 
 class LogStream:
@@ -35,7 +36,7 @@ class LogStream:
         pass
 
 
-class LogWindow(QWidget):
+class LogWindow(MenuWindowWidget):
     """日志窗口类"""
 
     def __init__(self):

@@ -15,6 +15,8 @@ from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from loguru import logger
 
+from src.widget.sub_window_widget import SubWindowWidget
+
 BROADCAST_PORT = 9000
 TRANSFER_PORT = 9001
 BUFFER_SIZE = 4096
@@ -142,8 +144,7 @@ class ServerThread(QThread):
         self.quit()
 
 
-class FastSenderApp(QWidget):
-    closed_signal = Signal()
+class FastSenderApp(SubWindowWidget):
 
     def __init__(self):
         super().__init__()

@@ -115,7 +115,7 @@ class InvisibleWatermarkApp(QWidget):
         layout.addWidget(self.input_watermark)
         layout.addLayout(button_layout)
         layout.addWidget(self.progress_bar)
-        layout.addWidget(TransparentTextBox())
+        #layout.addWidget(TransparentTextBox())
         self.setLayout(layout)
 
         # 绑定事件

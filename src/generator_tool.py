@@ -7,8 +7,7 @@ from loguru import logger
 
 from src.const.fs_constants import FsConstants
 from src.password_generator import PasswordGeneratorApp
-from src.rename_generate import RenameGenerateApp
-from src.rename_replace import RenameReplaceApp
+from src.person_password_generator import PersonPasswordGeneratorApp
 from src.rsa_key_generator import RSAKeyGeneratorApp
 from src.util.common_util import CommonUtil
 from src.widget.sub_window_widget import SubWindowWidget
@@ -43,6 +42,7 @@ class GeneratorToolApp(SubWindowWidget):
 
     def add_tabs(self):
         self.tab_widget.addTab(PasswordGeneratorApp(), "密码生成")
+        self.tab_widget.addTab(PersonPasswordGeneratorApp(), "个性密码生成")
         self.tab_widget.addTab(RSAKeyGeneratorApp(), "RSA生成")
 
 

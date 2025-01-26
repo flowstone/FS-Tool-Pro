@@ -1,7 +1,6 @@
 from loguru import logger
 
 from src.util.common_util import CommonUtil
-from src.util.config_util import ConfigUtil
 from src.util.sqlite_connection_pool import SQLiteConnectionPool
 
 
@@ -56,9 +55,9 @@ class InitDB:
 
 
 # 示例用法
-if __name__ == "__main__":
-    db_tool = InitDB(ConfigUtil.get_db_full_path())
-    db_tool.create_table()
-    #db_tool.drop_table()
-    # 关闭连接
-    db_tool.close_connection()
+# if __name__ == "__main__":
+#     db_tool = InitDB(ConfigUtil.get_db_full_path())
+#     db_tool.create_table()
+#     #db_tool.drop_table()
+#     # 关闭连接
+#     db_tool.close_connection()

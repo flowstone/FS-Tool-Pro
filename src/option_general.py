@@ -10,7 +10,8 @@ import subprocess
 
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
-from src.util.config_util import ConfigUtil
+
+from src.util.config_manager import ConfigManager
 from src.util.message_util import MessageUtil
 from src.widget.menu_window_widget import MenuWindowWidget
 from src.widget.sub_window_widget import SubWindowWidget
@@ -22,6 +23,7 @@ class OptionGeneral(MenuWindowWidget):
     def __init__(self):
         super().__init__()
         self.slider_value = FsConstants.APP_MINI_SIZE
+        self.config_manager = ConfigManager()
 
         self.init_ui()
 
@@ -58,7 +60,7 @@ class OptionGeneral(MenuWindowWidget):
         base_group_box = QGroupBox("基础配置")
         layout = QVBoxLayout()
         self.flask_checkbox = QCheckBox("Flask服务")
-        self.flask_checkbox.setChecked(ConfigUtil.get_ini_flask_checked())
+        self.flask_checkbox.setChecked(self.config_manager.get_config(ConfigManager.APP_FLASK_CHECKED_KEY))
         layout.addWidget(self.flask_checkbox)
         base_group_box.setLayout(layout)
         return base_group_box
@@ -68,15 +70,20 @@ class OptionGeneral(MenuWindowWidget):
         group_box = QGroupBox("高级设置")
         layout = QVBoxLayout()
 
-        # 遮罩动画复选框
         self.icon_font_bold_checkbox = QCheckBox("主界面字体加粗")
         layout.addWidget(self.icon_font_bold_checkbox)
-        self.icon_font_bold_checkbox.setChecked(ConfigUtil.get_ini_icon_font_bold_checked())
+        self.icon_font_bold_checkbox.setChecked(self.config_manager.get_config(ConfigManager.APP_ICON_FONT_BOLD_CHECKED_KEY))
 
         # 遮罩动画复选框
-        self.mask_checkbox = QCheckBox("遮罩动画")
+        self.mask_checkbox = QCheckBox("阴影动画")
         layout.addWidget(self.mask_checkbox)
-        self.mask_checkbox.setChecked(ConfigUtil.get_ini_mini_mask_checked())
+        self.mask_checkbox.setChecked(self.config_manager.get_config(ConfigManager.APP_MINI_MASK_CHECKED_KEY))
+
+        # 吸引灯复选框
+        self.breathing_light_checkbox = QCheckBox("吸引灯动画")
+        layout.addWidget(self.breathing_light_checkbox)
+        self.breathing_light_checkbox.setChecked(
+            self.config_manager.get_config(ConfigManager.APP_MINI_BREATHING_LIGHT_CHECKED_KEY))
 
         # 悬浮球设置
         self.float_ball_checkbox = QCheckBox("设置悬浮球")
@@ -86,10 +93,10 @@ class OptionGeneral(MenuWindowWidget):
         self.float_ball_hide_widget = self.create_float_ball_widget()
         layout.addWidget(self.float_ball_hide_widget)
 
-        if ConfigUtil.get_ini_mini_checked():
+        if self.config_manager.get_config(ConfigManager.APP_MINI_CHECKED_KEY):
             self.float_ball_checkbox.setChecked(True)
-            self.slider.setValue(ConfigUtil.get_ini_mini_size())
-            self.float_ball_path_input.setText(ConfigUtil.get_ini_mini_image())
+            self.slider.setValue(self.config_manager.get_config(ConfigManager.APP_MINI_SIZE_KEY))
+            self.float_ball_path_input.setText(self.config_manager.get_config(ConfigManager.APP_MINI_IMAGE_KEY))
 
         # 托盘图标设置
         self.tray_menu_checkbox = QCheckBox("设置托盘图标")
@@ -98,9 +105,9 @@ class OptionGeneral(MenuWindowWidget):
 
         self.tray_menu_widget = self.create_tray_menu_widget()
         layout.addWidget(self.tray_menu_widget)
-        if ConfigUtil.get_ini_tray_menu_checked():
+        if self.config_manager.get_config(ConfigManager.APP_TRAY_MENU_CHECKED_KEY):
             self.tray_menu_checkbox.setChecked(True)
-            self.tray_menu_path_input.setText(ConfigUtil.get_ini_tray_menu_image())
+            self.tray_menu_path_input.setText(self.config_manager.get_config(ConfigManager.APP_TRAY_MENU_IMAGE_KEY))
 
         group_box.setLayout(layout)
         return group_box
@@ -187,7 +194,7 @@ class OptionGeneral(MenuWindowWidget):
         self.slider_value = value
 
     def browse_file(self):
-        file_path, _ = QFileDialog.getOpenFileName(self, "选择文件", "", "所有文件 (*.png)")
+        file_path, _ = QFileDialog.getOpenFileName(self, "选择文件", "", "所有文件 (*.png *.ico)")
         if file_path:
             sender = self.sender()
             if sender.objectName() == "tray_browse_button":
@@ -248,16 +255,23 @@ class OptionGeneral(MenuWindowWidget):
         mini_enabled = self.float_ball_checkbox.isChecked()
         tray_menu_enabled = self.tray_menu_checkbox.isChecked()
         try:
-            ConfigUtil.set_ini_flask_checked(flask_enabled)  # 将 Flask 服务的状态写入到配置文件
-            ConfigUtil.set_ini_icon_font_bold_checked(icon_font_bold_enabled)
-            ConfigUtil.set_ini_mini_mask_checked(mask_enabled)  # 将 Flask 服务的状态写入到配置文件
-            ConfigUtil.set_ini_mini_checked(mini_enabled)  # 将 悬浮球修改状态写入到配置文件
-            ConfigUtil.set_ini_tray_menu_checked(tray_menu_enabled)  # 将 托盘图标修改的状态写入到配置文件
+
+            self.config_manager.set_config(ConfigManager.APP_FLASK_CHECKED_KEY, flask_enabled)
+            self.config_manager.set_config(ConfigManager.APP_ICON_FONT_BOLD_CHECKED_KEY, icon_font_bold_enabled)
+            self.config_manager.set_config(ConfigManager.APP_MINI_MASK_CHECKED_KEY, mask_enabled)
+            self.config_manager.set_config(ConfigManager.APP_MINI_BREATHING_LIGHT_CHECKED_KEY,
+                                           self.breathing_light_checkbox.isChecked())
+            self.config_manager.set_config(ConfigManager.APP_MINI_CHECKED_KEY, mini_enabled)  # 将 悬浮球修改状态写入到配置文件
+            self.config_manager.set_config(ConfigManager.APP_TRAY_MENU_CHECKED_KEY,
+                                           tray_menu_enabled)  # 将 托盘图标修改的状态写入到配置文件
             if mini_enabled:
-                ConfigUtil.set_ini_mini_size(self.slider_value)
-                ConfigUtil.set_ini_mini_image(self.float_ball_path_input.text().strip())
+                self.config_manager.set_config(ConfigManager.APP_MINI_SIZE_KEY, self.slider_value)
+                self.config_manager.set_config(ConfigManager.APP_MINI_IMAGE_KEY,
+                                               self.float_ball_path_input.text().strip())
             if tray_menu_enabled:
-                ConfigUtil.set_ini_tray_menu_image(self.tray_menu_path_input.text().strip())
+                self.config_manager.set_config(ConfigManager.APP_TRAY_MENU_IMAGE_KEY,
+                                               self.tray_menu_path_input.text().strip())
+
             MessageUtil.show_success_message("设置已成功保存！")
         except Exception as e:
             MessageUtil.show_error_message(f"保存设置失败: {e}")

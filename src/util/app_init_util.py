@@ -5,7 +5,7 @@ from src.util.common_util import CommonUtil
 from PySide6.QtGui import QFontDatabase, QPalette
 from loguru import logger
 
-from src.util.config_util import ConfigUtil
+from src.util.config_manager import ConfigManager
 from src.util.init_db import InitDB
 
 
@@ -60,6 +60,7 @@ class AppInitUtil:
     # 初始化数据库
     @staticmethod
     def init_db():
-        load_db = InitDB(ConfigUtil.get_db_full_path())
+        config_manager = ConfigManager()
+        load_db = InitDB(config_manager.get_config(ConfigManager.APP_SQLITE_PATH_KEY))
         load_db.create_table()
         load_db.close_connection()

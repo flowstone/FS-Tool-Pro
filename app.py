@@ -40,8 +40,9 @@ from loguru import logger
 from flask_server import start_flask_in_thread
 from src.main_window import MainWindow
 from src.util.app_init_util import AppInitUtil
-from src.util.config_util import ConfigUtil
 from src.util.common_util import CommonUtil
+from src.util.config_manager import ConfigManager
+
 # 配置 loguru 日志输出（可选）
 logger.add(f"{CommonUtil.get_external_path()}/error.log", rotation="10 MB", retention="10 days", level="ERROR")
 
@@ -55,7 +56,8 @@ def main():
     AppInitUtil.write_init_file()
 
     # 启动 Flask 服务
-    if ConfigUtil.get_ini_flask_checked():
+    config_manager = ConfigManager()
+    if config_manager.get_config(ConfigManager.APP_FLASK_CHECKED_KEY):
         start_flask_in_thread()
 
     # 加载样式表文件

@@ -3,7 +3,7 @@ from PySide6.QtGui import QPixmap, QColor
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsColorizeEffect
 
 from src.const.font_constants import FontConstants
-from src.util.config_util import ConfigUtil
+from src.util.config_manager import ConfigManager
 
 
 class AppIconWidget(QWidget):
@@ -21,7 +21,9 @@ class AppIconWidget(QWidget):
         # 保存名称和图标路径
         self.icon_path = icon_path
         self.name = name
-
+        self.config_manager = ConfigManager()
+        self.config_manager.config_updated.connect(self.on_config_updated)
+        self.icon_font_bold_checked = self.config_manager.get_config(ConfigManager.APP_ICON_FONT_BOLD_CHECKED_KEY)
         # 创建布局
         layout = QVBoxLayout()
         layout.setSpacing(0)  # 去掉图标和名称之间的间距
@@ -40,7 +42,7 @@ class AppIconWidget(QWidget):
         self.name_label = QLabel(name, self)
         self.name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # 名称居中显示
         self.name_label.setMaximumWidth(100)  # 设置最大宽度与图片一致
-        if ConfigUtil.get_ini_icon_font_bold_checked():
+        if self.icon_font_bold_checked:
             self.name_label.setFont(FontConstants.BOLD_SMALL)
 
         # 将两个 QLabel 添加到布局中
@@ -93,3 +95,8 @@ class AppIconWidget(QWidget):
         """鼠标离开时恢复原始颜色"""
         self._animate_color(self.COLOR_HOVER, self.COLOR_NORMAL)
         super().leaveEvent(event)
+
+    def on_config_updated(self, key, value):
+        if key == ConfigManager.APP_ICON_FONT_BOLD_CHECKED_KEY:
+            self.icon_font_bold_checked = self.config_manager.get_config(ConfigManager.APP_ICON_FONT_BOLD_CHECKED_KEY)
+            self.name_label.setFont(FontConstants.BOLD_SMALL if self.icon_font_bold_checked else FontConstants.BODY_SMALL)

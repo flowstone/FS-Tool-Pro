@@ -7,7 +7,7 @@ from PySide6.QtGui import QIcon, QAction
 from loguru import logger
 from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
-from src.util.config_util import ConfigUtil
+from src.util.config_manager import ConfigManager
 
 
 class TrayMenu(QObject):
@@ -19,12 +19,16 @@ class TrayMenu(QObject):
         super().__init__(parent)
         self.tray_icon = None
 
+        self.config_manager = ConfigManager()
+        self.config_manager.config_updated.connect(self.on_config_updated)
+        self.tray_menu_image = self.config_manager.get_config(ConfigManager.APP_TRAY_MENU_IMAGE_KEY)
+
     def init_tray_menu(self, main_window):
         logger.info("---- 初始化任务栏图标 ----")
         # 创建系统托盘图标
         self.tray_icon = QSystemTrayIcon(main_window)
         self.tray_icon.setIcon(
-            QIcon(ConfigUtil.get_ini_tray_menu_image()))  # 这里需要一个名为icon.png的图标文件，可以替换为真实路径
+            QIcon(self.tray_menu_image))  # 这里需要一个名为icon.png的图标文件，可以替换为真实路径
         # 双击托盘图标，打开主界面
         self.tray_icon.activated.connect(self.activate_signal_emit)
 
@@ -53,6 +57,10 @@ class TrayMenu(QObject):
     def show_main_signal_emit(self):
         self.show_main_signal.emit()
 
+    def on_config_updated(self, key, value):
+        self.tray_menu_image = self.config_manager.get_config(ConfigManager.APP_TRAY_MENU_IMAGE_KEY)
+        if key == ConfigManager.APP_TRAY_MENU_CHECKED_KEY:
+            self.tray_icon.setIcon(QIcon(self.tray_menu_image))
 
     # 重启应用
     @staticmethod

@@ -8,7 +8,7 @@ import os
 from src.util.common_util import CommonUtil
 from loguru import logger
 
-from src.util.config_util import ConfigUtil
+from src.util.config_manager import ConfigManager
 from src.widget.menu_window_widget import MenuWindowWidget
 
 
@@ -44,6 +44,7 @@ class LogWindow(MenuWindowWidget):
         self.setWindowTitle("日志窗口")
         logger.info(f"---- 初始化日志窗口 ----")
         self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+        self.config_manager = ConfigManager()
 
         self.setGeometry(0, 0, 800, 400)
         self.layout = QVBoxLayout(self)
@@ -68,15 +69,15 @@ class LogWindow(MenuWindowWidget):
         # 添加基础信息
         self.add_basic_info()
 
-    @staticmethod
-    def add_basic_info():
+
+    def add_basic_info(self):
         """添加系统和环境基础信息"""
         logger.info("=== 系统与环境信息 ===")
         logger.info(f"操作系统: {platform.system()} {platform.release()}")
         logger.info(f"IP: {CommonUtil.get_local_ip()}")
         logger.info(f"资源目录: {CommonUtil.get_resource_path('')}")
         logger.info(f"外部目录: {CommonUtil.get_external_path()}")
-        if ConfigUtil.get_ini_flask_checked():
+        if self.config_manager.get_config(ConfigManager.APP_FLASK_CHECKED_KEY):
             logger.info(f"Flask Server: http://127.0.0.1:5678")
         logger.info("===================")
 

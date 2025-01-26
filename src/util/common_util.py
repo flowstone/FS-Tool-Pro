@@ -188,3 +188,10 @@ class CommonUtil:
         # SAVE_FILE_PATH_WIN = "C:\\FS-Tool-Pro\\"
         # SAVE_FILE_PATH_MAC = "~/FS-Tool-Pro/"
         return FsConstants.SAVE_FILE_PATH_WIN if CommonUtil.check_win_os() else CommonUtil.get_mac_user_path()
+
+    # 获得Fast Sender全路径
+    @staticmethod
+    def get_sqlite_dir():
+        # 使用内置配置路径
+        data_path = CommonUtil.get_external_path()
+        return os.path.join(data_path, FsConstants.EXTERNAL_DATABASE_FILE)

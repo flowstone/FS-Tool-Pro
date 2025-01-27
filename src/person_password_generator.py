@@ -49,7 +49,7 @@ class PersonPasswordGeneratorApp(SubWindowWidget):
         rule_layout = QVBoxLayout()
 
         # 规则复选框
-        self.dynamic_salt = QCheckBox("动态盐值组合（使用完整特征）")
+        self.dynamic_salt = QCheckBox("动态盐值组合")
         self.char_sub = QCheckBox("基础字符替换（a→@）")
         self.double_sub = QCheckBox("高级符号替换（@→^）")
         self.vowel_upper = QCheckBox("元音字母大写")
@@ -119,6 +119,10 @@ class PersonPasswordGeneratorApp(SubWindowWidget):
         self.copy_btn.clicked.connect(self.copy_to_clipboard)
 
     def validate_inputs(self):
+        """
+        验证输入
+        :return:
+        """
         errors = []
         if not self.base_pw.text().strip():
             errors.append("基础密码不能为空")
@@ -146,22 +150,57 @@ class PersonPasswordGeneratorApp(SubWindowWidget):
             return False
         return True
 
+    # 截取前16位Hash值
     @staticmethod
     def process_hash_salt(secret):
-        """生成6位哈希盐值"""
+        """
+        取前16位哈希盐值
+        :param secret: 基础密码+网址特征+个人密钥
+        :return: 截取前16位
+        """
         hash_obj = hashlib.sha256(secret.encode()).hexdigest()
-        return hash_obj[:6]
+        return hash_obj[:16]
+
+    # 截取16位Hash值
+    @staticmethod
+    def dynamic_salt_hash_salt(secret_part, final_combined_hash_digest):
+        """
+        动态盐值组合
+        :param secret_part:str, 个人密钥
+        :param final_combined_hash_digest:str, 最终组合Hash值
+        :return: 截取的16位Hash值
+        """
+        if secret_part.isdigit():
+            # 对密钥进行哈希
+            secret_part_hash = hashlib.sha256(secret_part.encode()).hexdigest()
+            start_index = 0
+            for char in secret_part_hash:
+                if char.isdigit():
+                    start_index = int(char)
+                    break
+            if start_index + 16 <= len(final_combined_hash_digest):
+                password = final_combined_hash_digest[start_index: start_index + 16]
+            else:
+                remaining_length = 16 - (len(final_combined_hash_digest) - start_index)
+                password = final_combined_hash_digest[start_index:] + final_combined_hash_digest[:remaining_length]
+        else:
+            password = final_combined_hash_digest[:16]
+        return password
+
 
     def apply_rules(self, password):
+        site_part = self.site_feature.text().lower()
+        secret_part = self.secret_key.text()
         # 动态盐值处理
         if self.dynamic_salt.isChecked():
-            site_part = self.site_feature.text().lower()
-            secret_part = self.secret_key.text()
-            password += f"@{site_part}{secret_part}"
+            combined_for_pseudo_key = password + site_part
+            pseudo_key = hashlib.sha256(combined_for_pseudo_key.encode()).hexdigest()
+            final_combined = pseudo_key + secret_part
+            final_combined_hash_digest = hashlib.sha256(final_combined.encode()).hexdigest()
+            password = self.dynamic_salt_hash_salt(secret_part, final_combined_hash_digest)
         else:
-            # 使用哈希盐值
-            hash_salt = self.process_hash_salt(self.secret_key.text())
-            password += f"#{hash_salt}"
+            password += f"{site_part}{secret_part}"
+            password = self.process_hash_salt(password)
 
         # 规则处理流程
         rules = [
@@ -181,21 +220,41 @@ class PersonPasswordGeneratorApp(SubWindowWidget):
         return self.normalize_length(password)
 
     def process_char_substitution(self, password):
+        """
+        基础字符替换（a→@）
+        :param password: str, 16位Hash值
+        :return:
+        """
         if self.char_sub.isChecked():
             return ''.join([self.substitution_rules.get(c.lower(), c) for c in password])
         return password
 
     def process_double_sub(self, password):
+        """
+        高级符号替换（@→^）
+        :param password:  str, 16位Hash值
+        :return:
+        """
         if self.double_sub.isChecked():
             return ''.join([self.second_substitution.get(c, c) for c in password])
         return password
 
     def process_vowel_upper(self, password):
+        """
+        元音字母大写
+        :param password:   str, 16位Hash值
+        :return:
+        """
         if self.vowel_upper.isChecked():
             return ''.join([c.upper() if c.lower() in 'aeiou' else c for c in password])
         return password
 
     def process_prime_transform(self, password):
+        """
+        质数位置大写
+        :param password: str, 16位Hash值
+        :return:
+        """
         if self.prime_transform.isChecked():
             primes = [2, 3, 5, 7, 11, 13, 17, 19]
             pwd_list = list(password)
@@ -206,6 +265,11 @@ class PersonPasswordGeneratorApp(SubWindowWidget):
         return password
 
     def process_pos_swap(self, password):
+        """
+        奇偶位交换
+        :param password: str, 16位Hash值
+        :return:
+        """
         if self.pos_swap.isChecked():
             pwd_list = list(password)
             for i in range(0, len(pwd_list)-1, 2):
@@ -214,6 +278,11 @@ class PersonPasswordGeneratorApp(SubWindowWidget):
         return password
 
     def process_keyboard_shift(self, password):
+        """
+        键盘右移（全字符）
+        :param password: str, 16位Hash值
+        :return:
+        """
         if self.keyboard_shift.isChecked():
             keyboard_map = "1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
             shifted = "234567890wertyuiopasdfghjklzxcvbnmqQWERTYUIOPASDFGHJKLZXCVBNM1"
@@ -221,6 +290,11 @@ class PersonPasswordGeneratorApp(SubWindowWidget):
         return password
 
     def process_ascii_shift(self, password):
+        """
+        ASCII码+5（循环）
+        :param password: str, 16位Hash值
+        :return:
+        """
         if self.ascii_shift.isChecked():
             shifted = []
             for c in password:
@@ -232,12 +306,22 @@ class PersonPasswordGeneratorApp(SubWindowWidget):
         return password
 
     def process_separator(self, password):
+        """
+        插入分隔符（每4位）
+        :param password: str, 16位Hash值
+        :return:
+        """
         if self.insert_separator.isChecked():
             return '-'.join([password[i:i+4] for i in range(0, len(password), 4)])
         return password
 
     @staticmethod
     def normalize_length(password):
+        """
+        填充密码长度
+        :param password: str, 16位Hash值
+        :return:
+        """
         min_len, max_len = 16, 20
         if len(password) < min_len:
             return (password * 2)[:max_len]
@@ -253,6 +337,7 @@ class PersonPasswordGeneratorApp(SubWindowWidget):
             self.result.setText(final_password)
             self.result.setStyleSheet("")
         except Exception as e:
+            logger.error(f"生成错误: {str(e)}")
             self.show_error(f"生成错误: {str(e)}")
 
     def show_error(self, message):

@@ -2,6 +2,7 @@ import sys
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QToolBox
+from fs_base.widget import ToolBoxAnimation, TabAnimation
 from loguru import logger
 
 from src.const.fs_constants import FsConstants
@@ -14,8 +15,7 @@ from src.rename_generate import RenameGenerateApp
 from src.rename_replace import RenameReplaceApp
 from src.util.common_util import CommonUtil
 from src.widget.sub_window_widget import SubWindowWidget
-from src.widget.tabwidget_animation import AnimatedTabWidget
-from src.widget.toolbox_animation import AnimatedToolBox
+
 
 
 class FileToolApp(SubWindowWidget):
@@ -38,7 +38,7 @@ class FileToolApp(SubWindowWidget):
         layout = QVBoxLayout(self)
 
         # 创建 QToolBox
-        self.toolbox = AnimatedToolBox()
+        self.toolbox = ToolBoxAnimation()
         self.toolbox.setObjectName("mainToolBox")
 
         # 添加工具箱子项
@@ -81,7 +81,7 @@ class FileToolApp(SubWindowWidget):
         :param tabs: List[Tuple[QWidget, str]] 子页面和标题的列表
         :return: QTabWidget
         """
-        tab_widget = AnimatedTabWidget()
+        tab_widget = TabAnimation()
         tab_widget.setTabPosition(QTabWidget.TabPosition.North)
         tab_widget.setDocumentMode(True)
 

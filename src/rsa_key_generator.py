@@ -14,7 +14,6 @@ from src.const.font_constants import FontConstants
 from loguru import logger
 
 from src.widget.sub_window_widget import SubWindowWidget
-from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class RSAKeyGeneratorThread(QThread):

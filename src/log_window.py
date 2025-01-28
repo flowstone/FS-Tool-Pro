@@ -3,13 +3,15 @@ import platform
 import tempfile
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import QMenuBar, QMenu, QMainWindow, QTextEdit, QVBoxLayout, QWidget, QSystemTrayIcon, QMenu
+from fs_base.config_manager import ConfigManager
+from fs_base.widget import MenuWindow
+
 from src.const.fs_constants import FsConstants
 import os
 from src.util.common_util import CommonUtil
 from loguru import logger
 
-from src.util.config_manager import ConfigManager
-from src.widget.menu_window_widget import MenuWindowWidget
+
 
 
 class LogStream:
@@ -36,7 +38,7 @@ class LogStream:
         pass
 
 
-class LogWindow(MenuWindowWidget):
+class LogWindow(MenuWindow):
     """日志窗口类"""
 
     def __init__(self):
@@ -77,7 +79,7 @@ class LogWindow(MenuWindowWidget):
         logger.info(f"IP: {CommonUtil.get_local_ip()}")
         logger.info(f"资源目录: {CommonUtil.get_resource_path('')}")
         logger.info(f"外部目录: {CommonUtil.get_external_path()}")
-        if self.config_manager.get_config(ConfigManager.APP_FLASK_CHECKED_KEY):
+        if self.config_manager.get_config(FsConstants.APP_FLASK_CHECKED_KEY):
             logger.info(f"Flask Server: http://127.0.0.1:5678")
         logger.info("===================")
 

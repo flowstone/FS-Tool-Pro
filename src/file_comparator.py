@@ -8,16 +8,15 @@ from PySide6.QtWidgets import (
     QApplication, QVBoxLayout, QHBoxLayout, QPushButton, QFileDialog, QLabel, QWidget, QComboBox,
     QTextEdit
 )
+from fs_base.message_util import MessageUtil
+from fs_base.widget import CustomProgressBar
 from loguru import logger
 
 from src.const.color_constants import BLUE, BLACK
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
-from src.util.message_util import MessageUtil
-from src.widget.custom_progress_widget import CustomProgressBar
 from src.widget.sub_window_widget import SubWindowWidget
-from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class CompareThread(QThread):

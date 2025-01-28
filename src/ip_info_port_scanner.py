@@ -8,10 +8,10 @@ from PySide6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout,
     QPushButton, QTextEdit, QLabel, QLineEdit, QCheckBox
 )
+from fs_base.widget import CustomProgressBar
 from loguru import logger
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
-from src.widget.custom_progress_widget import CustomProgressBar
 from src.widget.sub_window_widget import SubWindowWidget
 
 

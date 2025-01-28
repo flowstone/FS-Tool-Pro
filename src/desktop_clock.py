@@ -4,8 +4,7 @@ from PySide6.QtCore import Qt, QTimer, Signal
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QCheckBox, QPushButton, QDialog, \
     QComboBox, QSpinBox, QGroupBox
-
-from src.widget.transparent_textbox_widget import TransparentTextBox
+from fs_base.widget import TransparentTextBox
 
 
 class DesktopClockApp(QWidget):

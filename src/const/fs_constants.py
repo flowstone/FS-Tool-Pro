@@ -1,4 +1,7 @@
-class FsConstants:
+from fs_base.const.app_constants import AppConstants
+
+
+class FsConstants(AppConstants):
     """
     ---------------------
     宽度为0 高度为0,则表示窗口【宽高】由组件们决定
@@ -111,9 +114,7 @@ class FsConstants:
     APP_ICON_FULL_PATH = "resources/images/app.ico"
     APP_MINI_ICON_FULL_PATH = "resources/images/app_mini.ico"
     APP_BAR_ICON_FULL_PATH = "resources/images/app_bar.ico"
-    AUTHOR_MAIL = "xueyao.me@gmail.com"
-    AUTHOR_BLOG = "https://blog.xueyao.tech"
-    AUTHOR_GITHUB = "https://github.com/flowstone"
+
     PROJECT_ADDRESS = "https://github.com/flowstone/FS-Tool-Pro"
     BASE_QSS_PATH = "resources/qss/base.qss"
     BASE_COLOR_MAP = "resources/images/img_colormap.gif"
@@ -141,8 +142,8 @@ class FsConstants:
     BUTTON_IMAGE_LOCK_CLOSE = "resources/btn/lock-solid.svg"
 
     # 保存文件路径
-    SAVE_FILE_PATH_WIN = "C:\\FS-Tool-Pro\\"
-    SAVE_FILE_PATH_MAC = "~/FS-Tool-Pro/"
+    AppConstants.SAVE_FILE_PATH_WIN = "C:\\FS-Tool-Pro\\"
+    AppConstants.SAVE_FILE_PATH_MAC = "~/FS-Tool-Pro/"
     EXTERNAL_DATABASE_FILE = "fs-tool-pro.db"
     EXTERNAL_FAST_SENDER_DIR = "fs_received_files"
     EXTERNAL_FLASK_MINI_DIR = "fs_flask_web"
@@ -156,3 +157,23 @@ class FsConstants:
     PREFERENCES_WINDOW_TITLE = "首选项"
     PREFERENCES_WINDOW_TITLE_ABOUT = "关于"
     PREFERENCES_WINDOW_TITLE_GENERAL = "常规"
+
+    APP_SQLITE_PATH_KEY = "sqlite.path"
+    APP_FLASK_CHECKED_KEY = "flask.checked"
+    APP_ICON_FONT_BOLD_CHECKED_KEY = "icon.font.bold.checked"
+
+    # 默认值
+    NEW_CONFIG = {
+        APP_SQLITE_PATH_KEY: "",
+        APP_FLASK_CHECKED_KEY: False,
+        APP_ICON_FONT_BOLD_CHECKED_KEY: False,
+    }
+    AppConstants.DEFAULT_CONFIG = {**AppConstants.DEFAULT_CONFIG, **NEW_CONFIG}
+    # 类型映射
+    NEW_CONFIG_TYPES = {
+        APP_FLASK_CHECKED_KEY: bool,
+        APP_ICON_FONT_BOLD_CHECKED_KEY: bool,
+        APP_SQLITE_PATH_KEY: str,
+    }
+    AppConstants.CONFIG_TYPES = {**AppConstants.CONFIG_TYPES, **NEW_CONFIG_TYPES}
+    ################### INI设置 #####################

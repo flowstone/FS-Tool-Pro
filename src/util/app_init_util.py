@@ -1,11 +1,13 @@
 import os
 import shutil
+
+from fs_base.config_manager import ConfigManager
+
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from PySide6.QtGui import QFontDatabase, QPalette
 from loguru import logger
 
-from src.util.config_manager import ConfigManager
 from src.util.init_db import InitDB
 
 
@@ -61,6 +63,6 @@ class AppInitUtil:
     @staticmethod
     def init_db():
         config_manager = ConfigManager()
-        load_db = InitDB(config_manager.get_config(ConfigManager.APP_SQLITE_PATH_KEY))
+        load_db = InitDB(config_manager.get_config(FsConstants.APP_SQLITE_PATH_KEY))
         load_db.create_table()
         load_db.close_connection()

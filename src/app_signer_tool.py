@@ -5,6 +5,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QTabWidget
 )
+from fs_base.widget import TabAnimation
 from loguru import logger
 
 from src.app_signer import AppSignerApp
@@ -13,7 +14,6 @@ from src.app_signer_public_key_extractor import PublicKeyExtractorApp
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.widget.sub_window_widget import SubWindowWidget
-from src.widget.tabwidget_animation import AnimatedTabWidget
 
 
 class AppSignerTool(SubWindowWidget):
@@ -33,7 +33,7 @@ class AppSignerTool(SubWindowWidget):
         # 创建主布局
         layout = QVBoxLayout(self)
         # 创建 TabWidget
-        self.tab_widget = AnimatedTabWidget()
+        self.tab_widget = TabAnimation()
         # 添加标签页
         self.add_tabs()
         # 将 TabWidget 添加到布局

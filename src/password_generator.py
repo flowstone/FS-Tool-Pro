@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
+from fs_base.widget import TransparentTextBox
 
 from src.const.color_constants import BLACK
 from src.const.font_constants import FontConstants
@@ -18,7 +19,6 @@ from loguru import logger
 from PySide6.QtCore import QThread, Signal
 
 from src.widget.sub_window_widget import SubWindowWidget
-from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class PasswordGeneratorThread(QThread):

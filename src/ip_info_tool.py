@@ -3,6 +3,7 @@ import sys
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
+from fs_base.widget import TabAnimation
 from loguru import logger
 
 from src.const.fs_constants import FsConstants
@@ -11,7 +12,6 @@ from src.ip_info_port_killer import PortKillerApp
 from src.ip_info_port_scanner import PortScannerApp
 from src.util.common_util import CommonUtil
 from src.widget.sub_window_widget import SubWindowWidget
-from src.widget.tabwidget_animation import AnimatedTabWidget
 
 
 class IpInfoToolApp(SubWindowWidget):
@@ -30,7 +30,7 @@ class IpInfoToolApp(SubWindowWidget):
         # 创建主布局
         layout = QVBoxLayout(self)
         # 创建 TabWidget
-        self.tab_widget = AnimatedTabWidget()
+        self.tab_widget = TabAnimation()
         # 添加标签页
         self.add_tabs()
         # 将 TabWidget 添加到布局

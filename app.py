@@ -35,13 +35,14 @@ import multiprocessing
 
 from PySide6.QtGui import QFont, QPalette
 from PySide6.QtWidgets import QApplication, QStyleFactory
+from fs_base.config_manager import ConfigManager
 from loguru import logger
 
 from flask_server import start_flask_in_thread
+from src.const.fs_constants import FsConstants
 from src.main_window import MainWindow
 from src.util.app_init_util import AppInitUtil
 from src.util.common_util import CommonUtil
-from src.util.config_manager import ConfigManager
 
 # 配置 loguru 日志输出（可选）
 logger.add(f"{CommonUtil.get_external_path()}/error.log", rotation="10 MB", retention="10 days", level="ERROR")
@@ -57,7 +58,7 @@ def main():
 
     # 启动 Flask 服务
     config_manager = ConfigManager()
-    if config_manager.get_config(ConfigManager.APP_FLASK_CHECKED_KEY):
+    if config_manager.get_config(FsConstants.APP_FLASK_CHECKED_KEY):
         start_flask_in_thread()
 
     # 加载样式表文件

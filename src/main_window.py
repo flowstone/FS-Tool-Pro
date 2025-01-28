@@ -1,29 +1,30 @@
 import sys
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QSystemTrayIcon, QMenu, QMainWindow
+from fs_base.app_mini import AppMini
+from fs_base.app_tray_menu import AppTrayMenu
+from fs_base.message_util import MessageUtil
 
 from src.app_instance_config import app_instance_config
 
 from PySide6.QtGui import QIcon
 
 from src.util.ini_util import IniUtil
-from src.util.message_util import MessageUtil
-from src.widget.app_mini import FloatingBall
+
 from loguru import logger
 from src.util.common_util import CommonUtil
 from src.const.fs_constants import FsConstants
 from src.widget.app_icon_widget import AppIconWidget
 from src.util.menu_bar import MenuBar
-from src.widget.tray_menu import TrayMenu
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.menubar = None
-        self.floating_ball = FloatingBall(self)
+        self.floating_ball = AppMini(self)
         self.is_floating_ball_visible = False
         self.icon_config = app_instance_config
-        self.tray_menu = TrayMenu(self)
+        self.tray_menu = AppTrayMenu(self)
         # 获取从配置文件读取的应用可见性
         self.visibility_config = IniUtil.get_ini_app_visibility()
         # 使用字典动态管理所有应用实例

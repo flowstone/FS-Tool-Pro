@@ -1,9 +1,10 @@
 from PySide6.QtCore import Signal, Qt, QPropertyAnimation, QEasingCurve
 from PySide6.QtGui import QPixmap, QColor
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsColorizeEffect
+from fs_base.config_manager import ConfigManager
 
 from src.const.font_constants import FontConstants
-from src.util.config_manager import ConfigManager
+from src.const.fs_constants import FsConstants
 
 
 class AppIconWidget(QWidget):
@@ -23,7 +24,7 @@ class AppIconWidget(QWidget):
         self.name = name
         self.config_manager = ConfigManager()
         self.config_manager.config_updated.connect(self.on_config_updated)
-        self.icon_font_bold_checked = self.config_manager.get_config(ConfigManager.APP_ICON_FONT_BOLD_CHECKED_KEY)
+        self.icon_font_bold_checked = self.config_manager.get_config(FsConstants.APP_ICON_FONT_BOLD_CHECKED_KEY)
         # 创建布局
         layout = QVBoxLayout()
         layout.setSpacing(0)  # 去掉图标和名称之间的间距
@@ -97,6 +98,6 @@ class AppIconWidget(QWidget):
         super().leaveEvent(event)
 
     def on_config_updated(self, key, value):
-        if key == ConfigManager.APP_ICON_FONT_BOLD_CHECKED_KEY:
-            self.icon_font_bold_checked = self.config_manager.get_config(ConfigManager.APP_ICON_FONT_BOLD_CHECKED_KEY)
+        if key == FsConstants.APP_ICON_FONT_BOLD_CHECKED_KEY:
+            self.icon_font_bold_checked = self.config_manager.get_config(FsConstants.APP_ICON_FONT_BOLD_CHECKED_KEY)
             self.name_label.setFont(FontConstants.BOLD_SMALL if self.icon_font_bold_checked else FontConstants.BODY_SMALL)

@@ -5,13 +5,13 @@ from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, Q
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 from cryptography.x509 import load_pem_x509_certificate, load_der_x509_certificate
+from fs_base.widget import TransparentTextBox
 from loguru import logger
 
 from src.const.font_constants import FontConstants
 from src.const.fs_constants import FsConstants
 from src.util.common_util import CommonUtil
 from src.widget.sub_window_widget import SubWindowWidget
-from src.widget.transparent_textbox_widget import TransparentTextBox
 
 
 class PublicKeyExtractorApp(SubWindowWidget):

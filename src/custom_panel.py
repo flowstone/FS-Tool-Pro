@@ -1,8 +1,15 @@
 import sys
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QPushButton, QLabel, QHBoxLayout
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QPushButton, QLabel, QHBoxLayout, QSpinBox, \
+    QColorDialog, QSlider
 from PySide6.QtCore import Qt, QPoint
-from PySide6.QtGui import QMouseEvent, QGuiApplication
+from PySide6.QtGui import QMouseEvent, QGuiApplication, QColorConstants, QIcon
 from loguru import logger
+
+from src.const.fs_constants import FsConstants
+from src.util.common_util import CommonUtil
+from src.widget.hover_image_button import HoverImageButton
+from src.widget.sub_window_widget import SubWindowWidget
+
 
 class DraggableLabel(QWidget):
     def __init__(self, text, parent=None):
@@ -17,13 +24,12 @@ class DraggableLabel(QWidget):
 
         # 文本标签
         self.text_label = QLabel(text)
-        self.text_label.setStyleSheet("background-color: lightblue; padding: 5px;")
+        self.text_label.setStyleSheet("background-color: lightblue; padding: 5px; font-weight: bold;")
         self.layout.addWidget(self.text_label)
 
         # 关闭按钮
         self.close_button = QPushButton("×")  # 使用叉号作为关闭按钮
-        self.close_button.setStyleSheet("background-color: red; color: white; font-weight: bold; border: none;")
-        self.close_button.setFixedSize(20, 20)  # 设置按钮大小
+        self.close_button.setStyleSheet("background-color: red; color: white; font-weight: bold; border: none; min-width: 15px;")
         self.close_button.clicked.connect(self.close_label)  # 绑定点击事件
         self.layout.addWidget(self.close_button)
 
@@ -51,6 +57,7 @@ class DraggableLabel(QWidget):
                 mini_plane = self.parentWidget().geometry()
                 mini_plane_width = mini_plane.width()
                 mini_plane_height = mini_plane.height()
+
                 # 计算 x 坐标的比例
                 width_ratio = screen_width / mini_plane_width
                 # 计算 y 坐标的比例
@@ -75,7 +82,7 @@ class DraggableLabel(QWidget):
 
 
 class TransparentWindow(QWidget):
-    def __init__(self, text):
+    def __init__(self, text, color, font_size):
         super().__init__()
         # 设置窗口为无边框且置顶
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
@@ -87,7 +94,9 @@ class TransparentWindow(QWidget):
         self.text_label = QLabel(text)
         self.text_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         # 设置标签样式
-        self.text_label.setStyleSheet("font-size: 24px;font-weight: bold;")
+        # 设置标签样式
+        style = f"font-size: {font_size}px; font-weight: bold; color: {color.name()};"
+        self.text_label.setStyleSheet(style)
         layout.addWidget(self.text_label)
         self.setLayout(layout)
 
@@ -95,17 +104,20 @@ class TransparentWindow(QWidget):
         self.adjustSize()
 
 
-class MainWindow(QWidget):
+class CustomPanelApp(SubWindowWidget):
     def __init__(self):
         super().__init__()
+        logger.info(f"---- 初始化{FsConstants.WINDOW_TITLE_CUSTOM_PANEL} ----")
 
+        self.setWindowTitle(FsConstants.WINDOW_TITLE_CUSTOM_PANEL)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
         # 创建布局
         layout = QVBoxLayout()
 
         # 创建桌面方框
         self.desktop = QWidget()
         self.desktop.setStyleSheet("background-color: lightgray;")
-        self.desktop.setMinimumSize(400, 300)
+        self.desktop.setMinimumSize(600, 300)
         self.desktop.setMouseTracking(True)
         self.desktop.mouseMoveEvent = self.on_desktop_mouse_move
         layout.addWidget(self.desktop)
@@ -114,6 +126,22 @@ class MainWindow(QWidget):
         input_layout = QVBoxLayout()
         self.input_box = QLineEdit()
         input_layout.addWidget(self.input_box)
+
+        # 颜色选择按钮
+        self.color_button = QPushButton("选择颜色")
+        self.color_button.clicked.connect(self.select_color)
+        self.selected_color = QColorConstants.Black
+        input_layout.addWidget(self.color_button)
+
+        # 字体大小滑块
+        self.font_size_slider = QSlider(Qt.Orientation.Horizontal)
+        self.font_size_slider.setRange(14, 100)
+        self.font_size_slider.setValue(24)
+        self.label = QLabel(f"滑块当前值: {self.font_size_slider.value()}")
+        self.font_size_slider.valueChanged.connect(self.on_slider_value_changed)
+
+        input_layout.addWidget(self.label)
+        input_layout.addWidget(self.font_size_slider)
 
         self.add_button = QPushButton("添加")
         self.add_button.clicked.connect(self.add_text_to_desktop)
@@ -128,6 +156,14 @@ class MainWindow(QWidget):
         # 设置布局
         self.setLayout(layout)
 
+    def on_slider_value_changed(self, value):
+        self.label.setText(f"滑块当前值: {value}")
+
+    def select_color(self):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self.selected_color = color
+
     def add_text_to_desktop(self):
         text = self.input_box.text()
         if text:
@@ -135,9 +171,12 @@ class MainWindow(QWidget):
             label.move(50, 50)
             label.show()
 
-            # 创建透明窗口并传入文本
-            transparent_window = TransparentWindow(text)
+            # 获取选择的颜色和字体大小
+            color = self.selected_color
+            font_size = self.font_size_slider.value()
 
+            # 创建透明窗口并传入文本、颜色和字体大小
+            transparent_window = TransparentWindow(text, color, font_size)
             # 设置透明窗口的位置为桌面区域的某个位置（例如左上角偏移50像素）
             transparent_window.move(50, 50)  # 透明窗口与标签有相同的初始位置
             transparent_window.show()
@@ -150,22 +189,9 @@ class MainWindow(QWidget):
         pos = event.position().toPoint()
         self.mouse_pos_label.setText(f"鼠标位置: ({pos.x()}, {pos.y()})")
 
-    def scale_position(self, widget: QWidget, pos: QPoint):
-        # 获取桌面区域的大小
-        desktop_size = self.desktop.size()
-
-        # 计算缩放比例
-        scale_x = desktop_size.width() / self.desktop.minimumWidth()
-        scale_y = desktop_size.height() / self.desktop.minimumHeight()
-
-        # 缩放后的坐标
-        scaled_x = pos.x() * scale_x
-        scaled_y = pos.y() * scale_y
-
-        return QPoint(scaled_x, scaled_y)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = CustomPanelApp()
     window.show()
     sys.exit(app.exec())

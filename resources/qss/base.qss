@@ -149,8 +149,7 @@ QPushButton#start_button:pressed {
 }
 QPushButton#start_button:disabled {
     background-color: gray;
-    colo
-    r: white;
+    color: white;
 }
 
 

@@ -58,13 +58,17 @@ class DraggableLabel(QWidget):
                 mini_plane_width = mini_plane.width()
                 mini_plane_height = mini_plane.height()
 
+                # 获取 DraggableLabel 的宽高
+                label_width = self.width()
+                label_height = self.height()
+
                 # 计算 x 坐标的比例
                 width_ratio = screen_width / mini_plane_width
                 # 计算 y 坐标的比例
                 height_ratio = screen_height / mini_plane_height
                 # 计算透明窗口新的 x、y 坐标
-                transparent_x = new_pos.x() * width_ratio
-                transparent_y = new_pos.y() * height_ratio
+                transparent_x = (new_pos.x() + label_width / 2) * width_ratio - self.transparent_window.width() / 2
+                transparent_y = (new_pos.y() + label_height / 2) * height_ratio - self.transparent_window.height() / 2
 
                 self.transparent_window.move(int(transparent_x), int(transparent_y))
         super().mouseMoveEvent(event)

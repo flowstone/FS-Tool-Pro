@@ -207,11 +207,11 @@ class PersonPasswordGeneratorApp(SubWindowWidget):
             self.process_char_substitution,
             self.process_double_sub,
             self.process_vowel_upper,
-            self.process_prime_transform,
             self.process_pos_swap,
             self.process_keyboard_shift,
+            self.process_separator,
             self.process_ascii_shift,
-            self.process_separator
+            self.process_prime_transform
         ]
 
         for rule in rules:
@@ -256,7 +256,8 @@ class PersonPasswordGeneratorApp(SubWindowWidget):
         :return:
         """
         if self.prime_transform.isChecked():
-            primes = [2, 3, 5, 7, 11, 13, 17, 19]
+            # 修改后的质数索引（0-based）
+            primes = [1, 2, 4, 6, 10, 12, 16, 18]  # 对应第2、3、5、7、11、13、17、19位
             pwd_list = list(password)
             for i in primes:
                 if i < len(pwd_list):

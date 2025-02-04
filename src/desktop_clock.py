@@ -1,10 +1,12 @@
 import sys
 import time
 from PySide6.QtCore import Qt, QTimer, Signal
-from PySide6.QtGui import QGuiApplication
+from PySide6.QtGui import QGuiApplication, QIcon
 from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QCheckBox, QPushButton, QDialog, \
     QComboBox, QSpinBox, QGroupBox
 from fs_base.widget import TransparentTextBox
+
+from src.util.common_util import CommonUtil
 
 
 class DesktopClockApp(QWidget):
@@ -24,6 +26,7 @@ class DesktopClockApp(QWidget):
         self.setWindowTitle("桌面时钟")
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)  # 设置窗口背景透明
+
         self.setWindowOpacity(0.8)
         self.setGeometry(0, 0, 200, 120)
 
@@ -133,6 +136,8 @@ class DesktopClockSetting(QDialog):
     def init_ui(self):
         self.setWindowTitle("设置")
         self.setFixedWidth(400)
+        self.setWindowIcon(QIcon(CommonUtil.get_ico_full_path()))
+
         layout = QVBoxLayout()
 
         # 时间显示开关

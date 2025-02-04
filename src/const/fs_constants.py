@@ -40,6 +40,7 @@ class FsConstants(AppConstants):
     APP_TITLE_APP_SIGNER = "文件签名"
     APP_TITLE_FAST_SENDER_TOOL = "快速发送"
     APP_TITLE_COLOR_PICKER = "取色器"
+    APP_TITLE_CUSTOM_PANEL = "自定义面板"
 
     WINDOW_TITLE_DESKTOP_CLOCK = "透明时间"
     WINDOW_TITLE_STICK_NOTE = "快捷便签"
@@ -74,6 +75,7 @@ class FsConstants(AppConstants):
     WINDOW_TITLE_FAST_SENDER_MINI = "Flask Mini 服务"
     WINDOW_TITLE_WEBDAV_SERVER = "WebDAV服务"
     WINDOW_TITLE_COLOR_PICKER = "图片取色器"
+    WINDOW_TITLE_CUSTOM_PANEL = "自定义面板"
 
 
 
@@ -135,6 +137,7 @@ class FsConstants(AppConstants):
     APP_ICON_APP_SIGNER = "app_signer_icon.svg"
     APP_ICON_FAST_SENDER_TOOL = "fast_sender_icon.svg"
     APP_ICON_COLOR_PICKER = "color_picker_icon.svg"
+    APP_ICON_CUSTOM_PANEL = "custom_panel_icon.svg"
 
 
 
